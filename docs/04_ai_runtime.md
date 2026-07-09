@@ -1,28 +1,11 @@
-# AI Runtime
+# AI Runtime (Stufe D) — Dokumentation
 
-Die AI Runtime unterstuetzt redaktionelle und technische Arbeit, ohne finale Entscheidungen zu uebernehmen.
+Die **Ausführung** liegt in `digiwiki/ai_runtime/`. Dieses Repo enthält nur die **Routing-Konfiguration**:
 
-## Aufgaben
+- `runtime/routing.json` — Task → Agent, Modell, Playbooks
 
-- Quellen zusammenfassen.
-- Content-Entwuerfe erstellen.
-- Varianten fuer Tonalitaet und Kanal vorbereiten.
-- Qualitaetspruefungen gegen Playbooks ausfuehren.
-- Risiken und fehlende Informationen markieren.
+REST-Endpunkte: `/api/v1/runtime/*` (siehe `docs/verfahren/digiwiz_ai_runtime.md`).
 
-## Grenzen
+Prinzip: Task → Routing → Playbooks → Provider → Validator → Regisseur-Inbox.
 
-- Keine Auto-Veroeffentlichung.
-- Keine eigenstaendige Veraenderung produktiver Systeme.
-- Keine Entscheidung ueber finale Freigabe.
-- Keine verdeckte Speicherung sensibler Daten.
-
-## Runtime-Vertrag
-
-Jede Runtime-Ausgabe muss enthalten:
-
-- Eingaben oder Quellenreferenzen.
-- angewendetes Playbook.
-- Ergebnisstatus.
-- offene Fragen oder Risiken.
-- klare Kennzeichnung als Entwurf, Pruefung oder Empfehlung.
+MCP: vorbereitet (`mcp.enabled: false`), nicht implementiert — ADR-0001.

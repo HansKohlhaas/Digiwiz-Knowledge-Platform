@@ -1,9 +1,22 @@
 # Changelog
 
-Alle relevanten Aenderungen an dieser Dokumentationsbasis werden hier dokumentiert.
+Format basiert auf [Keep a Changelog](https://keepachangelog.com/).
 
-## 0.1.0 - Initial
+## [1.0.0] - 2026-07-09
 
-- Initiale Repository-Struktur angelegt.
-- Grundsaetzliche Architekturprinzipien dokumentiert.
-- Playbooks, Schemas, ADRs, Beispiele sowie Cursor- und Codex-Anweisungen ergaenzt.
+### Added
+
+- Initiales Knowledge-Platform-Repo im Digiwiz-Monorepo (`knowledge-platform/`)
+- Playbooks: presseschau, linkedin, brandvoice, sources, image, wordpress, seo
+- Content: `linkedin-presseschau.md` (kanonisch)
+- Schema: `agent-lieferung.v3.json`
+- Runtime: `routing.json` (aus Stufe D)
+- ADR-0001 bis ADR-0005
+- Manifest `meta/manifest.yaml`, VERSION 1.0.0
+- Verfahrensdoku migriert aus `docs/wiki/verfahren/`
+- Digiwiz App: `knowledge_paths.py` + `knowledge_lock.json` (Fallback-kompatibel)
+
+### Notes
+
+- Keine Breaking Changes — Legacy-Pfade in `firmenapp/config/` bleiben als Fallback
+- Stufe E (Knowledge Graph) bewusst nicht enthalten

@@ -1,19 +1,22 @@
-# ADR-0004: No auto-publishing
+# ADR-0004: Keine Auto-Veröffentlichung
 
 ## Status
 
-Accepted
+Akzeptiert (2026-07-09)
 
-## Context
+## Kontext
 
-Externe Kanaele wie LinkedIn oder WordPress haben reputative und rechtliche Wirkung.
+Presseschau, LinkedIn und Newsletter bergen Reputations- und Compliance-Risiken bei unkontrollierter Veröffentlichung.
 
-## Decision
+## Entscheidung
 
-Digiwiz veroeffentlicht keine Inhalte automatisch. Das System darf Veroeffentlichung vorbereiten, aber nicht final ausloesen.
+- **Keine** direkte LinkedIn-API-Veröffentlichung aus Digiwiz
+- **Keine** automatische WordPress-Publish-Pipeline
+- **Keine** Auto-Freigabe bei grün/gelb in der Brandvoice-Ampel
+- Bildgenerierung nur manuell per UI-Button
 
-## Consequences
+## Konsequenzen
 
-- Publish-nahe Funktionen benoetigen explizite Freigabe.
-- APIs und MCP-Tools duerfen standardmaessig keine Publish-Aktionen anbieten.
-- Beispiele muessen `auto_publish: false` respektieren.
+- Playbooks enthalten `no_auto_publish` als harte Regel
+- API-Responses liefern `inbox_id`, nicht `published_url`
+- Stufe F (autonome Agenten) muss diese ADR explizit erweitern, nicht überschreiben

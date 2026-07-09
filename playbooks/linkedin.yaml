@@ -1,23 +1,28 @@
-id: linkedin
-version: 0.1.0
-name: LinkedIn Draft
-purpose: Erstellung eines LinkedIn-Entwurfs auf Basis freigegebener Inhalte.
-owner: Hans
-approval_required: true
-auto_publish: false
-inputs:
-  - brief
-  - audience
-  - key_points
-  - brandvoice
-steps:
-  - clarify_angle
-  - draft_post
-  - check_tone
-  - prepare_variants
-quality_checks:
-  - no_auto_publish
-  - clear_claims
-  - brandvoice_match
-outputs:
-  - linkedin_post_draft
+name: linkedin
+title: LinkedIn-Beiträge (Hans-Stil)
+version: "2026-07-09"
+description: >
+  Thought-Leadership-Posts für LinkedIn — sachlich, entscheidungsorientiert, ohne Verkaufspitch.
+content_file: content/playbooks/linkedin-presseschau.md
+stimme: hans
+structure:
+  - hook
+  - kontext
+  - einordnung
+  - dialog_frage
+rules:
+  - id: sie_form
+    severity: soft
+    text: Respektvolles Sie in Beiträgen
+  - id: no_pitch
+    severity: hard
+    text: Kein direkter DigiBest-Verkaufspitch im Post
+  - id: one_hans_phrase
+    severity: soft
+    text: Maximal eine typische Hans-Phrase pro Text
+no_gos:
+  - "Alles klar"
+  - "Alles paletti"
+  - "Machen wir"
+  - "Man muss einfach"
+  - "Sie sollten unbedingt"

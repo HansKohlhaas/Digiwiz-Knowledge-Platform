@@ -1,0 +1,26 @@
+{
+  "schema": "digiwiz.agent_lieferung",
+  "version": 3,
+  "datum": "2026-07-09",
+  "quelle_agent": "chatgpt-presseschau",
+  "created_at": "2026-07-09T08:00:00",
+  "vorschlaege": [
+    {
+      "typ": "linkedin_post",
+      "titel": "LinkedIn: Apotheken-Digitalisierung — Testlieferung",
+      "linkedin_post": "In der Apotheke bleibt Digitalisierung oft auf der Strecke.\n\nWas mich überzeugt: planbare Prozesse statt weiterer IT-Inseln.\n\nApotheken mit klarer Struktur gewinnen Spielraum für Beratung.\n\nWie erleben Sie das bei Ihren Partnern?\n\n#Apotheke #Digitalisierung",
+      "hook": "Wer wartet, verliert Anschluss — nicht nur Zeit.",
+      "begruendung": "Presseschau-Testlieferung — E2E-Validierung Stufe B.",
+      "quellen": [
+        {
+          "titel": "Example Artikel",
+          "url": "https://example.com/presseschau-test"
+        }
+      ],
+      "meta": {
+        "stimme": "hans",
+        "prioritaet": 75
+      }
+    }
+  ]
+}

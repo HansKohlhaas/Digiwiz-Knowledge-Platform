@@ -1,19 +1,21 @@
-# ADR-0001: REST before MCP
+# ADR-0001: REST vor MCP
 
 ## Status
 
-Accepted
+Akzeptiert (2026-07-09)
 
-## Context
+## Kontext
 
-Digiwiz benoetigt stabile Integrationspunkte fuer bestehende Systeme, CLI-Aufrufe und spaetere Agenten.
+Externe KI-Systeme sollen Digiwiz anbinden. MCP ist attraktiv, aber noch nicht überall stabil einsetzbar.
 
-## Decision
+## Entscheidung
 
-REST wird zuerst spezifiziert und umgesetzt. MCP wird als Adapter auf stabile REST-Funktionen vorbereitet.
+1. **REST/CLI zuerst** (Stufe C/D): `digiwiz-agent`, FastAPI `/api/v1/*`
+2. **MCP vorbereiten**, nicht implementieren: Routing-Config enthält `mcp.enabled: false`
+3. Gleiche Semantik für spätere MCP-Tools wie REST-Endpunkte
 
-## Consequences
+## Konsequenzen
 
-- Fruehe Integrationen bleiben einfach testbar.
-- MCP-Tools koennen spaeter kontrolliert ergaenzt werden.
-- API-Vertraege muessen versioniert und dokumentiert werden.
+- Externe Agenten nutzen HTTP + API-Key
+- Knowledge Platform dokumentiert REST-Contracts
+- MCP folgt als Adapter-Schicht ohne Logik-Duplikat

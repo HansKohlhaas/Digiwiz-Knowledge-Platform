@@ -1,24 +1,31 @@
-# Start Here
+# Start here — Digiwiz Knowledge Platform
 
-Dieses Repository dient als Arbeitsgrundlage fuer Menschen und KI-Assistenten, die an Digiwiz-Dokumentation, Architektur und kontrollierter Automatisierung arbeiten.
+## Für Menschen
 
-## Arbeitsweise
+1. [README.md](README.md) — Zweck und Grenzen
+2. [adr/](adr/) — Architekturentscheidungen (verbindlich)
+3. [docs/verfahren/](docs/verfahren/) — Betriebsverfahren (aus Digiwiz migriert)
+4. [playbooks/](playbooks/) — Maschinenlesbare Regeln
+5. [content/playbooks/](content/playbooks/) — Kanonische Langtexte
 
-1. Erst Architektur und Playbooks lesen.
-2. Danach relevante ADRs pruefen.
-3. Erst dann neue Tasks, API-Spezifikationen oder Runtime-Anweisungen erstellen.
+## Für Digiwiz App / Cursor
 
-## Verbindliche Grenzen
+- Manifest: [meta/manifest.yaml](meta/manifest.yaml)
+- Schema Presseschau: [schemas/agent-lieferung.v3.json](schemas/agent-lieferung.v3.json)
+- Runtime-Routing: [runtime/routing.json](runtime/routing.json)
+- Beispiele: [examples/presseschau/](examples/presseschau/)
+- Cursor: [cursor/CURSOR_IMPLEMENTATION_GUIDE.md](cursor/CURSOR_IMPLEMENTATION_GUIDE.md)
+- Codex: [codex/CODEX_WORKING_RULES.md](codex/CODEX_WORKING_RULES.md)
 
-- Keine Auto-Veroeffentlichung.
-- Keine unautorisierte Veraenderung bestehender Digiwiz-Produktivsysteme.
-- Keine Breaking Changes ohne ADR und explizite Freigabe.
-- Keine verdeckten Seiteneffekte in Skripten, Tasks oder Agentenablaeufen.
+## Stufen A–D (bereits in App umgesetzt)
 
-## Primaere Einstiege
+| Stufe | Knowledge Platform | Digiwiz App |
+|-------|-------------------|-------------|
+| A | Playbooks, Content, Examples | Inbox, Import, Morgen-Lauf |
+| B | Schemas, QS-Docs | `agent_lieferung_validierung.py` |
+| C | API-Doku in `docs/verfahren/` | `digiwiz_agent.py`, `11_wiki_api.py` |
+| D | `runtime/routing.json` | `digiwiki/ai_runtime/` |
 
-- Vision: `docs/01_vision.md`
-- Systemarchitektur: `docs/02_system_architecture.md`
-- Playbook-Strategie: `docs/03_knowledge_platform.md`
-- API-Strategie: `docs/05_api_strategy.md`
-- Codex-Regeln: `codex/CODEX_WORKING_RULES.md`
+## Stufe E (noch nicht beginnen)
+
+Knowledge Graph — erst nach abgeschlossener Migration und Freigabe. Siehe README Next Actions.

@@ -1,16 +1,13 @@
-id: seo
-version: 0.1.0
-name: SEO Review
-purpose: Pruefung von Inhalten auf Suchintention, Struktur und Metadaten.
-inputs:
-  - draft
-  - target_query
-  - audience
-checks:
-  - search_intent_match
-  - title_clear
-  - meta_description_clear
-  - headings_structured
-  - internal_links_suggested
-outputs:
-  - seo_review
+name: seo
+title: SEO / WordPress-Texte
+version: "2026-07-09"
+description: >
+  SEO-orientierte Textentwürfe — Runtime-Task seo, keine Auto-Veröffentlichung.
+content_file: content/playbooks/linkedin-presseschau.md
+rules:
+  - id: no_auto_publish
+    severity: hard
+    text: Keine direkte Veröffentlichung
+  - id: review_first
+    severity: hard
+    text: Regisseur-Inbox oder manueller Export

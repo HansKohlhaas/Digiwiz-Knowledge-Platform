@@ -1,23 +1,38 @@
-id: presseschau
-version: 0.1.0
-name: Presseschau
-purpose: Strukturierte Zusammenfassung relevanter Quellen fuer redaktionelle Bewertung.
-owner: Hans
-approval_required: true
-auto_publish: false
-inputs:
-  - topic
-  - sources
-  - date_range
-steps:
-  - collect_sources
-  - summarize_findings
-  - extract_claims
-  - mark_risks
-  - prepare_delivery
-quality_checks:
-  - source_urls_present
-  - claims_traceable
-  - no_unverified_facts_as_certainty
-outputs:
-  - presseschau_delivery
+name: presseschau
+title: Presseschau → LinkedIn
+version: "2026-07-09"
+description: >
+  Aus Presse- und Branchensignalen einen LinkedIn-Beitrag vorbereiten.
+  Lieferung als JSON v3 an Digiwiz — Freigabe über Regisseur-Inbox.
+content_file: content/playbooks/linkedin-presseschau.md
+stimme: hans
+schema_version: 3
+required_fields:
+  envelope:
+    - datum
+    - quelle_agent
+    - created_at
+    - version
+    - vorschlaege
+  vorschlag:
+    - typ
+    - titel
+    - linkedin_post
+    - quellen
+rules:
+  - id: no_auto_publish
+    severity: hard
+    text: Keine Auto-Veröffentlichung — nur Regisseur-Inbox
+  - id: length
+    severity: soft
+    text: "800–1.800 Zeichen empfohlen"
+  - id: hashtags
+    severity: soft
+    text: "3–5 sachliche Hashtags"
+  - id: dialog
+    severity: soft
+    text: Echte Frage am Ende als Dialog-Öffner
+delivery:
+  cli: digiwiz-agent submit presseschau <file.json>
+  api: POST /api/v1/agenten/lieferung
+  inbox: data/agenten/inbox/

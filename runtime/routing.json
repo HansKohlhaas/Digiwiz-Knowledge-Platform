@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "default_provider": "mock",
+  "routing": [
+    {
+      "task": "presseschau",
+      "agent": "NewsAgent",
+      "model": "openai:gpt-4o-mini",
+      "fallback_model": "mock:deterministic",
+      "playbooks": ["presseschau", "linkedin", "brandvoice", "sources"]
+    },
+    {
+      "task": "linkedin_post",
+      "agent": "NewsAgent",
+      "model": "openai:gpt-4o-mini",
+      "fallback_model": "mock:deterministic",
+      "playbooks": ["linkedin", "brandvoice"]
+    },
+    {
+      "task": "brandvoice",
+      "agent": "BrandvoiceAgent",
+      "model": "mock:deterministic",
+      "playbooks": ["brandvoice"]
+    },
+    {
+      "task": "image",
+      "agent": "ImageAgent",
+      "model": "openai:gpt-image-1",
+      "fallback_model": "mock:deterministic",
+      "playbooks": ["image"]
+    },
+    {
+      "task": "seo",
+      "agent": "SEOAgent",
+      "model": "openai:gpt-4o-mini",
+      "fallback_model": "mock:deterministic",
+      "playbooks": ["wordpress", "linkedin", "seo"]
+    }
+  ],
+  "mcp": {
+    "enabled": false,
+    "hinweis": "MCP-Server vorbereitet — REST implementiert, MCP folgt in späterer Stufe"
+  }
+}

@@ -1,17 +1,15 @@
 # Deployment
 
-Dieses Repository enthaelt keine Produktivlogik und wird daher nicht als Anwendung deployed. Deployment bedeutet hier die kontrollierte Verteilung von Dokumentation, Schemas und Playbooks.
+## Knowledge Platform
 
-## Artefakte
+- Versionierung über `VERSION` + `CHANGELOG.md`
+- Kann als Git-Submodule oder separates Repo ausgekoppelt werden
+- App pinnt Version via `digiwiki/knowledge_lock.json`
 
-- Markdown-Dokumente fuer Menschen und KI-Assistenten.
-- YAML-Playbooks fuer Workflow-Steuerung.
-- JSON Schemas fuer Validierung.
-- Beispiele fuer Implementierung und Tests.
+## Digiwiz App (Render / lokal)
 
-## Regeln
+- Runtime-Code unverändert in `digiwiki/`
+- Env: `DIGIWIZ_KNOWLEDGE_ROOT` wenn KP außerhalb des Monorepos
+- `data/` bleibt lokal/ephemeral
 
-- Aenderungen werden versioniert.
-- Breaking Changes an Schemas benoetigen ADR und Migrationshinweis.
-- Produktivsysteme importieren nur freigegebene Versionen.
-- Windows-Pfade und Shell-Kommandos muessen kompatibel dokumentiert werden.
+Siehe Render-Regeln: Port `0.0.0.0:$PORT`, ephemeral filesystem.

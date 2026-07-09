@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Digiwiz Agenten-Lieferung v3",
+  "schema_id": "digiwiz.agent_lieferung",
+  "version": 3,
+  "hinweis": "Stufe B — strikte Pflichtfelder bei version>=3. Kanonisch in Knowledge Platform.",
+  "required_envelope": ["datum", "quelle_agent", "created_at", "version", "vorschlaege"],
+  "required_vorschlag_linkedin_post": ["typ", "titel", "linkedin_post", "quellen"],
+  "beispiel": {
+    "schema": "digiwiz.agent_lieferung",
+    "version": 3,
+    "datum": "2026-07-09",
+    "quelle_agent": "chatgpt-presseschau",
+    "created_at": "2026-07-09T08:00:00",
+    "vorschlaege": [
+      {
+        "typ": "linkedin_post",
+        "titel": "LinkedIn: Apotheken-Digitalisierung",
+        "linkedin_post": "Beispieltext mit Frage am Ende?\n\n#Apotheke",
+        "quellen": [{ "titel": "Beispiel", "url": "https://example.com/artikel" }],
+        "meta": {
+          "hook": "Hook-Zeile",
+          "begruendung": "Warum heute",
+          "stimme": "hans"
+        }
+      }
+    ]
+  }
+}

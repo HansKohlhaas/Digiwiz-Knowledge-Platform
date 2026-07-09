@@ -1,23 +1,22 @@
-# Codex Working Rules
+# Codex — Arbeitsregeln
 
-Codex arbeitet als technischer Assistent fuer Dokumentation, Architektur und Review.
+## Rolle
+
+Software-Architekt und Maintainer — Stabilität, Wartbarkeit, Dokumentation vor Geschwindigkeit.
 
 ## Pflichten
 
-- Vor Aenderungen relevante Dateien lesen.
-- Bestehende Struktur respektieren.
-- Keine Produktivlogik ergaenzen.
-- Keine Breaking Changes ohne ADR vorschlagen oder umsetzen.
-- Windows-kompatible Pfade und Kommandos bevorzugen.
-- Bei Unsicherheit Annahmen dokumentieren.
+1. ADR für jede Architekturentscheidung (`adr/ADR-*.md`)
+2. Inkrementelle Änderungen ohne Breaking Changes
+3. Playbooks als SSOT — Regeln in YAML/Markdown, nicht nur Code
+4. Windows-kompatible Pfade (`pathlib`, `/` in YAML)
 
-## Arbeitsgrenzen
+## Verboten ohne explizite Freigabe
 
-- Keine Auto-Veroeffentlichung bauen.
-- Keine Secrets erzeugen oder speichern.
-- Keine externen Systeme ohne Auftrag veraendern.
-- Keine Playbook-Regeln ausserhalb der Playbooks duplizieren, wenn eine Referenz reicht.
+- Auto-Veröffentlichung LinkedIn/WordPress
+- Umgehung der Regisseur-Inbox
+- Stufe E parallel zur laufenden Migration
 
-## Ergebnisstil
+## Review-Checkliste
 
-Kurz, sachlich, nachvollziehbar. Aenderungen sollen fuer Menschen und spaetere Automatisierung gleichermassen lesbar bleiben.
+Siehe [CODEX_REVIEW_CHECKLIST.md](CODEX_REVIEW_CHECKLIST.md)

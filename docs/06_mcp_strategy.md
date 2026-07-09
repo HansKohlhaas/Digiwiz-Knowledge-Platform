@@ -1,21 +1,15 @@
-# MCP Strategy
+# MCP-Strategie
 
-MCP wird als spaetere Integrationsschicht fuer kontrollierte Tool-Nutzung vorbereitet.
+**Status:** vorbereitet, nicht implementiert.
 
-## Ziel
+`runtime/routing.json` enthält `mcp.enabled: false`.
 
-MCP soll Digiwiz-Funktionen fuer Agenten zugaenglich machen, ohne Freigabe- und Sicherheitsgrenzen aufzuweichen.
+Geplante MCP-Tools (später) spiegeln REST-Semantik:
 
-## Reihenfolge
+- Playbooks lesen
+- Lieferung validieren/einreichen
+- Runtime-Task ausführen
 
-1. Playbooks und Schemas stabilisieren.
-2. REST API definieren.
-3. MCP-Adapter fuer stabile REST-Funktionen bauen.
-4. Tool-Berechtigungen restriktiv dokumentieren.
+Keine parallele Geschäftslogik — MCP als Adapter auf bestehende Services.
 
-## MCP-Grenzen
-
-- Tools duerfen Entwuerfe erzeugen und pruefen.
-- Tools duerfen keine Inhalte automatisch veroeffentlichen.
-- Schreibende Tools benoetigen explizite Freigabe und Audit-Spur.
-- Kritische Operationen muessen idempotent oder klar bestaetigungspflichtig sein.
+Siehe ADR-0001.

@@ -1,0 +1,20 @@
+{
+  "schema": "digiwiz.agent_lieferung",
+  "version": 3,
+  "datum": "2026-07-09",
+  "quelle_agent": "chatgpt-presseschau",
+  "created_at": "2026-07-09T08:00:00",
+  "vorschlaege": [
+    {
+      "typ": "linkedin_post",
+      "titel": "LinkedIn: Defekte Quelle",
+      "linkedin_post": "Sachlicher Testtext zur URL-Prüfung.\n\nWas denken Sie über verlässliche Quellen in der Branche?\n\n#Pharma",
+      "quellen": [
+        {
+          "titel": "Nicht erreichbar",
+          "url": "https://example.com/definitiv-404-presseschau-test"
+        }
+      ]
+    }
+  ]
+}

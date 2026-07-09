@@ -1,19 +1,23 @@
-id: sources
-version: 0.1.0
-name: Quellenarbeit
-purpose: Regeln fuer Recherche, Quellenbewertung und Zitierfaehigkeit.
-source_requirements:
-  - url
-  - title
-  - publisher
-  - publication_date
-  - retrieval_date
-checks:
-  - primary_source_preferred
-  - date_checked
-  - conflicts_marked
-  - uncertainty_explicit
-disallowed:
-  - erfundene_quellen
-  - nicht_markierte_spekulation
-  - quellenlose_tatsachenbehauptung
+name: sources
+title: Quellen- und URL-Prüfung
+version: "2026-07-09"
+description: >
+  Jede Presseschau-Lieferung muss mindestens eine Quelle mit erreichbarer HTTP/HTTPS-URL enthalten.
+rules:
+  - id: min_one_source
+    severity: hard
+    text: quellen[] mit mindestens einem Eintrag (titel + url)
+  - id: http_only
+    severity: hard
+    text: Nur http:// und https:// URLs
+  - id: reachable
+    severity: hard
+    text: "404/Timeout → Lieferung gelb oder rot"
+  - id: tracking_cleanup
+    severity: soft
+    text: "Tracking-Parameter (utm_*, fbclid, gclid) werden bereinigt wenn möglich"
+ampel:
+  ok: URL erreichbar (HTTP 2xx)
+  gelb: Timeout, Netzwerk, HTTP 3xx
+  rot: 404, 4xx/5xx, ungültiges Format
+implementation: digiwiki/agent_lieferung_validierung.py

@@ -1,31 +1,34 @@
-# System Architecture
+# Systemarchitektur
 
-Die Digiwiz Knowledge Platform beschreibt die Soll-Architektur und Entscheidungsgrundlagen fuer das bestehende Digiwiz-System.
-
-## Architekturueberblick
-
-```mermaid
-flowchart LR
-  Human[Hans / Regisseur] --> Playbooks[Playbooks]
-  Playbooks --> Runtime[AI Runtime]
-  Playbooks --> API[REST API]
-  API --> Integrations[Externe Systeme]
-  Runtime --> Drafts[Entwuerfe und Pruefberichte]
-  Drafts --> Human
-  Human --> Publish[Manuelle Freigabe / Veroeffentlichung]
+```
+Externe Agenten / DAR
+        │
+        ▼
+Knowledge Platform (Regeln, Schemas, Playbooks)
+        │
+        ▼
+Digiwiz App (Validierung, Inbox, UI)
+        │
+        ▼
+Regisseur-Inbox → manuelle Freigabe
 ```
 
 ## Komponenten
 
-- Knowledge Layer: Dokumentation, Playbooks, Schemas, ADRs.
-- Quality Layer: Validierung, Review-Checklisten, Quellenpruefung.
-- Interface Layer: CLI und REST API.
-- AI Runtime: Assistenz fuer Recherche, Strukturierung, Varianten und Pruefung.
-- Integration Layer: WordPress, LinkedIn, Quellen, Bilddienste und spaetere MCP-Server.
+| Schicht | Ort | Verantwortung |
+|---------|-----|---------------|
+| Knowledge | `knowledge-platform/` | Playbooks, Schemas, ADRs, Runtime-Routing |
+| Ausführung | `digiwiki/` | Pipeline, API, Validierung, Inbox |
+| Zustand | `data/` | Inbox, Logs, Memory (gitignored) |
+| Legacy | `firmenapp/config/` | Fallback bis Deprecation |
 
-## Grundregeln
+## Pfad-Auflösung
 
-- Playbooks steuern Verhalten, nicht verstreute Prompt-Fragmente.
-- REST-Endpunkte bilden stabile Integrationsgrenzen.
-- MCP wird vorbereitet, aber nicht als erste Abhaengigkeit eingefuehrt.
-- Jede neue Faehigkeit muss rueckwaertskompatibel beschrieben werden.
+`digiwiki/knowledge_paths.py` — Env `DIGIWIZ_KNOWLEDGE_ROOT` oder `knowledge-platform/`.
+
+## Verwandte Dokumente
+
+- [03_knowledge_platform.md](03_knowledge_platform.md)
+- [04_ai_runtime.md](04_ai_runtime.md)
+- [05_api_strategy.md](05_api_strategy.md)
+- `adr/` — verbindliche Entscheidungen

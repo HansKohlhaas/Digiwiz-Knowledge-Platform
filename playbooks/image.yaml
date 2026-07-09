@@ -1,18 +1,21 @@
-id: image
-version: 0.1.0
-name: Bildvorbereitung
-purpose: Vorbereitung von Bildideen, Prompts und Pruefhinweisen.
-approval_required: true
-auto_publish: false
-inputs:
-  - content_context
-  - target_channel
-  - visual_style
-steps:
-  - define_visual_goal
-  - create_prompt
-  - check_rights_and_sensitivity
-  - prepare_alt_text
-outputs:
-  - image_brief
-  - alt_text
+name: image
+title: Beitragsbild (Presseschau)
+version: "2026-07-09"
+description: >
+  Optionales Bild für LinkedIn-Posts — Prompt oder Datei, keine Auto-Veröffentlichung.
+rules:
+  - id: no_text_in_image
+    severity: hard
+    text: Kein Text im Bild
+  - id: format
+    severity: soft
+    text: "LinkedIn landscape ca. 1536×1024"
+  - id: style
+    severity: soft
+    text: Professionell, Business, Pharma/Apotheke — keine Stock-Klischees
+fields:
+  - bild_prompt
+  - bild_datei
+  - bild_base64
+storage: data/presseschau/assets/
+generation: OpenAI (manuell in Regisseur-Inbox — OPENAI_API_KEY erforderlich)

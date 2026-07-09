@@ -1,0 +1,13 @@
+{
+  "schema": "digiwiz.agent_lieferung",
+  "version": 3,
+  "datum": "2026-07-09",
+  "created_at": "2026-07-09T08:00:00",
+  "vorschlaege": [
+    {
+      "typ": "linkedin_post",
+      "titel": "Fehlt quelle_agent und quellen",
+      "linkedin_post": "Kurzer Text ohne Pflichtfelder."
+    }
+  ]
+}

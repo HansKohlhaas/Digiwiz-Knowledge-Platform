@@ -1,23 +1,9 @@
-# Security
+# Sicherheit
 
-Sicherheit bedeutet fuer Digiwiz vor allem kontrollierte Freigabe, nachvollziehbare Datenfluesse und begrenzte Tool-Rechte.
+- API-Keys nur in `.env` oder lokaler Config — nicht im Repo
+- Keine Auto-Veröffentlichung (ADR-0004)
+- Freigabe nur über Regisseur-Inbox (ADR-0002)
+- Brandvoice rot blockiert Standard-Freigabe
+- Runtime-Telemetry und API-Logs ohne Schlüssel
 
-## Schutzprinzipien
-
-- Least Privilege fuer APIs, CLI-Kommandos und MCP-Tools.
-- Keine Secrets in Repository-Dateien.
-- Keine produktiven Tokens in Beispielen.
-- Auditierbare Freigaben fuer veroeffentlichungsnahe Aktionen.
-
-## Datenklassen
-
-- Oeffentlich: veroeffentlichte Artikel, oeffentliche Quellen.
-- Intern: Playbooks, Entwuerfe, Roadmap, Architektur.
-- Sensibel: Tokens, Kundendaten, private Kommunikation, unveroeffentlichte Strategie.
-
-## Pflichtpruefungen
-
-- Sind Quellen korrekt referenziert?
-- Enthalten Entwuerfe vertrauliche Informationen?
-- Gibt es versteckte Auto-Publish-Pfade?
-- Sind Berechtigungen minimal gehalten?
+Streamlit-RBAC: separates Thema (offen in Stufe-A-Checkliste).

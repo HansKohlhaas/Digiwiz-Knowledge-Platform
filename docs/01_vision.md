@@ -1,21 +1,24 @@
-# Vision
+# Vision — Digiwiz Knowledge Platform
 
-Digiwiz ist ein kontrolliertes Wissens- und Content-System. Es verbindet redaktionelle Steuerung, wiederholbare Playbooks, technische Schnittstellen und KI-gestuetzte Vorbereitung.
+Digiwiz ist ein **Regisseur-System**: KI-Systeme bereiten Inhalte vor, Hans entscheidet über Freigabe und Veröffentlichung.
 
-## Zielbild
+## Leitprinzipien
 
-Hans bleibt Regisseur. Das System liefert vorbereitete Ergebnisse, nachvollziehbare Quellen, strukturierte Varianten und Qualitaetspruefungen. Entscheidungen, Tonalitaet und Veroeffentlichung bleiben menschlich kontrolliert.
+1. **Keine Auto-Veröffentlichung** (ADR-0004)
+2. **Regisseur-Inbox** als einziger Freigabe-Hub (ADR-0002)
+3. **Playbooks als SSOT** (ADR-0003)
+4. **REST vor MCP** (ADR-0001)
+5. **Wissen getrennt von Runtime** (ADR-0005)
 
-## Nicht-Ziele
+## Stufen
 
-- Keine Blackbox-Automatisierung.
-- Kein automatisches Posten auf externen Plattformen.
-- Keine Vermischung von Dokumentation und Produktivlogik.
-- Keine Architekturentscheidungen ohne ADR.
+| Stufe | Fokus | Status |
+|-------|-------|--------|
+| A | Knowledge Layer | ✅ App + KP |
+| B | Qualitätssicherung | ✅ App + KP |
+| C | CLI/API | ✅ App, Doku in KP |
+| D | AI Runtime | ✅ App, Routing in KP |
+| E | Knowledge Graph | ⏳ nach Migration |
+| F | Autonome Agenten | Roadmap |
 
-## Erfolgskriterien
-
-- Workflows sind als Playbooks dokumentiert.
-- Ergebnisse sind validierbar und reproduzierbar.
-- API- und MCP-Entwicklung folgt klaren Grenzen.
-- KI-Ausgaben koennen geprueft, korrigiert und freigegeben werden.
+Details: [02_system_architecture.md](02_system_architecture.md)

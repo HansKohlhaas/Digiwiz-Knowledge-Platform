@@ -1,19 +1,16 @@
-# Knowledge Platform
+# Knowledge Platform — Rolle und Grenzen
 
-Die Knowledge Platform ist die dokumentierte Steuerungsschicht fuer Digiwiz. Sie macht Ablaufe, Datenmodelle und Entscheidungen versionierbar.
+Dieses Repository ist **Single Source of Truth** für:
 
-## Inhalte
+- `playbooks/` — maschinenlesbare Regeln (YAML)
+- `content/playbooks/` — kanonische Langtexte (Markdown)
+- `schemas/` — Lieferungs- und Datenverträge
+- `runtime/` — AI-Routing-Konfiguration (keine Ausführung)
+- `adr/` — Architekturentscheidungen
+- `examples/` — gültige und fehlerhafte Beispieldaten
 
-- Playbooks fuer wiederholbare Arbeitsablaeufe.
-- Schemas fuer Validierung und Austauschformate.
-- ADRs fuer Architekturentscheidungen.
-- Beispiele fuer erwartete Ergebnisse.
-- Implementierungsanweisungen fuer Cursor und Codex.
+**Nicht enthalten:** Python-Runtime, Streamlit-UI, Provider-Code, `data/`.
 
-## Single Source of Truth
+Binding zur App: `digiwiki/knowledge_paths.py`, Env `DIGIWIZ_KNOWLEDGE_ROOT`.
 
-Playbooks sind die primaere Quelle fuer Prozessregeln. Code, Prompts und API-Handler duerfen Playbook-Regeln nur referenzieren oder umsetzen, aber nicht widerspruechlich neu definieren.
-
-## Pflege
-
-Neue Workflows werden zuerst als Playbook beschrieben, danach mit Schema validiert und erst anschliessend in CLI, API oder Runtime umgesetzt.
+Siehe ADR-0003 und ADR-0005.

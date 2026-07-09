@@ -1,20 +1,12 @@
-# Quality Assurance
+# Qualitätssicherung (Stufe B)
 
-Qualitaetssicherung ist Stufe B des Digiwiz-Stufenmodells. Sie stellt sicher, dass Playbooks, Entwuerfe, Schemas und API-Verhalten pruefbar bleiben.
+Verfahren: `docs/verfahren/presseschau_qualitaetssicherung.md`
 
-## QA-Dimensionen
+| Prüfung | Ort (App) |
+|---------|-----------|
+| Schema v3 | `agent_lieferung_validierung.py` |
+| URL-Erreichbarkeit | `pruefe_url_erreichbar()` |
+| Dubletten | `fingerabdruck_vorschlag()` |
+| Brandvoice-Ampel | `brandvoice_pruefung.py` |
 
-- Inhaltliche Korrektheit.
-- Quellenklarheit.
-- Formatvalidierung.
-- Tonalitaet und Brandvoice.
-- Sicherheits- und Freigabegrenzen.
-- Rueckwaertskompatibilitaet.
-
-## Mindestpruefung fuer neue Artefakte
-
-- Markdown ist strukturiert und ohne Marketingfloskeln.
-- YAML ist maschinenlesbar.
-- JSON entspricht dem passenden Schema.
-- ADRs enthalten Kontext, Entscheidung und Konsequenzen.
-- Beispiele enthalten keine echten Secrets.
+Schema und Beispiele: `schemas/`, `examples/presseschau/`.

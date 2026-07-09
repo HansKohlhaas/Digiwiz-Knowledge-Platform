@@ -1,0 +1,33 @@
+# Digiwiz Knowledge Platform — lokale Artefakte (nicht versionieren)
+#
+# Im Monorepo ergänzt diese Datei die Root-.gitignore unter knowledge-platform/.
+# Als eigenes Repo (ADR-0005) ist sie allein verbindlich.
+#
+# KP enthält keine Runtime — Secrets und venv gehören in die Digiwiz App.
+
+# Secrets (falls lokal angelegt — Keys gehören in digiwiki/.env)
+.env
+.env.*
+!.env.example
+
+# Python (nur für tests/test_contract.py lokal)
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.code-workspace
+
+# Temporäre Arbeitskopien
+*.bak
+*.tmp
+*~

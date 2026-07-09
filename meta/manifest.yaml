@@ -1,0 +1,18 @@
+version: "1.0.0"
+name: digiwiz-knowledge-platform
+description: Single Source of Truth für Playbooks, Schemas, Runtime-Regeln und ADRs
+digiwiz_app_compat: ">=2026.07"
+stages:
+  A: knowledge_layer
+  B: qualitaetssicherung
+  C: cli_api
+  D: ai_runtime
+  E: knowledge_graph
+  F: autonome_agenten
+paths:
+  playbooks: playbooks/
+  schemas: schemas/
+  runtime: runtime/
+  examples: examples/
+  adrs: adr/
+  content: content/

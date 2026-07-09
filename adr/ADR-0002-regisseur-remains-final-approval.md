@@ -1,19 +1,21 @@
-# ADR-0002: Regisseur remains final approval
+# ADR-0002: Regisseur-Inbox bleibt Freigabe-Hub
 
 ## Status
 
-Accepted
+Akzeptiert (2026-07-09)
 
-## Context
+## Kontext
 
-Digiwiz nutzt KI fuer Vorbereitung und Qualitaetssicherung, aber redaktionelle Verantwortung bleibt menschlich.
+Digiwiz ist ein Regisseur-System: KI bereitet vor, Hans entscheidet.
 
-## Decision
+## Entscheidung
 
-Hans bleibt finale Freigabeinstanz. KI-Ausgaben sind Entwuerfe, Pruefungen oder Empfehlungen.
+Alle Agenten-Lieferungen (Presseschau, Newsletter, Runtime-Tasks mit `submit_inbox`) enden in `regisseur_inbox.json` mit Status `offen`.
 
-## Consequences
+Freigabe nur über `annehmen_vorschlag()` — optional `erzwingen=True` bei Brandvoice rot.
 
-- Keine automatische Veroeffentlichung.
-- Workflows muessen Freigabepunkte enthalten.
-- Agenten duerfen keine finale Entscheidung simulieren.
+## Konsequenzen
+
+- Kein Umgehen der Inbox in Produktivpfaden
+- Runtime und API liefern `inbox_id`, nicht Publish-URLs
+- Knowledge Platform dokumentiert Freigabe als Pflicht-Schritt

@@ -1,18 +1,22 @@
-id: wordpress
-version: 0.1.0
-name: WordPress Draft
-purpose: Vorbereitung von WordPress-Inhalten ohne automatische Veroeffentlichung.
-approval_required: true
-auto_publish: false
-inputs:
-  - article_brief
-  - seo_keywords
-  - category
-steps:
-  - draft_structure
-  - prepare_body
-  - suggest_metadata
-  - mark_review_items
-outputs:
-  - wordpress_draft
-  - metadata_suggestions
+name: wordpress
+title: WordPress / Blog (Vorbereitung)
+version: "2026-07-09"
+description: >
+  Vorbereitung für Blog-Inhalte — keine Auto-Veröffentlichung.
+status: vorbereitet
+rules:
+  - id: no_auto_publish
+    severity: hard
+    text: Keine direkte WordPress-Veröffentlichung aus Digiwiz
+  - id: review_first
+    severity: hard
+    text: Freigabe über Regisseur-Inbox oder manuellen Export
+  - id: brandvoice
+    severity: soft
+    text: DigiBest-Unternehmensstimme für Blog-Texte
+workflow:
+  - Entwurf in docs/content/
+  - Manuelle Freigabe
+  - Spätere API-Anbindung geplant
+notes: >
+  MCP- und REST-Erweiterung für WordPress ist für eine spätere Stufe vorgesehen.

@@ -1,18 +1,20 @@
-id: brandvoice
-version: 0.1.0
-name: Brandvoice
-purpose: Leitplanken fuer Tonalitaet und redaktionelle Haltung.
-principles:
-  - sachlich
-  - klar
-  - fachlich
-  - menschlich
-avoid:
-  - marketingfloskeln
-  - uebertriebene versprechen
-  - unbelegte behauptungen
-  - automatische finalisierung
-review_questions:
-  - Ist die Aussage konkret?
-  - Ist der Nutzen ohne Uebertreibung beschrieben?
-  - Bleibt Hans als Regisseur erkennbar?
+name: brandvoice
+title: Brandvoice-Ampel (DigiBest / Hans)
+version: "2026-07-09"
+description: >
+  Regelbasierte Prüfung für LinkedIn-Texte — Ampel grün/gelb/rot vor Freigabe.
+ampel:
+  gruen: freigabefähig
+  gelb: manuell prüfen
+  rot: nicht freigabefähig (Freigabe blockiert)
+criteria:
+  - keine Floskeln (z. B. "in der heutigen Zeit", "ganzheitlich")
+  - keine übertriebenen Superlative ohne Beleg
+  - kurze, klare Sätze
+  - sachlich und entscheidungsorientiert
+  - Hans-Stil / DigiBest-Tonalität
+meta_fields:
+  - brandvoice_status
+  - brandvoice_hinweise
+  - brandvoice_verstoesse
+implementation: digiwiki/brandvoice_pruefung.py

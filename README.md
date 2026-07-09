@@ -1,44 +1,52 @@
 # Digiwiz Knowledge Platform
 
-Dieses Repository ist die zentrale, versionierte Systemdokumentation fuer Digiwiz. Es enthaelt keine Produktivlogik, sondern beschreibt Architektur, Playbooks, API-Spezifikationen, MCP-Strategie, Datenmodelle, ADRs, Roadmap und Implementierungsanweisungen fuer Cursor und Codex.
+Zentrale, versionierte **Wissens- und Regel-Architektur** für Digiwiz — keine Produktiv-Runtime.
 
-## Zweck
+## Rolle
 
-Digiwiz bleibt ein Regisseur-System: KI darf recherchieren, strukturieren, vorschlagen und pruefen. Die finale Freigabe liegt immer bei Hans. Es gibt keine automatische Veroeffentlichung auf LinkedIn, WordPress oder anderen Kanaelen.
+| Dieses Repo | Digiwiz App (`digiwiki/`, `firmenapp/`) |
+|-------------|----------------------------------------|
+| Playbooks (YAML + Markdown) | Ausführung, UI, Inbox |
+| Schemas, Examples | Import, Validierung (Code) |
+| Runtime-Routing (JSON) | `ai_runtime/` Pipeline |
+| ADRs, Verfahren | Betrieb, Streamlit, CRM |
 
-## Prinzipien
-
-- Playbooks sind die Single Source of Truth fuer wiederholbare Workflows.
-- REST kommt zuerst; MCP-Faehigkeit wird vorbereitet.
-- Bestehender Digiwiz-Code wird nicht durch Breaking Changes gefaehrdet.
-- Windows-Kompatibilitaet ist verbindlich.
-- Architekturentscheidungen werden als ADR dokumentiert.
-- Markdown, YAML und JSON bleiben menschenlesbar und maschinenlesbar.
+**Prinzip:** KI bereitet vor → **Regisseur-Inbox** → Hans gibt frei → **keine Auto-Veröffentlichung**.
 
 ## Stufenmodell
 
-| Stufe | Fokus | Ergebnis |
-| --- | --- | --- |
-| A | Knowledge Layer | Dokumentierte Architektur, Playbooks, Datenmodelle |
-| B | Qualitaetssicherung | Review-Regeln, Validierung, Checklisten |
-| C | CLI/API | Lokale Automatisierung und REST-Schnittstellen |
-| D | AI Runtime | KI-gestuetzte Vorbereitung und Pruefung |
-| E | Knowledge Graph | Verknuepfte Wissensbasis |
-| F | Autonome Agenten | Kontrollierte Teilautomatisierung mit Freigabegrenzen |
+| Stufe | Inhalt | Ort |
+|-------|--------|-----|
+| A | Knowledge Layer | `playbooks/`, `content/` |
+| B | Qualitätssicherung | `schemas/`, `docs/verfahren/` |
+| C | CLI/API | dokumentiert, Code in App |
+| D | AI Runtime | `runtime/`, Code in App |
+| E | Knowledge Graph | **nächste Phase** — nur hier |
+| F | Autonome Agenten | Roadmap |
 
-## Repository-Struktur
+## Schnellstart
 
-- `docs/`: Systemarchitektur, Strategien, Security, QA und Deployment.
-- `playbooks/`: Wiederverwendbare Prozessdefinitionen.
-- `schemas/`: JSON Schemas fuer Playbooks und Ergebnisformate.
-- `adr/`: Architekturentscheidungen.
-- `examples/`: Beispielartefakte fuer API- und Content-Ergebnisse.
-- `cursor/`: Implementierungsanweisungen fuer Cursor.
-- `codex/`: Arbeitsregeln und Review-Checkliste fuer Codex.
+1. Lesen: [00_START_HERE.md](00_START_HERE.md)
+2. ADRs: [adr/](adr/)
+3. Playbooks: [playbooks/](playbooks/)
+4. App-Einbindung: `digiwiki/knowledge_paths.py` + `digiwiki/knowledge_lock.json`
 
-## Next actions
+## Version
 
-1. Bestehende Digiwiz-Architektur importieren/zusammenfassen.
-2. Stufe B finalisieren.
-3. Stufe C spezifizieren.
-4. Stufe D als AI Runtime vorbereiten.
+Siehe [VERSION](VERSION) und [CHANGELOG.md](CHANGELOG.md).
+
+## Next Actions
+
+1. ~~Migration Playbooks/Schemas aus Digiwiz-Monorepo~~ (v1.0.0)
+2. Contract-Tests in `tests/` erweitern
+3. Regeln aus Python nach `quality/` extrahieren (inkrementell)
+4. **Stufe E — Knowledge Graph** (nach Freigabe, nicht parallel)
+
+## Einbindung in Digiwiz App
+
+```env
+# Optional — Default: <monorepo>/knowledge-platform
+DIGIWIZ_KNOWLEDGE_ROOT=C:\Pfad\zu\knowledge-platform
+```
+
+Ohne Env-Variable nutzt die App automatisch `knowledge-platform/` neben `digiwiki/`, mit Fallback auf Legacy-Pfade unter `firmenapp/config/`.

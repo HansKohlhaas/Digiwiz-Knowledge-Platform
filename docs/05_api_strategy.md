@@ -1,23 +1,20 @@
-# API Strategy
+# API-Strategie
 
-Digiwiz nutzt eine REST-first-Strategie. MCP wird vorbereitet, aber nicht als Voraussetzung fuer fruehe Integrationen behandelt.
+## Stufe C — Agenten-API
 
-## REST zuerst
+- CLI: `digiwiz-agent`
+- REST: `/api/v1/agenten/*`, `/api/v1/playbooks/*`
+- Auth: `X-DIGIWIZ-API-KEY`
 
-REST-Endpunkte sind nachvollziehbar, testbar und fuer bestehende Systeme einfach integrierbar. Sie bilden die stabile Grundlage fuer CLI, UI und spaetere Agenten.
+Details: `docs/verfahren/digiwiz_agent_api.md`
 
-## Vorgeschlagene Ressourcen
+## Stufe D — Runtime-API
 
-- `GET /playbooks`
-- `GET /playbooks/{id}`
-- `POST /validate/playbook`
-- `POST /drafts/presseschau`
-- `POST /drafts/linkedin`
-- `POST /reviews/content`
+- REST: `/api/v1/runtime/*`
+- Gleicher Server (`11_wiki_api.py`)
 
-## API-Regeln
+## Prinzipien
 
-- Keine Breaking Changes ohne ADR.
-- Versionierte Response-Formate.
-- Validierung gegen Schemas.
-- Keine Veroeffentlichungs-Endpunkte ohne manuelle Freigabestufe.
+1. REST zuerst (ADR-0001)
+2. Keine offenen Schreib-Endpunkte
+3. Responses liefern `inbox_id`, nicht Publish-URLs (ADR-0004)

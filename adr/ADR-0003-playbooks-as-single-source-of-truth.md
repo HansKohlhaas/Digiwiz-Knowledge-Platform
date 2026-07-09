@@ -1,19 +1,24 @@
-# ADR-0003: Playbooks as Single Source of Truth
+# ADR-0003: Playbooks als Single Source of Truth
 
 ## Status
 
-Accepted
+Akzeptiert (2026-07-09)
 
-## Context
+## Kontext
 
-Wiederholbare Arbeitsablaeufe brauchen konsistente Regeln fuer Menschen, APIs und KI-Assistenten.
+Playbook-Regeln lagen verteilt in `firmenapp/config/playbooks/`, `docs/wiki/.../Playbooks/` und Python-Code.
 
-## Decision
+## Entscheidung
 
-Playbooks werden als Single Source of Truth fuer Prozessregeln genutzt.
+1. **Digiwiz Knowledge Platform** (`knowledge-platform/`) ist kanonische Quelle für:
+   - `playbooks/*.yaml`
+   - `content/playbooks/*.md`
+   - `schemas/`, `runtime/`, `examples/`
+2. Digiwiz App lädt über `knowledge_paths.py` mit **Fallback** auf Legacy-Pfade
+3. Regeländerungen erfolgen primär in YAML/Markdown, nicht nur im Code
 
-## Consequences
+## Konsequenzen
 
-- Prompts und Code muessen Playbooks referenzieren.
-- Aenderungen an Workflow-Regeln beginnen im Playbook.
-- Schemas validieren zentrale Ergebnisformate.
+- Versionierung und Changelog im Knowledge-Repo
+- `digiwiki/knowledge_lock.json` pinnt kompatible Version
+- Legacy-Dateien bleiben bis Deprecation-Phase als Fallback
