@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digiwiz.local/schemas/knowledge_graph_node.schema.json",
+  "title": "Knowledge Graph Node",
+  "description": "Stufe E — Knoten mit Provenienz. Schema in KP, Instanz optional in App.",
+  "type": "object",
+  "required": ["id", "type", "label", "provenance"],
+  "properties": {
+    "id": { "type": "string" },
+    "type": { "type": "string" },
+    "label": { "type": "string" },
+    "provenance": {
+      "type": "object",
+      "required": ["source_type", "source_ref"],
+      "properties": {
+        "source_type": {
+          "enum": ["playbook", "adr", "contract", "wiki", "agent_lieferung", "derived_index"]
+        },
+        "source_ref": { "type": "string" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "observed_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "meta": { "type": "object" }
+  }
+}

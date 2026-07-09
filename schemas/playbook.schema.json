@@ -1,21 +1,34 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://digiwiz.local/schemas/playbook.schema.json",
-  "title": "Digiwiz Playbook",
+  "title": "Digiwiz Playbook YAML (Contract)",
+  "description": "Governance-Metadaten für alle Playbooks — maschinell prüfbar.",
   "type": "object",
-  "required": ["id", "version", "name", "purpose"],
+  "required": ["name", "title", "version", "governance"],
   "properties": {
-    "id": { "type": "string", "pattern": "^[a-z0-9_-]+$" },
+    "name": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "title": { "type": "string" },
     "version": { "type": "string" },
-    "name": { "type": "string" },
-    "purpose": { "type": "string" },
-    "owner": { "type": "string" },
-    "approval_required": { "type": "boolean" },
-    "auto_publish": { "type": "boolean", "const": false },
-    "inputs": { "type": "array", "items": { "type": "string" } },
-    "steps": { "type": "array", "items": { "type": "string" } },
-    "quality_checks": { "type": "array", "items": { "type": "string" } },
-    "outputs": { "type": "array", "items": { "type": "string" } }
+    "description": { "type": "string" },
+    "governance": {
+      "type": "object",
+      "required": ["owner", "approval_required", "auto_publish", "version"],
+      "properties": {
+        "owner": { "type": "string" },
+        "approval_required": { "const": true },
+        "auto_publish": { "const": false },
+        "version": { "type": "string" },
+        "outputs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "quality_checks": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    }
   },
   "additionalProperties": true
 }

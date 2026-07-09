@@ -1,6 +1,16 @@
 name: seo
 title: SEO / WordPress-Texte
 version: "2026-07-09"
+governance:
+  owner: digiwiz-architecture
+  approval_required: true
+  auto_publish: false
+  version: "2026-07-09"
+  outputs:
+    - seo_draft
+  quality_checks:
+    - no_auto_publish
+    - review_first
 description: >
   SEO-orientierte Textentwürfe — Runtime-Task seo, keine Auto-Veröffentlichung.
 content_file: content/playbooks/linkedin-presseschau.md

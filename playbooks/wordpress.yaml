@@ -1,6 +1,17 @@
 name: wordpress
 title: WordPress / Blog (Vorbereitung)
 version: "2026-07-09"
+governance:
+  owner: digiwiz-architecture
+  approval_required: true
+  auto_publish: false
+  version: "2026-07-09"
+  outputs:
+    - blog_draft
+  quality_checks:
+    - no_auto_publish
+    - review_first
+    - brandvoice
 description: >
   Vorbereitung für Blog-Inhalte — keine Auto-Veröffentlichung.
 status: vorbereitet

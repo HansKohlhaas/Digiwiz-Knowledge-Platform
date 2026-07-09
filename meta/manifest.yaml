@@ -1,4 +1,4 @@
-version: "1.0.0"
+version: "1.1.0"
 name: digiwiz-knowledge-platform
 description: >
   Verbindliche Quelle für Regeln und Schnittstellen (Contracts):
@@ -19,6 +19,18 @@ contracts:
   json_schemas:
     path: schemas/
     status: active
+    includes:
+      - agent-lieferung.v3.json
+      - runtime_output.schema.json
+      - context_builder_input.schema.json
+      - context_builder_output.schema.json
+      - knowledge_graph_node.schema.json
+      - knowledge_graph_edge.schema.json
+      - chroma_index_manifest.schema.json
+      - chroma_rebuild_report.schema.json
+      - playbook.schema.json
+      - linkedin.schema.json
+      - api_error.schema.json
   prompt_schemas:
     path: schemas/prompts/
     status: planned

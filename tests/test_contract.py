@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class TestKnowledgePlatformContract(unittest.TestCase):
     def test_version_und_manifest(self):
         version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
-        self.assertEqual(version, "1.0.0")
+        self.assertEqual(version, "1.1.0")
         manifest = (ROOT / "meta" / "manifest.yaml").read_text(encoding="utf-8")
         self.assertIn("digiwiz-knowledge-platform", manifest)
 
@@ -70,7 +70,7 @@ class TestKnowledgePlatformContract(unittest.TestCase):
         adr = ROOT / "adr" / "ADR-0009-knowledge-graph-and-chroma-rag.md"
         self.assertTrue(adr.is_file())
         text = adr.read_text(encoding="utf-8")
-        self.assertIn("nicht SSOT", text)
+        self.assertIn("abgeleiteter", text.lower())
         self.assertIn("Context Builder", text)
         self.assertTrue((ROOT / "contracts" / "retrieval" / "README.md").is_file())
         self.assertTrue((ROOT / "adr" / "README.md").is_file())

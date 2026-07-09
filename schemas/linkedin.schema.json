@@ -1,14 +1,32 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://digiwiz.local/schemas/linkedin.schema.json",
-  "title": "LinkedIn Draft",
+  "title": "LinkedIn Post Vorschlag",
+  "description": "Einzelner LinkedIn-Post — passend zu agent-lieferung v3 Vorschlag.",
   "type": "object",
-  "required": ["draft", "approval_required", "auto_publish"],
+  "required": ["typ", "titel", "linkedin_post"],
   "properties": {
-    "draft": { "type": "string" },
-    "variants": { "type": "array", "items": { "type": "string" } },
-    "approval_required": { "type": "boolean", "const": true },
-    "auto_publish": { "type": "boolean", "const": false },
-    "review_notes": { "type": "array", "items": { "type": "string" } }
+    "typ": { "const": "linkedin_post" },
+    "titel": { "type": "string", "minLength": 5 },
+    "linkedin_post": { "type": "string", "minLength": 100 },
+    "hook": { "type": "string" },
+    "quellen": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["titel", "url"],
+        "properties": {
+          "titel": { "type": "string" },
+          "url": { "type": "string", "format": "uri" }
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "stimme": { "const": "hans" },
+        "brandvoice_status": { "enum": ["gruen", "gelb", "rot"] }
+      }
+    }
   }
 }

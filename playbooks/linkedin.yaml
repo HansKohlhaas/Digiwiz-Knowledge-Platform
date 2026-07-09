@@ -1,6 +1,17 @@
 name: linkedin
 title: LinkedIn-Beiträge (Hans-Stil)
 version: "2026-07-09"
+governance:
+  owner: digiwiz-architecture
+  approval_required: true
+  auto_publish: false
+  version: "2026-07-09"
+  outputs:
+    - linkedin_post_draft
+  quality_checks:
+    - brandvoice
+    - no_pitch
+    - length_hashtags
 description: >
   Thought-Leadership-Posts für LinkedIn — sachlich, entscheidungsorientiert, ohne Verkaufspitch.
 content_file: content/playbooks/linkedin-presseschau.md

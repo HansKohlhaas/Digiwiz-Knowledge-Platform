@@ -21,8 +21,10 @@ Nicht nur Dokumentation: **Playbooks, JSON-Schemas, Prompt-Schemas, API-Verträg
 | B | Qualitätssicherung | `schemas/`, `docs/verfahren/` |
 | C | CLI/API | dokumentiert, Code in App |
 | D | AI Runtime | `runtime/`, Code in App |
-| E | Knowledge Graph | ⏳ [Roadmap](docs/11_roadmap_stufen_a_f.md) |
+| E | Knowledge Graph | ⏳ [Roadmap](docs/11_roadmap_stufen_a_f.md) · [Architektur-Schichten](docs/12_architecture_layers.md) |
 | F | Autonome Agenten | 📋 [Roadmap](docs/11_roadmap_stufen_a_f.md) |
+
+**Abgrenzung Stufe E:** Knowledge Graph erweitert die **Knowledge Platform** (Schemas, Provenienz) — nicht die App-Runtime. **DAR** bleibt einzige AI Runtime; **Chroma/RAG** ist abgeleiteter Index in der App (ADR-0008–0012).
 
 ## Schnellstart
 

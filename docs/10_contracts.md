@@ -52,6 +52,18 @@ Die Knowledge Platform definiert **verbindliche Schnittstellen** zwischen Wissen
 - **Zweck:** Merge-Regeln Graph ↔ Chroma/RAG im Context Builder; Limits, Provenienz
 - **Status:** [ADR-0009](../adr/ADR-0009-knowledge-graph-and-chroma-rag.md) — **keine** Chroma-DB in KP; Index bleibt abgeleitet in App
 
+### 9. Runtime- und Context-Contracts (Stufe D/E)
+
+| Schema | Pfad | Zweck |
+|--------|------|--------|
+| Runtime-Output | `schemas/runtime_output.schema.json` | DAR-Task-Ausgabe (kein `published_url`) |
+| API-Fehler | `schemas/api_error.schema.json` | Einheitliches Fehler-Envelope |
+| Context Builder Input/Output | `schemas/context_builder_*.schema.json` | Kontext-Merge (ADR-0011) |
+| Knowledge Graph Node/Edge | `schemas/knowledge_graph_*.schema.json` | Stufe E Struktur + Provenienz |
+| Chroma Manifest / Rebuild | `schemas/chroma_*.schema.json` | Abgeleiteter Index, rebuild-fähig |
+| Playbook-Governance | `schemas/playbook.schema.json` | `owner`, `auto_publish: false`, … |
+| LinkedIn-Vorschlag | `schemas/linkedin.schema.json` | Beispiel: `examples/linkedin/` |
+
 ## Workflow: Contract first
 
 ```

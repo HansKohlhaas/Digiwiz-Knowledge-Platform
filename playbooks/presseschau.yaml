@@ -1,6 +1,19 @@
 name: presseschau
 title: Presseschau → LinkedIn
 version: "2026-07-09"
+governance:
+  owner: digiwiz-architecture
+  approval_required: true
+  auto_publish: false
+  version: "2026-07-09"
+  outputs:
+    - inbox_json
+    - linkedin_post_draft
+  quality_checks:
+    - schema_v3
+    - sources_url
+    - brandvoice
+    - no_duplicate
 description: >
   Aus Presse- und Branchensignalen einen LinkedIn-Beitrag vorbereiten.
   Lieferung als JSON v3 an Digiwiz — Freigabe über Regisseur-Inbox.

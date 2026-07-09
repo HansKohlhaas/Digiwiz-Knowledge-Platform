@@ -31,8 +31,8 @@ Env: `DIGIWIZ_KNOWLEDGE_ROOT` (optional)
 - **C:** CLI `digiwiz-agent`, REST `/api/v1/*`
 - **D:** AI Runtime `/api/v1/runtime/*`
 
-Details: `docs/verfahren/` und `cursor/CURSOR_TASK_STAGE_*.md`
+Details: `docs/verfahren/` und `cursor/CURSOR_TASK_STAGE_*.md` (E, F verfügbar; B–D in App abgeschlossen)
 
 ## Nächste Aufgabe
 
-**Stufe E — Knowledge Graph** — nur in diesem Repo, nach Freigabe.
+**Stufe E — Knowledge Graph** — nur in diesem Repo, nach Freigabe. Siehe [CURSOR_TASK_STAGE_E.md](CURSOR_TASK_STAGE_E.md).

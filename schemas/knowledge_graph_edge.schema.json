@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digiwiz.local/schemas/knowledge_graph_edge.schema.json",
+  "title": "Knowledge Graph Edge",
+  "type": "object",
+  "required": ["id", "type", "from", "to", "provenance"],
+  "properties": {
+    "id": { "type": "string" },
+    "type": { "type": "string" },
+    "from": { "type": "string" },
+    "to": { "type": "string" },
+    "provenance": {
+      "type": "object",
+      "required": ["source_type", "source_ref"],
+      "properties": {
+        "source_type": {
+          "enum": ["playbook", "adr", "contract", "wiki", "agent_lieferung", "inferred"]
+        },
+        "source_ref": { "type": "string" }
+      }
+    }
+  }
+}

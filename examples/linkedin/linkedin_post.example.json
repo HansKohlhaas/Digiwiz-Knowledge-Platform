@@ -1,0 +1,16 @@
+{
+  "typ": "linkedin_post",
+  "titel": "LinkedIn: Apotheken-Digitalisierung — Beispiel",
+  "linkedin_post": "In der Apotheke bleibt Digitalisierung oft auf der Strecke.\n\nWas mich überzeugt: planbare Prozesse statt weiterer IT-Inseln.\n\nApotheken mit klarer Struktur gewinnen Spielraum für Beratung.\n\nWie erleben Sie das bei Ihren Partnern?\n\n#Apotheke #Digitalisierung",
+  "hook": "Wer wartet, verliert Anschluss — nicht nur Zeit.",
+  "quellen": [
+    {
+      "titel": "Example Artikel",
+      "url": "https://example.com/presseschau-test"
+    }
+  ],
+  "meta": {
+    "stimme": "hans",
+    "brandvoice_status": "gruen"
+  }
+}

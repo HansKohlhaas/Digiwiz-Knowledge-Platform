@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digiwiz.local/schemas/context_builder_input.schema.json",
+  "title": "DAR Context Builder Input",
+  "type": "object",
+  "required": ["task", "playbooks"],
+  "properties": {
+    "task": { "type": "string" },
+    "playbooks": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "graph_query": { "type": "object" },
+    "rag_query": { "type": "object" },
+    "session_id": { "type": "string" }
+  }
+}

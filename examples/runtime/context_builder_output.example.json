@@ -1,0 +1,19 @@
+{
+  "task": "presseschau",
+  "applied_playbooks": ["presseschau", "brandvoice", "sources"],
+  "applied_adrs": ["ADR-0002", "ADR-0004", "ADR-0011"],
+  "graph_snippets": [],
+  "rag_snippets": [
+    {
+      "text": "Keine Auto-Veröffentlichung — Regisseur-Inbox bleibt Freigabe-Hub.",
+      "source_ref": "adr/ADR-0004-no-auto-publishing.md",
+      "derived": true
+    }
+  ],
+  "sources": [
+    "playbooks/presseschau.yaml",
+    "content/playbooks/linkedin-presseschau.md",
+    "adr/ADR-0004-no-auto-publishing.md"
+  ],
+  "uncertainties": ["Graph-Kontext noch nicht aktiv (Stufe E1)"]
+}

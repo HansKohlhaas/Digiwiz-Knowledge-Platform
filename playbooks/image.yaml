@@ -1,6 +1,17 @@
 name: image
 title: Beitragsbild (Presseschau)
 version: "2026-07-09"
+governance:
+  owner: digiwiz-architecture
+  approval_required: true
+  auto_publish: false
+  version: "2026-07-09"
+  outputs:
+    - image_prompt
+    - image_file
+  quality_checks:
+    - no_text_in_image
+    - no_auto_publish
 description: >
   Optionales Bild für LinkedIn-Posts — Prompt oder Datei, keine Auto-Veröffentlichung.
 rules:

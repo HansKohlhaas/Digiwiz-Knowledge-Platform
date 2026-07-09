@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digiwiz.local/schemas/context_builder_output.schema.json",
+  "title": "DAR Context Builder Output",
+  "description": "ADR-0011 — angewandte Playbooks, Quellen, Unsicherheiten. Kein Auto-Publish.",
+  "type": "object",
+  "required": ["task", "applied_playbooks", "applied_adrs", "sources", "uncertainties"],
+  "properties": {
+    "task": { "type": "string" },
+    "applied_playbooks": { "type": "array", "items": { "type": "string" } },
+    "applied_adrs": { "type": "array", "items": { "type": "string" } },
+    "graph_snippets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["text", "provenance"],
+        "properties": {
+          "text": { "type": "string" },
+          "provenance": { "type": "object" }
+        }
+      }
+    },
+    "rag_snippets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["text", "source_ref"],
+        "properties": {
+          "text": { "type": "string" },
+          "source_ref": { "type": "string" },
+          "derived": { "const": true }
+        }
+      }
+    },
+    "sources": { "type": "array", "items": { "type": "string" } },
+    "uncertainties": { "type": "array", "items": { "type": "string" } }
+  },
+  "not": {
+    "required": ["published_url", "auto_publish"]
+  }
+}

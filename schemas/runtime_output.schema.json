@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digiwiz.local/schemas/runtime_output.schema.json",
+  "title": "DAR Runtime Output",
+  "description": "Strukturierte Ausgabe einer DAR-Task — kein Publish.",
+  "type": "object",
+  "required": ["task", "status", "agent", "provider", "model"],
+  "properties": {
+    "task": { "type": "string" },
+    "status": { "enum": ["completed", "validation_warning", "validation_failed", "failed"] },
+    "agent": { "type": "string" },
+    "provider": { "type": "string" },
+    "model": { "type": "string" },
+    "playbooks": { "type": "array", "items": { "type": "string" } },
+    "output": { "type": "object" },
+    "validation": { "type": "object" },
+    "inbox_id": { "type": ["string", "null"] },
+    "telemetry_id": { "type": "string" }
+  },
+  "not": {
+    "required": ["published_url"]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "manifest_version": 1,
+  "index_name": "digiwiz-kp-semantic-v1",
+  "derived": true,
+  "forbidden_as_canonical": true,
+  "knowledge_platform_version": "1.1.0",
+  "build_inputs": [
+    { "source_type": "playbook", "source_ref": "playbooks/presseschau.yaml" },
+    { "source_type": "content", "source_ref": "content/playbooks/linkedin-presseschau.md" },
+    { "source_type": "adr", "source_ref": "adr/ADR-0004-no-auto-publishing.md" },
+    { "source_type": "contract", "source_ref": "contracts/retrieval/README.md" }
+  ]
+}

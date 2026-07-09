@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digiwiz.local/schemas/chroma_index_manifest.schema.json",
+  "title": "Chroma Index Manifest",
+  "description": "ADR-0009 — abgeleiteter Index; nur KP-Quellen als build_inputs erlaubt.",
+  "type": "object",
+  "required": ["manifest_version", "index_name", "derived", "build_inputs"],
+  "properties": {
+    "manifest_version": { "type": "integer", "minimum": 1 },
+    "index_name": { "type": "string" },
+    "derived": { "const": true },
+    "knowledge_platform_version": { "type": "string" },
+    "build_inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source_type", "source_ref"],
+        "properties": {
+          "source_type": {
+            "enum": ["playbook", "content", "wiki", "contract", "adr", "approved_inbox_export"]
+          },
+          "source_ref": { "type": "string" }
+        }
+      }
+    },
+    "forbidden_as_canonical": {
+      "type": "boolean",
+      "const": true,
+      "description": "Index darf nie SSOT ersetzen"
+    }
+  }
+}

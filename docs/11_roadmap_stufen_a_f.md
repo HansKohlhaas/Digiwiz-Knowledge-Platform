@@ -35,6 +35,19 @@ Stufe F  Autonome Agenten           📋 Roadmap — nach E, ADR-0004 beachten
 
 **Querschnitt:** ADR-0006 (kein Git-Submodule bis nach E) · ADR-0007 (Contracts als SSOT)
 
+Siehe auch: [12_architecture_layers.md](12_architecture_layers.md) — explizite Abgrenzung KP / DAR / Graph / Chroma.
+
+## Operative Matrix (Scope je Stufe)
+
+| Stufe | Scope | Nicht-Ziele | Eingänge | Ausgänge | Freigabegrenze |
+|-------|--------|-------------|----------|----------|----------------|
+| **A** | Playbooks, Content, Inbox-Import | Auto-Publish | Agent-JSON, Newsletter, E-Mail | Inbox-Vorschläge | Regisseur-Inbox |
+| **B** | QS vor Inbox | Publish | Lieferungs-JSON v3 | validiert / blockiert | Rot → keine Standard-Freigabe |
+| **C** | CLI + REST API | Auto-Publish | API-Key, JSON | validate/submit | Submit → Inbox only |
+| **D** | DAR Pipeline | Zweite Runtime, Publish | Tasks, routing.json | Runtime-Output, optional inbox_id | ADR-0010, ADR-0004 |
+| **E** | Graph-Schema, Retrieval-Contracts | Graph-Runtime, Chroma in KP | Playbooks, Wiki, ADRs | Graph-Beispiele, Context-Spec | Kein Bypass DAR/Inbox |
+| **F** | Agent-Policies, Scheduler-Spec | Auto-Publish, Runtime-Duplikat | Policies, Graph-Kontext | Vorschläge, Lern-Log | ADR-0012, Inbox für externe Wirkung |
+
 ---
 
 ## Stufe A — Knowledge Layer
@@ -330,6 +343,9 @@ Version-Pin: digiwiki/knowledge_lock.json ↔ KP VERSION
 | 0007 | Contracts als SSOT (alle) |
 | 0008 | Knowledge Graph = KP-Erweiterung, keine neue Runtime (E) |
 | 0009 | Graph + Chroma/RAG — Rollen, Retrieval-Policy in KP (E) |
+| 0010 | DAR als einzige AI Runtime (D, E) |
+| 0011 | Context Builder kombiniert kanonisch + Graph + RAG (D, E) |
+| 0012 | Contracts vor E/F-Automation (E, F) |
 
 ---
 

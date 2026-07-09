@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digiwiz.local/schemas/chroma_rebuild_report.schema.json",
+  "title": "Chroma Rebuild Report",
+  "type": "object",
+  "required": ["rebuild_at", "status", "manifest_ref"],
+  "properties": {
+    "rebuild_at": { "type": "string", "format": "date-time" },
+    "status": { "enum": ["success", "partial", "failed"] },
+    "manifest_ref": { "type": "string" },
+    "documents_indexed": { "type": "integer", "minimum": 0 },
+    "errors": { "type": "array", "items": { "type": "string" } },
+    "kp_conflict_resolved_by": { "enum": ["knowledge_platform", "none"] }
+  }
+}

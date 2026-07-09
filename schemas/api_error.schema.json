@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digiwiz.local/schemas/api_error.schema.json",
+  "title": "Digiwiz API Error Envelope",
+  "type": "object",
+  "required": ["status", "errors"],
+  "properties": {
+    "status": {
+      "enum": ["validation_error", "rejected", "duplicate", "error", "unauthorized"]
+    },
+    "http_status": { "type": "integer" },
+    "errors": { "type": "array", "items": { "type": "string" } },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "inbox_id": { "type": ["string", "null"] }
+  }
+}

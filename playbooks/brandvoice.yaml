@@ -1,6 +1,16 @@
 name: brandvoice
 title: Brandvoice-Ampel (DigiBest / Hans)
 version: "2026-07-09"
+governance:
+  owner: digiwiz-architecture
+  approval_required: true
+  auto_publish: false
+  version: "2026-07-09"
+  outputs:
+    - brandvoice_status_meta
+  quality_checks:
+    - ampel_gruen_gelb_rot
+    - floskeln_superlative
 description: >
   Regelbasierte Prüfung für LinkedIn-Texte — Ampel grün/gelb/rot vor Freigabe.
 ampel:
