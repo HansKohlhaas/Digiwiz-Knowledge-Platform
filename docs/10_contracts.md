@@ -64,6 +64,14 @@ Die Knowledge Platform definiert **verbindliche Schnittstellen** zwischen Wissen
 | Playbook-Governance | `schemas/playbook.schema.json` | `owner`, `auto_publish: false`, … |
 | LinkedIn-Vorschlag | `schemas/linkedin.schema.json` | Beispiel: `examples/linkedin/` |
 
+### 10. Source Resolution (Stufe D/E, aktiv ab v1.2.0)
+
+| Artefakt | Pfad | Zweck |
+|----------|------|--------|
+| Policy | `contracts/source-resolution/source_resolution_policy.yaml` | SQL-first-Domänen, Sequenz, Konflikte (ADR-0013) |
+| Doku | `docs/13_source_resolution.md` | Entscheidungsregeln, Beispiele, DAR-Integration (geplant) |
+| Beispiele | `examples/source-resolution/` | SQL-first, RAG, Graph-Fragen |
+
 ## Workflow: Contract first
 
 ```

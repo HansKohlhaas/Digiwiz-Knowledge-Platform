@@ -54,3 +54,18 @@ Jeder Context-Build muss ausweisen (Schema `context_builder_output.schema.json`)
 ## Verwandte ADRs
 
 - ADR-0002, ADR-0004, ADR-0009, ADR-0010
+- **ADR-0013** — Source Resolution und SQL-first (erweitert Prioritätsstufe 2 vor Graph/RAG)
+
+## Erweiterung durch ADR-0013 (2026-07-09)
+
+Die verbindliche Auflösungssequenz wird um **Schritt 0 (Klassifikation)** und **Schritt 2 (SQL/CRM)** erweitert:
+
+```
+0. Intent-Klassifikation (SQL-first?)
+1. Playbooks + ADRs + Contracts (unverändert, Pflicht)
+2. SQL / CRM / Stammdaten (neu, bei SQL-first)
+3. Knowledge Graph (unverändert, Stufe E)
+4. Chroma/RAG (unverändert, abgeleitet)
+```
+
+Details: [docs/13_source_resolution.md](../docs/13_source_resolution.md), [ADR-0013](../adr/ADR-0013-source-resolution-and-sql-first-policy.md).

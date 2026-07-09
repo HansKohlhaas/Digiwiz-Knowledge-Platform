@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://digiwiz.local/schemas/context_builder_output.schema.json",
   "title": "DAR Context Builder Output",
-  "description": "ADR-0011 — angewandte Playbooks, Quellen, Unsicherheiten. Kein Auto-Publish.",
+  "description": "ADR-0011 + ADR-0013 — angewandte Playbooks, Quellen, Source Resolution, Unsicherheiten. Kein Auto-Publish.",
   "type": "object",
   "required": ["task", "applied_playbooks", "applied_adrs", "sources", "uncertainties"],
   "properties": {
@@ -33,7 +33,37 @@
       }
     },
     "sources": { "type": "array", "items": { "type": "string" } },
-    "uncertainties": { "type": "array", "items": { "type": "string" } }
+    "uncertainties": { "type": "array", "items": { "type": "string" } },
+    "sql_first": { "type": "boolean", "description": "ADR-0013 — SQL-first-Klassifikation" },
+    "resolution_path": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Angewendete Schritte z. B. classify, sql, knowledge_platform, chroma_rag"
+    },
+    "sql_snippets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["text", "provenance"],
+        "properties": {
+          "text": { "type": "string" },
+          "query_ref": { "type": "string" },
+          "provenance": { "type": "object" }
+        }
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["sources", "resolution", "winner"],
+        "properties": {
+          "sources": { "type": "array", "items": { "type": "string" } },
+          "resolution": { "type": "string" },
+          "winner": { "type": "string" }
+        }
+      }
+    }
   },
   "not": {
     "required": ["published_url", "auto_publish"]

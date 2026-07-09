@@ -1,0 +1,32 @@
+# Beispiele — Knowledge-Graph-Fragen (Stufe E, geplant)
+# Fakten zu Entitäten weiterhin aus SQL; Graph für Struktur/Provenienz
+
+examples:
+  - id: graph-001
+    question: "Welche Playbooks referenzieren die Quellen-Regeln?"
+    sql_first: false
+    expected_resolution_path: [classify, knowledge_platform, knowledge_graph]
+    note: Strukturelle Kanten Playbook → Regel
+
+  - id: graph-002
+    question: "Welche ADRs hängen direkt an Stufe E?"
+    sql_first: false
+    expected_resolution_path: [classify, knowledge_platform, knowledge_graph]
+
+  - id: graph-003
+    question: "Welche Agenten-Lieferungen bezogen sich auf Hersteller X?"
+    sql_first: true
+    triggers: [hersteller]
+    expected_resolution_path: [classify, knowledge_platform, sql, knowledge_graph]
+    note: Hersteller-Fakten SQL; Lieferungs-Kanten Graph
+
+  - id: graph-004
+    question: "Provenienz-Kette für Entität presseschau-Regel?"
+    sql_first: false
+    expected_resolution_path: [classify, knowledge_platform, knowledge_graph]
+
+  - id: graph-005
+    question: "Konflikt zwischen zwei Regeln — welche ADR-Kette gilt?"
+    sql_first: false
+    expected_resolution_path: [classify, knowledge_platform, knowledge_graph]
+    note: Policy-/ADR-Beziehungsgraph

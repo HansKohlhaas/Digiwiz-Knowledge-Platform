@@ -1,4 +1,4 @@
-version: "1.1.0"
+version: "1.2.0"
 name: digiwiz-knowledge-platform
 description: >
   Verbindliche Quelle für Regeln und Schnittstellen (Contracts):
@@ -52,6 +52,12 @@ contracts:
     policy: contracts/retrieval/
     status: planned
     hinweis: Chroma/RAG-Index lebt in App — nicht SSOT (ADR-0009)
+  source_resolution:
+    policy: contracts/source-resolution/
+    examples: examples/source-resolution/
+    status: active
+    adr: ADR-0013
+    hinweis: SQL-first vor Graph/RAG; keine SQL-Implementierung in KP
   examples:
     path: examples/
     status: active

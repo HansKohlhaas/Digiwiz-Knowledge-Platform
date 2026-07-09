@@ -4,7 +4,8 @@
 
 1. [README.md](README.md) — Zweck und Grenzen
 2. [docs/11_roadmap_stufen_a_f.md](docs/11_roadmap_stufen_a_f.md) — **Roadmap A–F**
-3. [docs/10_contracts.md](docs/10_contracts.md) — Verträge (Contracts)
+3. [docs/13_source_resolution.md](docs/13_source_resolution.md) — **Source Resolution, SQL-first**
+4. [docs/10_contracts.md](docs/10_contracts.md) — Verträge (Contracts)
 4. [adr/](adr/) — Architekturentscheidungen ([Index](adr/README.md))
 5. [docs/verfahren/](docs/verfahren/) — Betriebsverfahren
 6. [playbooks/](playbooks/) — Maschinenlesbare Regeln

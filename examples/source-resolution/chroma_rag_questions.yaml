@@ -1,0 +1,36 @@
+# Beispiele — Chroma/RAG-Fragen (nach Klassifikation, kein SQL-first)
+# Schritt 0 trotzdem Pflicht — versteckte Kundennummer würde SQL-first auslösen
+
+examples:
+  - id: rag-001
+    question: "Wie exportiere ich markierte Chat-Antworten aus dem DigiWiki?"
+    sql_first: false
+    triggers: []
+    expected_resolution_path: [classify, knowledge_platform, chroma_rag]
+    note: Bedienung/Verfahren — Wiki-Index
+
+  - id: rag-002
+    question: "Was steht in der Brandvoice zu übertriebenen Superlativen?"
+    sql_first: false
+    expected_resolution_path: [classify, knowledge_platform, chroma_rag]
+
+  - id: rag-003
+    question: "Schritte der Presseschau-Qualitätssicherung Stufe B?"
+    sql_first: false
+    expected_resolution_path: [classify, knowledge_platform, chroma_rag]
+
+  - id: rag-004
+    question: "DigiBest USPs — kurze Zusammenfassung aus dem Wiki?"
+    sql_first: false
+    expected_resolution_path: [classify, knowledge_platform, chroma_rag]
+
+  - id: rag-005
+    question: "Was ist die Regisseur-Inbox im Digiwiz-Workflow?"
+    sql_first: false
+    expected_resolution_path: [classify, knowledge_platform, chroma_rag]
+
+  - id: rag-006
+    question: "Ähnliche Artikel zur Oracle-Integration im Wiki?"
+    sql_first: false
+    expected_resolution_path: [classify, knowledge_platform, chroma_rag]
+    note: Semantische Ähnlichkeit — typischer RAG-Use-Case

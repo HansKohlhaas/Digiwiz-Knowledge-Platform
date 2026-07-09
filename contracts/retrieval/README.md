@@ -2,6 +2,8 @@
 
 Verträge für **Kontext-Zusammenführung** im DAR Context Builder — nicht für die Chroma-DB selbst.
 
+**Voraussetzung:** [Source Resolution](../source-resolution/) (ADR-0013) — SQL-first **vor** Graph/RAG-Merge.
+
 ## Abgrenzung (ADR-0009)
 
 | Artefakt | Rolle | SSOT? |
@@ -15,9 +17,9 @@ Verträge für **Kontext-Zusammenführung** im DAR Context Builder — nicht fü
 
 ## Geplante Inhalte
 
-- Kontext-Priorität: Playbooks → Graph → RAG
+- Kontext-Priorität **nach** Source Resolution: Graph → RAG (innerhalb Schritt 3–4)
 - Token-/Passage-Limits pro Task
 - Provenienz-Pflicht in DAR-Kontext
 - No-Gos (kein Auto-Publish aus RAG-Snippets)
 
-Siehe [ADR-0009](../adr/ADR-0009-knowledge-graph-and-chroma-rag.md), [ADR-0008](../adr/ADR-0008-knowledge-graph-as-platform-extension.md).
+Siehe [ADR-0009](../adr/ADR-0009-knowledge-graph-and-chroma-rag.md), [ADR-0013](../adr/ADR-0013-source-resolution-and-sql-first-policy.md), [merge_policy.yaml](merge_policy.yaml) (Platzhalter).

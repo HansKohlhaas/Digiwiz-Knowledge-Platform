@@ -25,18 +25,24 @@ Regisseur-Inbox → manuelle Freigabe
 ## Kontext-Schichten (Stufe D/E)
 
 ```
-Playbooks + Contracts (KP, SSOT)
+[0] Source Resolution — SQL-first? (ADR-0013)
         │
-        ├──► Knowledge Graph (strukturiert, Provenienz)     ← Stufe E, KP-Schema
+        ▼
+Playbooks + Contracts (KP, SSOT für Regeln)
         │
-        └──► Chroma/RAG (semantisch, abgeleitet)            ← App, rebuild-fähig
+        ├──► SQL / CRM (Firmendaten, SSOT operativ)
+        │
+        ├──► Knowledge Graph (strukturiert, Provenienz)     ← Stufe E
+        │
+        └──► Chroma/RAG (semantisch, abgeleitet)            ← App
                   │
                   ▼
         DAR context_builder  →  Validator  →  Regisseur-Inbox
 ```
 
 **ADR-0008:** Graph = KP-Erweiterung, keine neue Runtime.  
-**ADR-0009:** Chroma ist nicht SSOT; Context Builder kombiniert Graph + RAG.
+**ADR-0009:** Chroma ist nicht SSOT.  
+**ADR-0013:** SQL ist SSOT für Firmendaten; Klassifikation vor Graph/RAG.
 
 ## Pfad-Auflösung
 
@@ -49,4 +55,5 @@ Playbooks + Contracts (KP, SSOT)
 - [05_api_strategy.md](05_api_strategy.md)
 - [10_contracts.md](10_contracts.md)
 - [11_roadmap_stufen_a_f.md](11_roadmap_stufen_a_f.md)
+- [13_source_resolution.md](13_source_resolution.md)
 - [adr/README.md](../adr/README.md) — ADR-Index

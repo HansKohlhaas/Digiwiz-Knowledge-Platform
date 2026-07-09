@@ -1,0 +1,39 @@
+# Beispiele — SQL-first-Fragen (ADR-0013)
+# Jede Frage: resolution_path erwartet ["classify", "sql", ...]
+
+examples:
+  - id: sql-001
+    question: "Welchen CRM-Status hat Apotheke mit Kundennummer 12345?"
+    sql_first: true
+    triggers: [kundennummern, crm_status, apothekenbezug]
+    expected_resolution_path: [classify, knowledge_platform, sql]
+
+  - id: sql-002
+    question: "Wer ist Ansprechpartner bei Hersteller Bayer für Nielsengebiet Nord?"
+    sql_first: true
+    triggers: [hersteller, ansprechpartner, nielsengebiete]
+
+  - id: sql-003
+    question: "Umsatzklasse von Vertreiber Müller GmbH?"
+    sql_first: true
+    triggers: [vertreiber, umsatzklassen]
+
+  - id: sql-004
+    question: "MSV3-Status für Sortiment Pharma-Line beim Kunden 98765?"
+    sql_first: true
+    triggers: [msv3_status, sortiments_produktbezug, kundennummern]
+
+  - id: sql-005
+    question: "Interne Bewertung zu Apotheke Schmidt — letzter Eintrag?"
+    sql_first: true
+    triggers: [interne_bewertungen, apothekenbezug, historien]
+
+  - id: sql-006
+    question: "Welche Freigaben existieren für Produkt P-2024?"
+    sql_first: true
+    triggers: [freigaben, sortiments_produktbezug]
+
+  - id: sql-007
+    question: "Segmentierung aller Apotheken im Vertriebskanal E-Commerce?"
+    sql_first: true
+    triggers: [segmentierung, apothekenbezug, vertriebskanaele]

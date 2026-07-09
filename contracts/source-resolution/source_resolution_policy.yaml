@@ -1,0 +1,119 @@
+# Source Resolution Policy — Digiwiz Knowledge Platform
+# Contract v1 — maschinenlesbar, ADR-0013
+# Implementierung in App geplant; KP definiert Regeln.
+
+policy_version: 1
+adr: ADR-0013
+effective_from: "2026-07-09"
+
+# Schritt 0 ist Pflicht vor jeder Wissensabfrage
+resolution_sequence:
+  - step: 0
+    id: classify_intent
+    source: source_resolution_router
+    mandatory: true
+    description: Prüfen ob SQL-/CRM-/Unternehmensdaten-Abfrage
+  - step: 1
+    id: knowledge_platform
+    sources: [playbooks, adrs, contracts]
+    mandatory_for_dar_tasks: true
+    ssot_for: [rules, governance, approval]
+  - step: 2
+    id: sql_crm_stammdaten
+    sources: [sql_database, crm]
+    condition: sql_first_or_domain_match
+    ssot_for: [operational_master_data, company_facts]
+  - step: 3
+    id: knowledge_graph
+    sources: [graph_store]
+    condition: structural_query
+    status: planned_stage_e
+    ssot_for: [relationships, provenance_structure]
+  - step: 4
+    id: chroma_rag
+    sources: [chroma_index]
+    condition: semantic_query
+    derived: true
+    ssot_for: []
+  - step: 5
+    id: web_external
+    sources: [web]
+    condition: supplementary_only
+    priority: lowest
+
+sql_first_domains:
+  - hersteller
+  - vertreiber
+  - apothekenbezug
+  - ansprechpartner
+  - crm_status
+  - kundennummern
+  - segmentierung
+  - umsatzklassen
+  - vertriebskanaele
+  - nielsengebiete
+  - msv3_status
+  - sortiments_produktbezug
+  - historien
+  - freigaben
+  - interne_bewertungen
+  - firmenspezifische_notizen
+  - operative_stammdaten
+
+sql_first_triggers:
+  entity_patterns:
+    - kundennummer
+    - kunden_nr
+    - apotheke_id
+    - hersteller_id
+    - vertreiber_id
+  question_types:
+    - status_abfrage
+    - historie
+    - freigabe_stand
+    - segment_umsatz
+    - ansprechpartner_lookup
+    - sortiment_msv3
+
+conflict_resolution:
+  - conflict: sql_vs_chroma
+    domain: company_master_data
+    winner: sql
+    action: document_in_uncertainties_if_chroma_differs
+  - conflict: sql_vs_web
+    domain: company_master_data
+    winner: sql
+  - conflict: kp_contract_vs_chroma
+    winner: knowledge_platform
+    adr: ADR-0009
+  - conflict: sql_vs_graph_attribute
+    winner: sql
+    note: graph_for_relationships_only
+  - conflict: graph_vs_chroma
+    winner: merge_by_policy
+    ref: contracts/retrieval/merge_policy.yaml
+  - conflict: multiple_sql_rows
+    winner: none
+    action: emit_uncertainty_no_guess
+
+forbidden:
+  - use_chroma_as_canonical_for_sql_first_domains
+  - use_web_over_sql_for_company_facts
+  - skip_classify_step
+  - auto_publish_from_any_source
+
+dar_context_builder:
+  planned_modules:
+    - source_resolution_router
+    - context_builder
+  output_fields:
+    - resolution_path
+    - sql_first
+    - applied_playbooks
+    - applied_adrs
+    - sql_snippets
+    - graph_snippets
+    - rag_snippets
+    - sources
+    - conflicts
+    - uncertainties

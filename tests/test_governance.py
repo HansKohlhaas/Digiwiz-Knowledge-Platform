@@ -148,8 +148,13 @@ class TestGovernance(unittest.TestCase):
             errors = sorted(validator.iter_errors(data), key=lambda e: list(e.path))
             self.assertFalse(errors, f"{name}: {[e.message for e in errors]}")
 
-    def test_adrs_0010_bis_0012(self):
-        for n in (10, 11, 12):
+    def test_source_resolution_policy_existiert(self):
+        policy = ROOT / "contracts" / "source-resolution" / "source_resolution_policy.yaml"
+        self.assertTrue(policy.is_file())
+        text = policy.read_text(encoding="utf-8")
+        self.assertIn("sql_first_domains", text)
+        self.assertIn("hersteller", text)
+        for n in (10, 11, 12, 13):
             path = ROOT / "adr" / f"ADR-{n:04d}-"
             matches = list(ROOT.glob(f"adr/ADR-{n:04d}-*.md"))
             self.assertEqual(len(matches), 1, n)

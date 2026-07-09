@@ -11,7 +11,8 @@
 | **DAR** | Pipeline, Provider, Routing, Context Builder, Validator | SSOT, Graph-Store, Vektor-DB |
 | **Knowledge Platform** | Contracts, Playbooks, Schemas, ADRs | Ausführung |
 | **Knowledge Graph** | Struktur + Provenienz (KP-Schema) | Eigene Runtime (ADR-0008) |
-| **Chroma/RAG** | Abgeleiteter semantischer Index (App) | Kanonisches Wissen (ADR-0009) |
+| **Chroma/RAG** | Abgeleiteter semantischer Index (App) | Kanonisches Wissen, Firmendaten (→ SQL) |
+| **SQL / CRM** | Operative Stammdaten (App-DB) | Regeln, Playbooks (→ KP) |
 
 ## Architektur (DAR)
 
@@ -22,10 +23,13 @@ POST /api/v1/runtime/task
 routing_engine  ← runtime/routing.json (KP)
         │
         ▼
+source_resolution_router  ← SQL-first (geplant, ADR-0013)
+        │
+        ▼
 playbook_loader ← playbooks/ (KP)
         │
         ▼
-context_builder ← Playbooks (Pflicht) + Graph (E) + RAG (Chroma)
+context_builder ← Playbooks + SQL? + Graph (E) + RAG (Chroma)
         │
         ▼
 Provider (OpenAI, Mock, …)
@@ -45,7 +49,7 @@ regisseur_inbox  (optional submit_inbox: true)
 |-------|--------|
 | `ai_runtime/pipeline.py` | Orchestrierung |
 | `ai_runtime/routing_engine.py` | Task → Agent, Modell, Playbooks |
-| `ai_runtime/context_builder.py` | Kontext-Merge (ADR-0011) |
+| `ai_runtime/context_builder.py` | Kontext-Merge (ADR-0011, ADR-0013 geplant) |
 | `ai_runtime/providers/` | KI-Provider |
 | `11_wiki_api.py` | REST `/api/v1/runtime/*` |
 
@@ -60,7 +64,7 @@ regisseur_inbox  (optional submit_inbox: true)
 |--------|--------|
 | `runtime_output.schema.json` | Struktur DAR-Ausgabe |
 | `context_builder_input.schema.json` | Kontext-Anfrage |
-| `context_builder_output.schema.json` | Angewandte Playbooks, Quellen, Unsicherheiten |
+| `context_builder_output.schema.json` | Angewandte Playbooks, Quellen, Source Resolution, Unsicherheiten |
 | `api_error.schema.json` | Einheitliche API-Fehler |
 
 Stufe E/F-Automation erst nach Contract-Abschluss (ADR-0012).
@@ -77,4 +81,4 @@ Vorbereitet (`mcp.enabled: false`), nicht implementiert — ADR-0001.
 
 - ADR-0010 — DAR als einzige Runtime
 - ADR-0011 — Context Builder
-- ADR-0008, ADR-0009 — Graph und Chroma
+- ADR-0013 — Source Resolution, SQL-first

@@ -4,6 +4,23 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-07-09
+
+### Added
+
+- **ADR-0013:** Source Resolution and SQL-first Policy
+- `docs/13_source_resolution.md` — verbindliche Auflösungssequenz, Entscheidungsregeln, Konflikte, DAR-Integration (geplant)
+- `contracts/source-resolution/source_resolution_policy.yaml` — maschinenlesbare SQL-first-Domänen und Konfliktregeln
+- `examples/source-resolution/` — Beispiele SQL-first, Chroma/RAG, Knowledge Graph
+- `context_builder_output.schema.json` — optionale Felder `sql_first`, `resolution_path`, `sql_snippets`, `conflicts`
+
+### Changed
+
+- ADR-0011 — Erweiterung um SQL-first-Schicht (Verweis ADR-0013)
+- `adr/README.md` — ADR-0013, erweiterte Leitplanke SQL vs. Chroma
+- `docs/12_architecture_layers.md`, `docs/04_ai_runtime.md`, Roadmap — Source Resolution Querschnitt
+- `contracts/retrieval/README.md` — Abgrenzung zu `source-resolution/`
+
 ## [1.1.0] - 2026-07-09
 
 ### Added

@@ -1,0 +1,19 @@
+# Retrieval Merge Policy (Platzhalter)
+
+**Status:** ⏳ geplant — Merge **nach** Source Resolution (ADR-0013 Schritt 3–4)
+
+Source Resolution entscheidet **welche Quellen** (SQL → Graph → RAG).  
+Dieser Ordner definiert **wie** Graph- und RAG-Snippets kombiniert werden.
+
+## Abgrenzung
+
+| Contract | Frage |
+|----------|--------|
+| [../source-resolution/](../source-resolution/) | Welche Quelle zuerst? SQL-first? |
+| **`retrieval/`** | Token-Limits, Passagen-Merge Graph↔RAG, Provenienz-Anzeige |
+
+## Geplante Datei
+
+- `merge_policy.yaml` — Limits, Prioritäten innerhalb Schritt 3–4
+
+Siehe [ADR-0009](../../adr/ADR-0009-knowledge-graph-and-chroma-rag.md), [ADR-0013](../../adr/ADR-0013-source-resolution-and-sql-first-policy.md).

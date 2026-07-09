@@ -16,5 +16,6 @@ Architekturentscheidungen in Lesereihenfolge (empfohlen für Neueinsteiger).
 | [0010](ADR-0010-dar-as-only-ai-runtime.md) | DAR als einzige AI Runtime | D, E |
 | [0011](ADR-0011-context-builder-combines-context-layers.md) | Context Builder kombiniert Schichten | D, E |
 | [0012](ADR-0012-contracts-before-stage-e-f-automation.md) | Contracts vor E/F-Automation | E, F |
+| [0013](ADR-0013-source-resolution-and-sql-first-policy.md) | Source Resolution, SQL-first | D, E, Wiki |
 
-**Leitplanke:** Bei Widerspruch zwischen abgeleitetem Index (Chroma) und KP-Contract gilt die **Knowledge Platform**.
+**Leitplanke:** Bei Widerspruch zwischen abgeleitetem Index (Chroma) und KP-Contract gilt die **Knowledge Platform**. Bei Widerspruch zwischen Chroma/RAG/Web und **SQL-Firmendaten** gilt **SQL** (ADR-0013).

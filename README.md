@@ -24,16 +24,17 @@ Nicht nur Dokumentation: **Playbooks, JSON-Schemas, Prompt-Schemas, API-Verträg
 | E | Knowledge Graph | ⏳ [Roadmap](docs/11_roadmap_stufen_a_f.md) · [Architektur-Schichten](docs/12_architecture_layers.md) |
 | F | Autonome Agenten | 📋 [Roadmap](docs/11_roadmap_stufen_a_f.md) |
 
-**Abgrenzung Stufe E:** Knowledge Graph erweitert die **Knowledge Platform** (Schemas, Provenienz) — nicht die App-Runtime. **DAR** bleibt einzige AI Runtime; **Chroma/RAG** ist abgeleiteter Index in der App (ADR-0008–0012).
+**Abgrenzung Stufe E:** Knowledge Graph erweitert die **Knowledge Platform** (Schemas, Provenienz) — nicht die App-Runtime. **DAR** bleibt einzige AI Runtime; **Chroma/RAG** ist abgeleiteter Index in der App; **SQL/CRM** ist SSOT für Firmendaten (**ADR-0013**).
 
 ## Schnellstart
 
 1. Lesen: [00_START_HERE.md](00_START_HERE.md)
 2. **Roadmap:** [docs/11_roadmap_stufen_a_f.md](docs/11_roadmap_stufen_a_f.md)
-3. **Contracts:** [docs/10_contracts.md](docs/10_contracts.md) · [contracts/](contracts/)
-3. ADRs: [adr/](adr/) ([Index](adr/README.md))
-4. Playbooks: [playbooks/](playbooks/)
-5. App-Einbindung: `digiwiki/knowledge_paths.py` + `digiwiki/knowledge_lock.json`
+3. **Source Resolution:** [docs/13_source_resolution.md](docs/13_source_resolution.md) — SQL-first (ADR-0013)
+4. **Contracts:** [docs/10_contracts.md](docs/10_contracts.md) · [contracts/](contracts/)
+5. ADRs: [adr/](adr/) ([Index](adr/README.md))
+6. Playbooks: [playbooks/](playbooks/)
+7. App-Einbindung: `digiwiki/knowledge_paths.py` + `digiwiki/knowledge_lock.json`
 
 ## Version
 
