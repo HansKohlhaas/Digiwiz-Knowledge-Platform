@@ -10,12 +10,14 @@ Playbook-Regeln lagen verteilt in `firmenapp/config/playbooks/`, `docs/wiki/.../
 
 ## Entscheidung
 
-1. **Digiwiz Knowledge Platform** (`knowledge-platform/`) ist kanonische Quelle für:
-   - `playbooks/*.yaml`
-   - `content/playbooks/*.md`
+1. **Digiwiz Knowledge Platform** ist kanonische Quelle für **Contracts** (ADR-0007):
+   - `playbooks/*.yaml`, `content/playbooks/*.md`
    - `schemas/`, `runtime/`, `examples/`
+   - künftig: `schemas/prompts/`, `contracts/api/`
 2. Digiwiz App lädt über `knowledge_paths.py` mit **Fallback** auf Legacy-Pfade
-3. Regeländerungen erfolgen primär in YAML/Markdown, nicht nur im Code
+3. Regeländerungen erfolgen primär in Contract-Artefakten, nicht nur im Code
+
+Siehe auch: [ADR-0007](ADR-0007-contracts-as-binding-artifacts.md)
 
 ## Konsequenzen
 

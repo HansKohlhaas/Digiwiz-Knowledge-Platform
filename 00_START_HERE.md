@@ -3,10 +3,12 @@
 ## Für Menschen
 
 1. [README.md](README.md) — Zweck und Grenzen
-2. [adr/](adr/) — Architekturentscheidungen (verbindlich)
-3. [docs/verfahren/](docs/verfahren/) — Betriebsverfahren (aus Digiwiz migriert)
-4. [playbooks/](playbooks/) — Maschinenlesbare Regeln
-5. [content/playbooks/](content/playbooks/) — Kanonische Langtexte
+2. [docs/11_roadmap_stufen_a_f.md](docs/11_roadmap_stufen_a_f.md) — **Roadmap A–F**
+3. [docs/10_contracts.md](docs/10_contracts.md) — Verträge (Contracts)
+4. [adr/](adr/) — Architekturentscheidungen (verbindlich)
+5. [docs/verfahren/](docs/verfahren/) — Betriebsverfahren
+6. [playbooks/](playbooks/) — Maschinenlesbare Regeln
+7. [content/playbooks/](content/playbooks/) — Kanonische Langtexte
 
 ## Für Digiwiz App / Cursor
 
@@ -26,6 +28,11 @@
 | C | API-Doku in `docs/verfahren/` | `digiwiz_agent.py`, `11_wiki_api.py` |
 | D | `runtime/routing.json` | `digiwiki/ai_runtime/` |
 
-## Stufe E (noch nicht beginnen)
+## Stufen E–F (Roadmap)
 
-Knowledge Graph — erst nach abgeschlossener Migration und Freigabe. Siehe README Next Actions.
+| Stufe | Fokus | Status |
+|-------|--------|--------|
+| E | Knowledge Graph | ⏳ nach Freigabe |
+| F | Autonome Agenten | 📋 Roadmap |
+
+Details: [docs/11_roadmap_stufen_a_f.md](docs/11_roadmap_stufen_a_f.md)

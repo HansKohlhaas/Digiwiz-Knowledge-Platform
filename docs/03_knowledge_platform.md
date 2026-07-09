@@ -1,16 +1,23 @@
 # Knowledge Platform — Rolle und Grenzen
 
-Dieses Repository ist **Single Source of Truth** für:
+Dieses Repository ist die **verbindliche Contract-Quelle** (ADR-0007) — nicht nur Dokumentation.
 
-- `playbooks/` — maschinenlesbare Regeln (YAML)
-- `content/playbooks/` — kanonische Langtexte (Markdown)
-- `schemas/` — Lieferungs- und Datenverträge
-- `runtime/` — AI-Routing-Konfiguration (keine Ausführung)
-- `adr/` — Architekturentscheidungen
-- `examples/` — gültige und fehlerhafte Beispieldaten
+## Contract-Artefakte
+
+| Typ | Pfad | Status |
+|-----|------|--------|
+| Playbooks | `playbooks/`, `content/playbooks/` | ✅ aktiv |
+| JSON-Schemas | `schemas/` | ✅ aktiv |
+| Prompt-Schemas | `schemas/prompts/` | ⏳ geplant |
+| API-Verträge | `contracts/api/` | ⏳ geplant |
+| Runtime-Konfiguration | `runtime/` | ✅ aktiv |
+| ADRs | `adr/` | ✅ aktiv |
+| Beispiele | `examples/` | ✅ aktiv |
+
+Menschenlesbare Verfahren: `docs/verfahren/` (verweisen auf Contracts).
 
 **Nicht enthalten:** Python-Runtime, Streamlit-UI, Provider-Code, `data/`.
 
 Binding zur App: `digiwiki/knowledge_paths.py`, Env `DIGIWIZ_KNOWLEDGE_ROOT`.
 
-Siehe ADR-0003 und ADR-0005.
+Siehe [10_contracts.md](10_contracts.md), ADR-0003, ADR-0005, ADR-0007.

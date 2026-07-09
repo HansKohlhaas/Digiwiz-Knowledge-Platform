@@ -1,6 +1,8 @@
 version: "1.0.0"
 name: digiwiz-knowledge-platform
-description: Single Source of Truth für Playbooks, Schemas, Runtime-Regeln und ADRs
+description: >
+  Verbindliche Quelle für Regeln und Schnittstellen (Contracts):
+  Playbooks, JSON-Schemas, Prompt-Schemas, API-Verträge, Runtime-Konfiguration, ADRs.
 digiwiz_app_compat: ">=2026.07"
 stages:
   A: knowledge_layer
@@ -9,6 +11,29 @@ stages:
   D: ai_runtime
   E: knowledge_graph
   F: autonome_agenten
+contracts:
+  playbooks:
+    path: playbooks/
+    content: content/playbooks/
+    status: active
+  json_schemas:
+    path: schemas/
+    status: active
+  prompt_schemas:
+    path: schemas/prompts/
+    status: planned
+  api:
+    path: contracts/api/
+    status: planned
+  runtime:
+    path: runtime/
+    status: active
+  adrs:
+    path: adr/
+    status: active
+  examples:
+    path: examples/
+    status: active
 paths:
   playbooks: playbooks/
   schemas: schemas/
@@ -16,3 +41,4 @@ paths:
   examples: examples/
   adrs: adr/
   content: content/
+  contracts: contracts/

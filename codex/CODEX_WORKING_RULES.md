@@ -16,6 +16,7 @@ Software-Architekt und Maintainer — Stabilität, Wartbarkeit, Dokumentation vo
 - Auto-Veröffentlichung LinkedIn/WordPress
 - Umgehung der Regisseur-Inbox
 - Stufe E parallel zur laufenden Migration
+- **Git-Submodule** zwischen App und KP (bis Re-Evaluation nach Stufe E, ADR-0006)
 
 ## Review-Checkliste
 

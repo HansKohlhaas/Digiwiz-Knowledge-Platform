@@ -1,15 +1,15 @@
 # Digiwiz Knowledge Platform
 
-Zentrale, versionierte **Wissens- und Regel-Architektur** für Digiwiz — keine Produktiv-Runtime.
+Zentrale, versionierte **Quelle für Regeln und Schnittstellen (Contracts)** für Digiwiz — keine Produktiv-Runtime.
+
+Nicht nur Dokumentation: **Playbooks, JSON-Schemas, Prompt-Schemas, API-Verträge, Runtime-Konfiguration und ADRs** sind maschinenlesbare, versionierte Verträge (ADR-0007).
 
 ## Rolle
 
 | Dieses Repo | Digiwiz App (`digiwiki/`, `firmenapp/`) |
 |-------------|----------------------------------------|
-| Playbooks (YAML + Markdown) | Ausführung, UI, Inbox |
-| Schemas, Examples | Import, Validierung (Code) |
-| Runtime-Routing (JSON) | `ai_runtime/` Pipeline |
-| ADRs, Verfahren | Betrieb, Streamlit, CRM |
+| **Contracts:** Playbooks, Schemas, API-Specs, Runtime-JSON, ADRs | Ausführung, Validierungscode, UI |
+| Beispiele (`examples/`) | Laufzeit (`data/`) |
 
 **Prinzip:** KI bereitet vor → **Regisseur-Inbox** → Hans gibt frei → **keine Auto-Veröffentlichung**.
 
@@ -21,15 +21,17 @@ Zentrale, versionierte **Wissens- und Regel-Architektur** für Digiwiz — keine
 | B | Qualitätssicherung | `schemas/`, `docs/verfahren/` |
 | C | CLI/API | dokumentiert, Code in App |
 | D | AI Runtime | `runtime/`, Code in App |
-| E | Knowledge Graph | **nächste Phase** — nur hier |
-| F | Autonome Agenten | Roadmap |
+| E | Knowledge Graph | ⏳ [Roadmap](docs/11_roadmap_stufen_a_f.md) |
+| F | Autonome Agenten | 📋 [Roadmap](docs/11_roadmap_stufen_a_f.md) |
 
 ## Schnellstart
 
 1. Lesen: [00_START_HERE.md](00_START_HERE.md)
-2. ADRs: [adr/](adr/)
-3. Playbooks: [playbooks/](playbooks/)
-4. App-Einbindung: `digiwiki/knowledge_paths.py` + `digiwiki/knowledge_lock.json`
+2. **Roadmap:** [docs/11_roadmap_stufen_a_f.md](docs/11_roadmap_stufen_a_f.md)
+3. **Contracts:** [docs/10_contracts.md](docs/10_contracts.md) · [contracts/](contracts/)
+3. ADRs: [adr/](adr/)
+4. Playbooks: [playbooks/](playbooks/)
+5. App-Einbindung: `digiwiki/knowledge_paths.py` + `digiwiki/knowledge_lock.json`
 
 ## Version
 
@@ -40,13 +42,18 @@ Siehe [VERSION](VERSION) und [CHANGELOG.md](CHANGELOG.md).
 1. ~~Migration Playbooks/Schemas aus Digiwiz-Monorepo~~ (v1.0.0)
 2. Contract-Tests in `tests/` erweitern
 3. Regeln aus Python nach `quality/` extrahieren (inkrementell)
-4. **Stufe E — Knowledge Graph** (nach Freigabe, nicht parallel)
+4. **Stufe E — Knowledge Graph** (nach Freigabe, siehe [docs/11_roadmap_stufen_a_f.md](docs/11_roadmap_stufen_a_f.md))
 
 ## Einbindung in Digiwiz App
 
 ```env
-# Optional — Default: <monorepo>/knowledge-platform
-DIGIWIZ_KNOWLEDGE_ROOT=C:\Pfad\zu\knowledge-platform
+# Kanonisch: geklontes KP-Repo (eigenständiges Repository)
+DIGIWIZ_KNOWLEDGE_ROOT=C:\Pfad\zu\Digiwiz-Knowledge-Platform
+
+# Optional — nur Monorepo-Entwicklung: Default knowledge-platform/ neben digiwiki/
 ```
 
-Ohne Env-Variable nutzt die App automatisch `knowledge-platform/` neben `digiwiki/`, mit Fallback auf Legacy-Pfade unter `firmenapp/config/`.
+**Kein Git-Submodule** (vorläufig) — siehe [ADR-0006](adr/ADR-0006-no-git-submodule-until-stage-e.md).  
+Binding nur über Pfad + `knowledge_lock.json`, nicht über Repo-Verschachtelung.
+
+Ohne Env-Variable nutzt die App `knowledge-platform/` im Monorepo, mit Fallback auf Legacy-Pfade unter `firmenapp/config/`.

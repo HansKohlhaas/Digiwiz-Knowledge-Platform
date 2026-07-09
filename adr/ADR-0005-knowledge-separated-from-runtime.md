@@ -20,6 +20,6 @@ Binding: `DIGIWIZ_KNOWLEDGE_ROOT` oder Default `../knowledge-platform/` im Monor
 
 ## Konsequenzen
 
-- Knowledge Platform kann als eigenes Git-Repo ausgekoppelt werden
+- Knowledge Platform als **eigenständiges Git-Repository** (kein Submodule — ADR-0006)
 - App-Tests bleiben Integrations-Tests; Knowledge-Tests sind Contract-Tests
 - Stufe E (Knowledge Graph) startet **nur** in Knowledge Platform

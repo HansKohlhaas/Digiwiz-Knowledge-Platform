@@ -17,8 +17,8 @@ Regisseur-Inbox → manuelle Freigabe
 
 | Schicht | Ort | Verantwortung |
 |---------|-----|---------------|
-| Knowledge | `knowledge-platform/` | Playbooks, Schemas, ADRs, Runtime-Routing |
-| Ausführung | `digiwiki/` | Pipeline, API, Validierung, Inbox |
+| **Contracts** | `knowledge-platform/` | Playbooks, Schemas, API-Specs, Runtime-JSON, ADRs |
+| Ausführung | `digiwiki/` | Pipeline, API-Implementierung, Validierung, Inbox |
 | Zustand | `data/` | Inbox, Logs, Memory (gitignored) |
 | Legacy | `firmenapp/config/` | Fallback bis Deprecation |
 

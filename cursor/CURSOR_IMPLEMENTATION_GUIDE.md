@@ -14,6 +14,8 @@
 | `playbooks/`, `schemas/`, `runtime/` | `digiwiki/ai_runtime/`, `agent_*.py` |
 | ADRs, Verfahren | UI, Inbox, `data/` |
 
+**Lose Kopplung:** kein Git-Submodule (ADR-0006). Nur `DIGIWIZ_KNOWLEDGE_ROOT` + Contract-Schnittstelle.
+
 ## Pfad-Auflösung (App)
 
 ```python

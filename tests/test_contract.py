@@ -38,6 +38,22 @@ class TestKnowledgePlatformContract(unittest.TestCase):
         self.assertEqual(beispiel.get("version"), 3)
         self.assertTrue(beispiel.get("vorschlaege"))
 
+    def test_manifest_contracts(self):
+        manifest = (ROOT / "meta" / "manifest.yaml").read_text(encoding="utf-8")
+        for key in ("playbooks", "json_schemas", "runtime", "adrs"):
+            self.assertIn(key, manifest)
+
+    def test_contract_index_existiert(self):
+        self.assertTrue((ROOT / "contracts" / "README.md").is_file())
+        self.assertTrue((ROOT / "docs" / "10_contracts.md").is_file())
+
+    def test_roadmap_existiert(self):
+        roadmap = ROOT / "docs" / "11_roadmap_stufen_a_f.md"
+        self.assertTrue(roadmap.is_file())
+        text = roadmap.read_text(encoding="utf-8")
+        for stufe in ("Stufe A", "Stufe B", "Stufe C", "Stufe D", "Stufe E", "Stufe F"):
+            self.assertIn(stufe, text)
+
     def test_content_linkedin_playbook(self):
         md = ROOT / "content" / "playbooks" / "linkedin-presseschau.md"
         self.assertTrue(md.is_file())
