@@ -1,4 +1,4 @@
-version: "1.2.0"
+version: "1.3.0"
 name: digiwiz-knowledge-platform
 description: >
   Verbindliche Quelle für Regeln und Schnittstellen (Contracts):
@@ -58,6 +58,15 @@ contracts:
     status: active
     adr: ADR-0013
     hinweis: SQL-first vor Graph/RAG; keine SQL-Implementierung in KP
+    includes:
+      - source_resolution_policy.yaml
+      - context_assembly.schema.json
+  context_assembly:
+    schema: contracts/source-resolution/context_assembly.schema.json
+    example: examples/source-resolution/context_assembly.example.json
+    status: active
+    adr: ADR-0011
+    hinweis: Pipeline vor Antwortgenerierung; DAR-Erweiterung geplant
   examples:
     path: examples/
     status: active

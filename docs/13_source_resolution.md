@@ -137,6 +137,8 @@ Beispiele: [examples/source-resolution/knowledge_graph_questions.yaml](../exampl
 
 ## 7. Geplante Integration — DAR Context Builder
 
+Siehe [12_context_assembly_pipeline.md](12_context_assembly_pipeline.md) (ADR-0011) — **Context Assembly Pipeline** vor Antwortgenerierung.
+
 **Status:** Contract + ADR — **Implementierung in App später** (ADR-0012).
 
 ### Geplante Pipeline-Erweiterung
@@ -145,20 +147,18 @@ Beispiele: [examples/source-resolution/knowledge_graph_questions.yaml](../exampl
 routing_engine
       │
       ▼
-source_resolution_router     ← NEU (App): Klassifikation Schritt 0
+context_assembly_pipeline    ← NEU (ADR-0011): Context-Array, Pflichtfelder
+      │
+      ▼
+source_resolution_router     ← Klassifikation + feldgesteuerte Quellen (ADR-0013)
       │
       ├── sql_first → crm/sql_query_adapter (App, read-only)
       │
       ▼
-context_builder              ← ADR-0011 + ADR-0013
-      │
-      ├── [1] playbooks + contracts (Pflicht)
-      ├── [2] sql_snippets (wenn sql_first)
-      ├── [3] graph_snippets (Stufe E)
-      └── [4] rag_snippets (abgeleitet)
+context_builder              ← Provider-Messages aus Assembly-Output
       │
       ▼
-context_builder_output       ← resolution_path, sources, uncertainties
+context_builder_output       ← resolution_path, context_array, uncertainties
 ```
 
 ### Geplante Output-Felder (Contract-Erweiterung)

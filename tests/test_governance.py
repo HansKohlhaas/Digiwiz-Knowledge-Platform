@@ -41,10 +41,15 @@ EXAMPLE_PAIRS = (
     ("examples/linkedin/linkedin_post.example.json", "linkedin.schema.json"),
     ("examples/retrieval/chroma_index_manifest.example.json", "chroma_index_manifest.schema.json"),
     ("examples/runtime/context_builder_output.example.json", "context_builder_output.schema.json"),
+    (
+        "examples/source-resolution/context_assembly.example.json",
+        "contracts/source-resolution/context_assembly.schema.json",
+    ),
 )
 STAGE_EF_DOCS = (
     ROOT / "docs" / "11_roadmap_stufen_a_f.md",
     ROOT / "docs" / "12_architecture_layers.md",
+    ROOT / "docs" / "12_context_assembly_pipeline.md",
     ROOT / "cursor" / "CURSOR_TASK_STAGE_E.md",
     ROOT / "cursor" / "CURSOR_TASK_STAGE_F.md",
 )
@@ -108,12 +113,26 @@ class TestGovernance(unittest.TestCase):
 
     def test_beispiele_gegen_schemas(self):
         Draft202012Validator = _jsonschema_validator()
-        for example_rel, schema_name in EXAMPLE_PAIRS:
+        for example_rel, schema_rel in EXAMPLE_PAIRS:
             example = _load_json(ROOT / example_rel)
-            schema = _load_json(SCHEMAS / schema_name)
+            if schema_rel.startswith("contracts/"):
+                schema_path = ROOT / schema_rel
+            else:
+                schema_path = SCHEMAS / schema_rel
+            schema = _load_json(schema_path)
             validator = Draft202012Validator(schema)
             errors = sorted(validator.iter_errors(example), key=lambda e: list(e.path))
             self.assertFalse(errors, f"{example_rel}: {[e.message for e in errors]}")
+
+    def test_context_assembly_contract_existiert(self):
+        schema = ROOT / "contracts" / "source-resolution" / "context_assembly.schema.json"
+        example = ROOT / "examples" / "source-resolution" / "context_assembly.example.json"
+        self.assertTrue(schema.is_file())
+        self.assertTrue(example.is_file())
+        data = _load_json(example)
+        self.assertTrue(data.get("ready_for_generation"))
+        self.assertIn("context_array", data)
+        self.assertFalse(data.get("missing_mandatory_fields"))
 
     def test_chroma_manifest_nur_kp_quellen(self):
         manifest = _load_json(ROOT / "examples" / "retrieval" / "chroma_index_manifest.example.json")

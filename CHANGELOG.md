@@ -4,6 +4,21 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-07-09
+
+### Added
+
+- **ADR-0011 v2:** Context Assembly Pipeline — Antwort erst nach internem Context-Array
+- `docs/12_context_assembly_pipeline.md` — 10-Schritte-Pipeline, feldgesteuerte Quellenabfrage
+- `contracts/source-resolution/context_assembly.schema.json` — Contract für Assembly-Output
+- `examples/source-resolution/context_assembly.example.json`
+
+### Changed
+
+- ADR-0011 — Titel und Inhalt: *Context Assembly before Answer Generation*
+- `meta/manifest.yaml` — Contract-Typ `context_assembly`
+- Roadmap Stufe D — Meilenstein **D5 Context Assembly**
+
 ## [1.2.0] - 2026-07-09
 
 ### Added

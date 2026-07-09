@@ -1,0 +1,85 @@
+{
+  "assembly_id": "asm-presseschau-crm-status-001",
+  "query": "Welchen CRM-Status hat Apotheke Kundennummer 12345 und welche Presseschau-Regeln gelten?",
+  "task": "presseschau",
+  "answer_goal": "CRM-Status nennen und relevante Presseschau-Governance kurz einordnen",
+  "answer_structure": [
+    "crm_status",
+    "presseschau_regeln",
+    "unsicherheiten"
+  ],
+  "required_fields": [
+    {
+      "field_id": "crm_status",
+      "label": "CRM-Status Apotheke 12345",
+      "mandatory": true,
+      "preferred_sources": ["sql_crm"]
+    },
+    {
+      "field_id": "presseschau_no_auto_publish",
+      "label": "Keine Auto-Veröffentlichung",
+      "mandatory": true,
+      "preferred_sources": ["knowledge_platform"]
+    },
+    {
+      "field_id": "brandvoice_hint",
+      "label": "Brandvoice-Hinweis",
+      "mandatory": false,
+      "preferred_sources": ["knowledge_platform", "chroma_rag"]
+    }
+  ],
+  "context_array": [
+    {
+      "field_id": "crm_status",
+      "status": "filled",
+      "value": "aktiv",
+      "source_layer": "sql_crm",
+      "source_ref": "crm.apotheken.kundennummer=12345",
+      "confidence": 1.0,
+      "provenance": { "system": "sql", "queried_at": "2026-07-09T20:00:00Z" }
+    },
+    {
+      "field_id": "presseschau_no_auto_publish",
+      "status": "filled",
+      "value": "Freigabe nur über Regisseur-Inbox — ADR-0004",
+      "source_layer": "knowledge_platform",
+      "source_ref": "playbooks/presseschau.yaml",
+      "confidence": 1.0,
+      "provenance": { "adr": "ADR-0004" }
+    },
+    {
+      "field_id": "brandvoice_hint",
+      "status": "uncertain",
+      "value": null,
+      "source_layer": "none",
+      "source_ref": "",
+      "confidence": 0.0
+    }
+  ],
+  "resolution_stages": [
+    "analyze_query",
+    "define_answer_structure",
+    "derive_required_fields",
+    "query_sql_crm",
+    "query_knowledge_platform",
+    "validate_mandatory_fields"
+  ],
+  "source_query_log": [
+    {
+      "stage": "query_sql_crm",
+      "triggered_by_field_ids": ["crm_status"],
+      "fields_resolved": ["crm_status"]
+    },
+    {
+      "stage": "query_knowledge_platform",
+      "triggered_by_field_ids": ["presseschau_no_auto_publish"],
+      "fields_resolved": ["presseschau_no_auto_publish"]
+    }
+  ],
+  "conflicts": [],
+  "missing_mandatory_fields": [],
+  "ready_for_generation": true,
+  "uncertainties": ["brandvoice_hint nicht aufgelöst — optional"],
+  "applied_playbooks": ["presseschau", "brandvoice"],
+  "applied_adrs": ["ADR-0002", "ADR-0004", "ADR-0011", "ADR-0013"]
+}

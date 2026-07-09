@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digiwiz.local/contracts/source-resolution/context_assembly.schema.json",
+  "title": "Context Assembly Pipeline",
+  "description": "ADR-0011 — Internes Context-Array vor Antwortgenerierung. Kein Auto-Publish.",
+  "type": "object",
+  "required": [
+    "assembly_id",
+    "query",
+    "answer_goal",
+    "answer_structure",
+    "required_fields",
+    "context_array",
+    "resolution_stages",
+    "ready_for_generation",
+    "missing_mandatory_fields"
+  ],
+  "properties": {
+    "assembly_id": { "type": "string" },
+    "query": { "type": "string", "minLength": 1 },
+    "task": { "type": "string" },
+    "answer_goal": { "type": "string", "minLength": 1 },
+    "answer_structure": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Geordnete Abschnitte der geplanten Antwort"
+    },
+    "required_fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field_id", "label", "mandatory"],
+        "properties": {
+          "field_id": { "type": "string" },
+          "label": { "type": "string" },
+          "mandatory": { "type": "boolean" },
+          "preferred_sources": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "sql_crm",
+                "knowledge_platform",
+                "knowledge_graph",
+                "chroma_rag",
+                "web_external"
+              ]
+            }
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "context_array": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field_id", "status"],
+        "properties": {
+          "field_id": { "type": "string" },
+          "status": {
+            "enum": ["filled", "missing", "uncertain", "conflict"]
+          },
+          "value": { "type": ["string", "null"] },
+          "source_layer": {
+            "enum": [
+              "sql_crm",
+              "knowledge_platform",
+              "knowledge_graph",
+              "chroma_rag",
+              "web_external",
+              "none"
+            ]
+          },
+          "source_ref": { "type": "string" },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "provenance": { "type": "object" }
+        }
+      }
+    },
+    "resolution_stages": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "analyze_query",
+          "define_answer_structure",
+          "derive_required_fields",
+          "query_sql_crm",
+          "query_knowledge_platform",
+          "query_knowledge_graph",
+          "query_chroma_rag",
+          "query_web_external",
+          "mark_conflicts",
+          "validate_mandatory_fields"
+        ]
+      },
+      "description": "Tatsächlich durchlaufene Pipeline-Schritte"
+    },
+    "source_query_log": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["stage", "triggered_by_field_ids"],
+        "properties": {
+          "stage": { "type": "string" },
+          "triggered_by_field_ids": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "fields_resolved": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field_id", "sources", "resolution", "winner"],
+        "properties": {
+          "field_id": { "type": "string" },
+          "sources": { "type": "array", "items": { "type": "string" } },
+          "resolution": { "type": "string" },
+          "winner": { "type": "string" }
+        }
+      }
+    },
+    "missing_mandatory_fields": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "ready_for_generation": {
+      "type": "boolean",
+      "description": "true nur wenn alle mandatory fields filled oder bewusst als missing dokumentiert"
+    },
+    "uncertainties": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "applied_playbooks": { "type": "array", "items": { "type": "string" } },
+    "applied_adrs": { "type": "array", "items": { "type": "string" } }
+  },
+  "not": {
+    "required": ["published_url", "auto_publish"]
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "ready_for_generation": { "const": true } },
+        "required": ["ready_for_generation"]
+      },
+      "then": {
+        "properties": {
+          "missing_mandatory_fields": { "maxItems": 0 }
+        }
+      }
+    }
+  ]
+}

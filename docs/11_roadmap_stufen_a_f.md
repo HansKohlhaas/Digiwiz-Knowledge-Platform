@@ -45,7 +45,8 @@ Siehe auch: [12_architecture_layers.md](12_architecture_layers.md) · [13_source
 | **B** | QS vor Inbox | Publish | Lieferungs-JSON v3 | validiert / blockiert | Rot → keine Standard-Freigabe |
 | **C** | CLI + REST API | Auto-Publish | API-Key, JSON | validate/submit | Submit → Inbox only |
 | **D** | DAR Pipeline | Zweite Runtime, Publish | Tasks, routing.json | Runtime-Output, optional inbox_id | ADR-0010, ADR-0004 |
-| **D4** | Source Resolution (SQL-first) | SQL in KP implementieren | User-Query, CRM-DB | `resolution_path`, SQL-Snippets | SQL SSOT Firmendaten (ADR-0013) |
+| **D4** | Source Resolution (SQL-first) | SQL in KP | User-Query | `resolution_path` | ADR-0013 |
+| **D5** | Context Assembly Pipeline | Antwort ohne Assembly | Query, Felder | `context_assembly` Contract | ADR-0011, kein Raten |
 | **E** | Graph-Schema, Retrieval-Contracts | Graph-Runtime, Chroma in KP | Playbooks, Wiki, ADRs | Graph-Beispiele, Context-Spec | Kein Bypass DAR/Inbox |
 | **F** | Agent-Policies, Scheduler-Spec | Auto-Publish, Runtime-Duplikat | Policies, Graph-Kontext | Vorschläge, Lern-Log | ADR-0012, Inbox für externe Wirkung |
 
@@ -217,6 +218,7 @@ Digiwiz als **AI Director**: Task → Routing → Playbooks → Provider → Val
 - [ ] Prompt-Schema pro Task (`presseschau`, `linkedin_post`, …)
 - [ ] Runtime-API in `contracts/api/` ergänzen
 - [ ] **D4 Source Resolution** — `source_resolution_router`, SQL-first (ADR-0013)
+- [ ] **D5 Context Assembly** — `context_assembly_pipeline`, Contract `context_assembly.schema.json` (ADR-0011)
 - [ ] MCP: `digiwiz_runtime_task` als Adapter auf Pipeline (ADR-0001)
 
 ---
@@ -331,7 +333,7 @@ Version-Pin: digiwiki/knowledge_lock.json ↔ KP VERSION
 | C | [digiwiz_agent_api.md](verfahren/digiwiz_agent_api.md) |
 | D | [digiwiz_ai_runtime.md](verfahren/digiwiz_ai_runtime.md) |
 | E–F | dieses Dokument + künftige ADRs |
-| Querschnitt | [13_source_resolution.md](13_source_resolution.md) — SQL-first |
+| Querschnitt | [13_source_resolution.md](13_source_resolution.md) · [12_context_assembly_pipeline.md](12_context_assembly_pipeline.md) |
 
 ### ADRs
 
@@ -347,7 +349,7 @@ Version-Pin: digiwiki/knowledge_lock.json ↔ KP VERSION
 | 0008 | Knowledge Graph = KP-Erweiterung, keine neue Runtime (E) |
 | 0009 | Graph + Chroma/RAG — Rollen, Retrieval-Policy in KP (E) |
 | 0010 | DAR als einzige AI Runtime (D, E) |
-| 0011 | Context Builder kombiniert kanonisch + Graph + RAG (D, E) |
+| 0011 | Context Assembly before Answer Generation (D, E) |
 | 0012 | Contracts vor E/F-Automation (E, F) |
 | 0013 | Source Resolution, SQL-first (D, E, Wiki) |
 

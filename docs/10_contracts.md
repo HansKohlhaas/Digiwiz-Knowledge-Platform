@@ -64,13 +64,15 @@ Die Knowledge Platform definiert **verbindliche Schnittstellen** zwischen Wissen
 | Playbook-Governance | `schemas/playbook.schema.json` | `owner`, `auto_publish: false`, … |
 | LinkedIn-Vorschlag | `schemas/linkedin.schema.json` | Beispiel: `examples/linkedin/` |
 
-### 10. Source Resolution (Stufe D/E, aktiv ab v1.2.0)
+### 10. Source Resolution & Context Assembly (Stufe D/E, v1.2.0+)
 
 | Artefakt | Pfad | Zweck |
 |----------|------|--------|
-| Policy | `contracts/source-resolution/source_resolution_policy.yaml` | SQL-first-Domänen, Sequenz, Konflikte (ADR-0013) |
-| Doku | `docs/13_source_resolution.md` | Entscheidungsregeln, Beispiele, DAR-Integration (geplant) |
-| Beispiele | `examples/source-resolution/` | SQL-first, RAG, Graph-Fragen |
+| Source Resolution Policy | `contracts/source-resolution/source_resolution_policy.yaml` | SQL-first, Sequenz (ADR-0013) |
+| **Context Assembly** | `contracts/source-resolution/context_assembly.schema.json` | Context-Array, Pflichtfelder (ADR-0011) |
+| Doku Assembly | `docs/12_context_assembly_pipeline.md` | 10-Schritte-Pipeline |
+| Doku Resolution | `docs/13_source_resolution.md` | Quellenreihenfolge, Konflikte |
+| Beispiele | `examples/source-resolution/` | SQL-first, RAG, Graph, Assembly |
 
 ## Workflow: Contract first
 

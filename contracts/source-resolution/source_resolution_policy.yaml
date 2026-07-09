@@ -105,15 +105,21 @@ forbidden:
 dar_context_builder:
   planned_modules:
     - source_resolution_router
+    - context_assembly_pipeline
     - context_builder
   output_fields:
     - resolution_path
     - sql_first
     - applied_playbooks
     - applied_adrs
+    - context_array
+    - missing_mandatory_fields
+    - ready_for_generation
     - sql_snippets
     - graph_snippets
     - rag_snippets
     - sources
     - conflicts
     - uncertainties
+  context_assembly_contract: contracts/source-resolution/context_assembly.schema.json
+  adr: ADR-0011

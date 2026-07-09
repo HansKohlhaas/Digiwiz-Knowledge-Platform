@@ -29,7 +29,7 @@ source_resolution_router  ← SQL-first (geplant, ADR-0013)
 playbook_loader ← playbooks/ (KP)
         │
         ▼
-context_builder ← Playbooks + SQL? + Graph (E) + RAG (Chroma)
+context_builder ← context_assembly_pipeline → Playbooks + SQL? + Graph? + RAG?
         │
         ▼
 Provider (OpenAI, Mock, …)
@@ -64,6 +64,7 @@ regisseur_inbox  (optional submit_inbox: true)
 |--------|--------|
 | `runtime_output.schema.json` | Struktur DAR-Ausgabe |
 | `context_builder_input.schema.json` | Kontext-Anfrage |
+| `context_assembly.schema.json` | Context-Array vor Antwortgenerierung (ADR-0011) |
 | `context_builder_output.schema.json` | Angewandte Playbooks, Quellen, Source Resolution, Unsicherheiten |
 | `api_error.schema.json` | Einheitliche API-Fehler |
 
@@ -80,5 +81,5 @@ Vorbereitet (`mcp.enabled: false`), nicht implementiert — ADR-0001.
 ## Verwandte ADRs
 
 - ADR-0010 — DAR als einzige Runtime
-- ADR-0011 — Context Builder
+- ADR-0011 — Context Assembly Pipeline
 - ADR-0013 — Source Resolution, SQL-first
