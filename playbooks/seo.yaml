@@ -1,0 +1,16 @@
+id: seo
+version: 0.1.0
+name: SEO Review
+purpose: Pruefung von Inhalten auf Suchintention, Struktur und Metadaten.
+inputs:
+  - draft
+  - target_query
+  - audience
+checks:
+  - search_intent_match
+  - title_clear
+  - meta_description_clear
+  - headings_structured
+  - internal_links_suggested
+outputs:
+  - seo_review

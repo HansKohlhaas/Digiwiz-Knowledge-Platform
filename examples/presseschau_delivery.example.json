@@ -1,0 +1,19 @@
+{
+  "topic": "KI in der Unternehmenskommunikation",
+  "date": "2026-07-09",
+  "approval_required": true,
+  "items": [
+    {
+      "title": "Beispielquelle zur KI-Nutzung",
+      "source_url": "https://example.com/source",
+      "summary": "Die Quelle beschreibt Chancen und Risiken beim Einsatz generativer KI.",
+      "claims": [
+        "KI kann Recherche und Entwurf beschleunigen.",
+        "Menschliche Freigabe bleibt fuer kritische Kommunikation notwendig."
+      ]
+    }
+  ],
+  "risks": [
+    "Beispielquelle ist Platzhalter und nicht fuer produktive Presseschau geeignet."
+  ]
+}

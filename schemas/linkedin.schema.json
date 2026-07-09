@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digiwiz.local/schemas/linkedin.schema.json",
+  "title": "LinkedIn Draft",
+  "type": "object",
+  "required": ["draft", "approval_required", "auto_publish"],
+  "properties": {
+    "draft": { "type": "string" },
+    "variants": { "type": "array", "items": { "type": "string" } },
+    "approval_required": { "type": "boolean", "const": true },
+    "auto_publish": { "type": "boolean", "const": false },
+    "review_notes": { "type": "array", "items": { "type": "string" } }
+  }
+}

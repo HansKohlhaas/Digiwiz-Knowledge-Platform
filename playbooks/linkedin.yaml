@@ -1,0 +1,23 @@
+id: linkedin
+version: 0.1.0
+name: LinkedIn Draft
+purpose: Erstellung eines LinkedIn-Entwurfs auf Basis freigegebener Inhalte.
+owner: Hans
+approval_required: true
+auto_publish: false
+inputs:
+  - brief
+  - audience
+  - key_points
+  - brandvoice
+steps:
+  - clarify_angle
+  - draft_post
+  - check_tone
+  - prepare_variants
+quality_checks:
+  - no_auto_publish
+  - clear_claims
+  - brandvoice_match
+outputs:
+  - linkedin_post_draft

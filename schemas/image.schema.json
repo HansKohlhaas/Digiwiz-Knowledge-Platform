@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digiwiz.local/schemas/image.schema.json",
+  "title": "Image Brief",
+  "type": "object",
+  "required": ["goal", "prompt", "approval_required"],
+  "properties": {
+    "goal": { "type": "string" },
+    "prompt": { "type": "string" },
+    "negative_prompt": { "type": "string" },
+    "alt_text": { "type": "string" },
+    "approval_required": { "type": "boolean", "const": true },
+    "rights_notes": { "type": "array", "items": { "type": "string" } }
+  }
+}

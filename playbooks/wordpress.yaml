@@ -1,0 +1,18 @@
+id: wordpress
+version: 0.1.0
+name: WordPress Draft
+purpose: Vorbereitung von WordPress-Inhalten ohne automatische Veroeffentlichung.
+approval_required: true
+auto_publish: false
+inputs:
+  - article_brief
+  - seo_keywords
+  - category
+steps:
+  - draft_structure
+  - prepare_body
+  - suggest_metadata
+  - mark_review_items
+outputs:
+  - wordpress_draft
+  - metadata_suggestions

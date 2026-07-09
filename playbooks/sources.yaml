@@ -1,0 +1,19 @@
+id: sources
+version: 0.1.0
+name: Quellenarbeit
+purpose: Regeln fuer Recherche, Quellenbewertung und Zitierfaehigkeit.
+source_requirements:
+  - url
+  - title
+  - publisher
+  - publication_date
+  - retrieval_date
+checks:
+  - primary_source_preferred
+  - date_checked
+  - conflicts_marked
+  - uncertainty_explicit
+disallowed:
+  - erfundene_quellen
+  - nicht_markierte_spekulation
+  - quellenlose_tatsachenbehauptung

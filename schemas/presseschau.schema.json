@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digiwiz.local/schemas/presseschau.schema.json",
+  "title": "Presseschau Delivery",
+  "type": "object",
+  "required": ["topic", "date", "items", "risks", "approval_required"],
+  "properties": {
+    "topic": { "type": "string" },
+    "date": { "type": "string", "format": "date" },
+    "approval_required": { "type": "boolean", "const": true },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "source_url", "summary"],
+        "properties": {
+          "title": { "type": "string" },
+          "source_url": { "type": "string", "format": "uri" },
+          "summary": { "type": "string" },
+          "claims": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "risks": { "type": "array", "items": { "type": "string" } }
+  }
+}

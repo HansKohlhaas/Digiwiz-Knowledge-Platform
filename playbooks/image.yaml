@@ -1,0 +1,18 @@
+id: image
+version: 0.1.0
+name: Bildvorbereitung
+purpose: Vorbereitung von Bildideen, Prompts und Pruefhinweisen.
+approval_required: true
+auto_publish: false
+inputs:
+  - content_context
+  - target_channel
+  - visual_style
+steps:
+  - define_visual_goal
+  - create_prompt
+  - check_rights_and_sensitivity
+  - prepare_alt_text
+outputs:
+  - image_brief
+  - alt_text

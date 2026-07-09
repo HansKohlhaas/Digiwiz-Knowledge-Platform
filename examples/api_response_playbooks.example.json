@@ -1,0 +1,21 @@
+{
+  "data": [
+    {
+      "id": "presseschau",
+      "version": "0.1.0",
+      "name": "Presseschau",
+      "approval_required": true,
+      "auto_publish": false
+    },
+    {
+      "id": "linkedin",
+      "version": "0.1.0",
+      "name": "LinkedIn Draft",
+      "approval_required": true,
+      "auto_publish": false
+    }
+  ],
+  "meta": {
+    "schema_version": "0.1.0"
+  }
+}

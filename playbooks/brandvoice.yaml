@@ -1,0 +1,18 @@
+id: brandvoice
+version: 0.1.0
+name: Brandvoice
+purpose: Leitplanken fuer Tonalitaet und redaktionelle Haltung.
+principles:
+  - sachlich
+  - klar
+  - fachlich
+  - menschlich
+avoid:
+  - marketingfloskeln
+  - uebertriebene versprechen
+  - unbelegte behauptungen
+  - automatische finalisierung
+review_questions:
+  - Ist die Aussage konkret?
+  - Ist der Nutzen ohne Uebertreibung beschrieben?
+  - Bleibt Hans als Regisseur erkennbar?
