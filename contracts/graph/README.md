@@ -2,6 +2,8 @@
 
 Deklarative Graph-Abfragen für DAR Context Assembly — **keine Runtime**.
 
+**Status:** **contract_active** (Schema + Beispiele) · **app_planned** (Graph-Client in App)
+
 | Artefakt | Pfad |
 |----------|------|
 | Query-Schema | `graph_query.schema.json` |

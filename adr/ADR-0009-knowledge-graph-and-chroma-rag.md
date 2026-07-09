@@ -52,7 +52,7 @@ Task + Playbooks (KP, Pflicht)
 ```
 
 - **Eine Runtime:** Stufe D (`ai_runtime/`) — ADR-0008 bleibt gültig
-- Context Builder **mergt** Graph- und RAG-Snippets nach definierten Prioritäten (Contract unter `contracts/retrieval/`, geplant)
+- Context Builder **mergt** Graph- und RAG-Snippets nach definierten Prioritäten — **`contracts/retrieval/merge_policy.yaml` v1 (contract_active, App-Merge ⏳)**
 - **Keine** direkte Veröffentlichung aus RAG- oder Graph-Ergebnissen
 
 ### Was nicht entschieden wird (bewusst ausgeklammert)
@@ -61,12 +61,14 @@ Task + Playbooks (KP, Pflicht)
 - Kein Ersatz des Wiki-Wächters oder Chroma-Pflege in Stufe E
 - Kein verbindliches Embedding-Modell — bleibt App-Konfiguration
 
-### Retrieval-Contracts (KP, geplant)
+### Retrieval-Contracts (KP)
 
 Regeln für Kontext-Zusammenführung — nicht der Vektor-Index:
 
-- `contracts/retrieval/` — Prioritäten, Limits, Provenienz-Anzeige, No-Gos
-- Graph-Abfragen bleiben in `contracts/graph/` (ADR-0008)
+- `contracts/retrieval/merge_policy.yaml` — **v1 aktiv** (Token-Limits, Prioritäten, Provenienz, Konflikte)
+- Graph-Abfragen in `contracts/graph/graph_query.schema.json` (ADR-0008)
+
+**Status:** Contract ✅ · App-Merge in Context Builder ⏳ (Stufe E3)
 
 ## Begründung
 

@@ -40,17 +40,27 @@ Die Knowledge Platform definiert **verbindliche Schnittstellen** zwischen Wissen
 - **Format:** Markdown (`adr/`)
 - **Zweck:** Architektur- und Prozessentscheidungen
 
-### 7. Knowledge Graph (Stufe E, geplant)
+### 7. Knowledge Graph (Stufe E)
 
-- **Format:** `schemas/graph/`, `contracts/graph/`, `examples/graph/`
+- **Format:** `schemas/knowledge_graph_*.schema.json`, `contracts/graph/`, `examples/graph/`
 - **Zweck:** Entitäten, Beziehungen, Provenienz — strukturierter Kontext für DAR
-- **Status:** [ADR-0008](../adr/ADR-0008-knowledge-graph-as-platform-extension.md) — KP-Erweiterung, keine neue Runtime
+- **Status:** **contract_active** · App Graph-Client **app_planned** — [ADR-0008](../adr/ADR-0008-knowledge-graph-as-platform-extension.md)
 
-### 8. Retrieval-Policy (Stufe E, geplant)
+### 8. Retrieval-Policy (Stufe E)
 
-- **Format:** `contracts/retrieval/`
+- **Format:** `contracts/retrieval/merge_policy.yaml`
 - **Zweck:** Merge-Regeln Graph ↔ Chroma/RAG im Context Builder; Limits, Provenienz
-- **Status:** [ADR-0009](../adr/ADR-0009-knowledge-graph-and-chroma-rag.md) — **keine** Chroma-DB in KP; Index bleibt abgeleitet in App
+- **Status:** **contract_active** (Merge Policy v1) · App-Merge **app_planned** — [ADR-0009](../adr/ADR-0009-knowledge-graph-and-chroma-rag.md)
+
+## Statusmodell (Contract vs. App)
+
+| Begriff | Bedeutung |
+|---------|-----------|
+| **contract_active** | Schema/Policy in KP vorhanden und getestet |
+| **app_planned** | Digiwiz App nutzt den Contract noch nicht vollständig |
+| **app_active** | Contract wird in der App produktiv konsumiert |
+
+Siehe `meta/manifest.yaml` (`contract_status`, `app_status`) und [contracts/README.md](../contracts/README.md).
 
 ### 9. Runtime- und Context-Contracts (Stufe D/E)
 

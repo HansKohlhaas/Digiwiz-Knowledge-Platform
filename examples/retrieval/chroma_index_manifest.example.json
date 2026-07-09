@@ -3,7 +3,7 @@
   "index_name": "digiwiz-kp-semantic-v1",
   "derived": true,
   "forbidden_as_canonical": true,
-  "knowledge_platform_version": "1.1.0",
+  "knowledge_platform_version": "1.4.1",
   "build_inputs": [
     { "source_type": "playbook", "source_ref": "playbooks/presseschau.yaml" },
     { "source_type": "content", "source_ref": "content/playbooks/linkedin-presseschau.md" },

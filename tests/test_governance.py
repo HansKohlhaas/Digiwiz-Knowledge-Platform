@@ -23,7 +23,16 @@ CHROMA_ALLOWED_SOURCES = frozenset(
     {"playbook", "content", "wiki", "contract", "adr", "approved_inbox_export"}
 )
 CONTEXT_OUTPUT_REQUIRED = frozenset(
-    {"task", "applied_playbooks", "applied_adrs", "sources", "uncertainties"}
+    {
+        "task",
+        "applied_playbooks",
+        "applied_adrs",
+        "sources",
+        "uncertainties",
+        "sql_first",
+        "resolution_path",
+        "conflicts",
+    }
 )
 NEW_SCHEMAS = (
     "playbook.schema.json",
@@ -161,6 +170,45 @@ class TestGovernance(unittest.TestCase):
         out = _load_json(ROOT / "examples" / "runtime" / "context_builder_output.example.json")
         for key in ("sql_first", "resolution_path", "sql_snippets", "conflicts"):
             self.assertIn(key, out, key)
+        Draft202012Validator = _jsonschema_validator()
+        schema = _load_json(SCHEMAS / "context_builder_output.schema.json")
+        errors = list(Draft202012Validator(schema).iter_errors(out))
+        self.assertFalse(errors, [e.message for e in errors])
+
+    def test_context_assembly_source_resolution_nachweis(self):
+        data = _load_json(ROOT / "examples" / "source-resolution" / "context_assembly.example.json")
+        self.assertEqual(
+            data.get("canonical_sequence_ref"),
+            "contracts/source-resolution/source_resolution_policy.yaml",
+        )
+        steps = data["classification"]["steps_completed"]
+        self.assertIn("classify_intent", steps)
+        self.assertIn("kp_governance", steps)
+
+    def test_chroma_manifest_aktuelle_kp_version(self):
+        manifest = _load_json(ROOT / "examples" / "retrieval" / "chroma_index_manifest.example.json")
+        version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
+        self.assertEqual(manifest.get("knowledge_platform_version"), version)
+
+    def test_manifest_statusmodell(self):
+        manifest = _load_yaml(ROOT / "meta" / "manifest.yaml")
+        self.assertIn("status_model", manifest)
+        kg = manifest["contracts"]["knowledge_graph"]
+        self.assertEqual(kg.get("contract_status"), "contract_active")
+        self.assertEqual(kg.get("app_status"), "app_planned")
+        retrieval = manifest["contracts"]["retrieval"]
+        self.assertEqual(retrieval.get("contract_status"), "contract_active")
+        self.assertEqual(retrieval.get("app_status"), "app_planned")
+
+    def test_roadmap_stufe_d_spalten(self):
+        text = (ROOT / "docs" / "11_roadmap_stufen_a_f.md").read_text(encoding="utf-8")
+        for line in text.splitlines():
+            if line.startswith("| **D** |"):
+                cells = [c.strip() for c in line.strip("|").split("|")]
+                self.assertEqual(len(cells), 5, f"D-Zeile hat {len(cells)} statt 5 Spalten: {line}")
+                break
+        else:
+            self.fail("Stufe-D-Zeile in Roadmap nicht gefunden")
 
     def test_merge_policy_nicht_platzhalter(self):
         data = _load_yaml(ROOT / "contracts" / "retrieval" / "merge_policy.yaml")

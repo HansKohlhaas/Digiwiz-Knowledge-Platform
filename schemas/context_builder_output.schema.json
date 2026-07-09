@@ -2,9 +2,18 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://digiwiz.local/schemas/context_builder_output.schema.json",
   "title": "DAR Context Builder Output",
-  "description": "ADR-0011 + ADR-0013 — angewandte Playbooks, Quellen, Source Resolution, Unsicherheiten. Kein Auto-Publish.",
+  "description": "ADR-0011 + ADR-0013 — angewandte Playbooks, Quellen, Source Resolution, Unsicherheiten. Kein Auto-Publish. Profil dar_context_builder_output_v1_4 verlangt ADR-0013-Nachweis.",
   "type": "object",
-  "required": ["task", "applied_playbooks", "applied_adrs", "sources", "uncertainties"],
+  "required": [
+    "task",
+    "applied_playbooks",
+    "applied_adrs",
+    "sources",
+    "uncertainties",
+    "sql_first",
+    "resolution_path",
+    "conflicts"
+  ],
   "properties": {
     "task": { "type": "string" },
     "applied_playbooks": { "type": "array", "items": { "type": "string" } },
@@ -34,11 +43,23 @@
     },
     "sources": { "type": "array", "items": { "type": "string" } },
     "uncertainties": { "type": "array", "items": { "type": "string" } },
-    "sql_first": { "type": "boolean", "description": "ADR-0013 — SQL-first-Klassifikation" },
+    "sql_first": { "type": "boolean", "description": "ADR-0013 — SQL-first-Klassifikation (Pflicht)" },
     "resolution_path": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Angewendete Schritte z. B. classify, sql, knowledge_platform, chroma_rag"
+      "items": {
+        "type": "string",
+        "enum": [
+          "classify_intent",
+          "kp_governance",
+          "query_sql_crm",
+          "query_knowledge_platform",
+          "query_knowledge_graph",
+          "query_chroma_rag",
+          "query_web_external"
+        ]
+      },
+      "minItems": 2,
+      "description": "Angewendete Schritte — muss classify_intent und kp_governance enthalten"
     },
     "sql_snippets": {
       "type": "array",
@@ -67,5 +88,38 @@
   },
   "not": {
     "required": ["published_url", "auto_publish"]
+  },
+  "allOf": [
+    {
+      "properties": {
+        "resolution_path": {
+          "contains": { "enum": ["classify_intent"] }
+        }
+      }
+    },
+    {
+      "properties": {
+        "resolution_path": {
+          "contains": { "enum": ["kp_governance"] }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "sql_first": { "const": true } },
+        "required": ["sql_first"]
+      },
+      "then": {
+        "required": ["sql_snippets"],
+        "properties": {
+          "sql_snippets": { "minItems": 1 }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "dar_context_builder_output_v1_4": {
+      "description": "Profil ab KP v1.4 — identisch mit Root-Schema (ADR-0013-Nachweis Pflicht)"
+    }
   }
 }

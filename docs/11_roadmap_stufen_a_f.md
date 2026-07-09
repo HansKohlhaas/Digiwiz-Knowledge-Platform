@@ -19,8 +19,8 @@ order: 11
 Stufe A  Knowledge Layer          ✅ abgeschlossen
 Stufe B  Qualitätssicherung        ✅ abgeschlossen
 Stufe C  CLI / Agenten-API        ✅ abgeschlossen (Contracts API-Spec ⏳)
-Stufe D  AI Runtime (DAR)           ✅ Basis (D1–D3) / ⏳ D4–D5 Contracts
-Stufe E  Knowledge Graph            ⏳ nächste Phase — nur in KP
+Stufe D  AI Runtime (DAR)           ✅ Basis App (D1–D3) / Contract ✅ (D4/D5) / App ⏳ (D4/D5)
+Stufe E  Knowledge Graph            Contract ✅ (E-Contracts) / App ⏳ (Graph-Client)
 Stufe F  Autonome Agenten           📋 Roadmap — nach E, ADR-0004 beachten
 ```
 
@@ -29,8 +29,8 @@ Stufe F  Autonome Agenten           📋 Roadmap — nach E, ADR-0004 beachten
 | **A** | Wissen & Import | Playbooks, Content, Examples | Inbox, Import, Morgen-Lauf | ✅ |
 | **B** | QS vor Freigabe | JSON-Schemas, QS-Verfahren | `agent_lieferung_validierung.py` | ✅ |
 | **C** | Externe Anbindung | API-Verfahren, API-Contract (geplant) | CLI, FastAPI `/api/v1/*` | ✅ / ⏳ Contract |
-| **D** | AI Director (Basis) | D4/D5 in App | `runtime/routing.json`, Source/Assembly Contracts | `digiwiki/ai_runtime/` | ✅ Basis / ⏳ D4–D5 |
-| **E** | Knowledge Graph | Graph-Schema, Abfrage-Verträge | Graph-Client (geplant) | ⏳ |
+| **D** | AI Director (Basis) | D4/D5 Contracts ✅ (v1.4.x), `runtime/routing.json` | `digiwiki/ai_runtime/` D1–D3 ✅, D4/D5 ⏳ | ✅ Basis App / ⏳ D4–D5 App |
+| **E** | Knowledge Graph | Graph-Schema, Query-Contracts ✅ | Graph-Client, Loader ⏳ | Contract ✅ / App ⏳ |
 | **F** | Autonomie | Policy-Contracts, Freigabe-Regeln | Scheduler, Agent-Orchestrierung | 📋 |
 
 **Querschnitt:** ADR-0006 (kein Git-Submodule bis nach E) · ADR-0007 (Contracts als SSOT) · **ADR-0013 (Source Resolution, SQL-first)**

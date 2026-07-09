@@ -1,9 +1,13 @@
-version: "1.4.0"
+version: "1.4.1"
 name: digiwiz-knowledge-platform
 description: >
   Verbindliche Quelle für Regeln und Schnittstellen (Contracts):
   Playbooks, JSON-Schemas, Prompt-Schemas, API-Verträge, Runtime-Konfiguration, ADRs.
 digiwiz_app_compat: ">=2026.07"
+status_model:
+  contract_active: Schema/Policy in KP vorhanden und getestet
+  app_planned: Digiwiz App-Implementierung offen
+  app_active: Contract wird in der App produktiv genutzt
 stages:
   A: knowledge_layer
   B: qualitaetssicherung
@@ -15,10 +19,12 @@ contracts:
   playbooks:
     path: playbooks/
     content: content/playbooks/
-    status: active
+    contract_status: contract_active
+    app_status: app_active
   json_schemas:
     path: schemas/
-    status: active
+    contract_status: contract_active
+    app_status: app_active
     includes:
       - agent-lieferung.v3.json
       - runtime_output.schema.json
@@ -33,47 +39,57 @@ contracts:
       - api_error.schema.json
   prompt_schemas:
     path: schemas/prompts/
-    status: planned
+    contract_status: app_planned
+    app_status: app_planned
   api:
     path: contracts/api/
-    status: planned
+    contract_status: app_planned
+    app_status: app_planned
   runtime:
     path: runtime/
-    status: active
+    contract_status: contract_active
+    app_status: app_active
   adrs:
     path: adr/
-    status: active
+    contract_status: contract_active
+    app_status: app_active
   knowledge_graph:
-    schema: schemas/graph/
+    schema: schemas/knowledge_graph_node.schema.json
     queries: contracts/graph/
     examples: examples/graph/
-    status: active
+    contract_status: contract_active
+    app_status: app_planned
+    hinweis: Query-Contract aktiv; persistenter Graph-Store in App geplant (Stufe E)
     includes:
       - graph_query.schema.json
   retrieval:
     policy: contracts/retrieval/
-    status: active
-    hinweis: Chroma/RAG-Index lebt in App — nicht SSOT (ADR-0009)
+    contract_status: contract_active
+    app_status: app_planned
+    hinweis: Merge-Policy v1 aktiv; Chroma/RAG-Index lebt in App — nicht SSOT (ADR-0009)
     includes:
       - merge_policy.yaml
   source_resolution:
     policy: contracts/source-resolution/
     examples: examples/source-resolution/
-    status: active
+    contract_status: contract_active
+    app_status: app_planned
     adr: ADR-0013
-    hinweis: SQL-first vor Graph/RAG; keine SQL-Implementierung in KP
+    hinweis: SQL-first vor Graph/RAG; Router in App geplant (D4)
     includes:
       - source_resolution_policy.yaml
       - context_assembly.schema.json
   context_assembly:
     schema: contracts/source-resolution/context_assembly.schema.json
     example: examples/source-resolution/context_assembly.example.json
-    status: active
+    contract_status: contract_active
+    app_status: app_planned
     adr: ADR-0011
-    hinweis: Pipeline vor Antwortgenerierung; DAR-Erweiterung geplant
+    hinweis: Pipeline-Contract aktiv; context_assembly_pipeline in App geplant (D5)
   examples:
     path: examples/
-    status: active
+    contract_status: contract_active
+    app_status: app_active
 paths:
   playbooks: playbooks/
   schemas: schemas/

@@ -13,10 +13,40 @@
     "context_array",
     "resolution_stages",
     "ready_for_generation",
-    "missing_mandatory_fields"
+    "missing_mandatory_fields",
+    "canonical_sequence_ref",
+    "classification"
   ],
   "properties": {
     "assembly_id": { "type": "string" },
+    "canonical_sequence_ref": {
+      "type": "string",
+      "const": "contracts/source-resolution/source_resolution_policy.yaml",
+      "description": "Verweis auf kanonische Source-Resolution-Sequenz (ADR-0013)"
+    },
+    "classification": {
+      "type": "object",
+      "required": ["sql_first", "steps_completed"],
+      "properties": {
+        "sql_first": { "type": "boolean" },
+        "steps_completed": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "classify_intent",
+              "kp_governance",
+              "sql_crm_stammdaten",
+              "knowledge_graph",
+              "chroma_rag",
+              "web_external"
+            ]
+          },
+          "minItems": 2,
+          "uniqueItems": true,
+          "description": "Kanonische Schritte aus source_resolution_policy.yaml — classify_intent und kp_governance Pflicht"
+        }
+      }
+    },
     "query": { "type": "string", "minLength": 1 },
     "task": { "type": "string" },
     "answer_goal": { "type": "string", "minLength": 1 },
@@ -146,6 +176,28 @@
     "required": ["published_url", "auto_publish"]
   },
   "allOf": [
+    {
+      "properties": {
+        "classification": {
+          "properties": {
+            "steps_completed": {
+              "contains": { "enum": ["classify_intent"] }
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "classification": {
+          "properties": {
+            "steps_completed": {
+              "contains": { "enum": ["kp_governance"] }
+            }
+          }
+        }
+      }
+    },
     {
       "if": {
         "properties": { "ready_for_generation": { "const": true } },

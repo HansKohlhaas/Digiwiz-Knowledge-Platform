@@ -1,5 +1,14 @@
 {
   "assembly_id": "asm-presseschau-crm-status-001",
+  "canonical_sequence_ref": "contracts/source-resolution/source_resolution_policy.yaml",
+  "classification": {
+    "sql_first": true,
+    "steps_completed": [
+      "classify_intent",
+      "kp_governance",
+      "sql_crm_stammdaten"
+    ]
+  },
   "query": "Welchen CRM-Status hat Apotheke Kundennummer 12345 und welche Presseschau-Regeln gelten?",
   "task": "presseschau",
   "answer_goal": "CRM-Status nennen und relevante Presseschau-Governance kurz einordnen",

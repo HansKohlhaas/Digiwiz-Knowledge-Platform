@@ -29,9 +29,9 @@ Risiko bei „neuer Runtime“:
 ### Konkret
 
 1. Graph-Artefakte leben unter KP-Contracts (ADR-0007):
-   - `schemas/graph/` — Datenmodell (Knoten, Kanten, Typen)
-   - `contracts/graph/` — Abfrage-Verträge (Format TBD, z. B. deklarative JSON-Queries)
-   - `examples/graph/` — Referenz-Instanzen
+   - `schemas/knowledge_graph_node.schema.json`, `schemas/knowledge_graph_edge.schema.json` — Datenmodell (Knoten, Kanten, Typen)
+   - `contracts/graph/graph_query.schema.json` — deklarative JSON-Queries (Query-Typ, erlaubte Node/Edge-Typen, Provenienzpflicht)
+   - `examples/graph/` — Referenz-Instanzen (Node, Edge, Query)
 2. **Stufe D (DAR)** bleibt die einzige AI-Runtime; Stufe E **erweitert den Kontext**, den DAR über Playbooks hinaus nutzt.
 3. Optionaler **persistenter Graph-Store** (Datei, DB) ist **Infrastruktur der App**, nicht Bestandteil der KP — das **Schema und die Semantik** bleiben in KP.
 4. Import aus Wiki/Playbooks (E2) produziert Graph-**Daten** in der App; die **Regeln des Imports** sind Contracts in KP.
@@ -45,7 +45,7 @@ Risiko bei „neuer Runtime“:
 
 ## Konsequenzen
 
-- Stufe E-Implementierung **startet in KP** (Schema, Beispiele, Contract-Tests), dann App-Integration
+- Stufe E-Implementierung **startet in KP** (Schema, Query-Contract, Beispiele, Contract-Tests ✅ v1.4.0), dann App-Integration (Graph-Client ⏳)
 - Kein neues Stufen-Label „Stufe E Runtime“ — E ist **Knowledge Layer++**
 - `meta/manifest.yaml` erhält Contract-Typ `knowledge_graph`
 - Roadmap-Meilensteine E1–E5 bleiben; E3 heißt explizit: DAR Context Builder, nicht neuer Director

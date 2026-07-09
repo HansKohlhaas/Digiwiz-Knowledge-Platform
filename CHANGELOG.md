@@ -4,6 +4,23 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [1.4.1] - 2026-07-09
+
+### Added
+
+- Statusmodell **contract_active / app_planned / app_active** in `meta/manifest.yaml`, `contracts/README.md`, `docs/10_contracts.md`
+- `context_assembly.schema.json` — `canonical_sequence_ref`, `classification.steps_completed` (Pflicht: `classify_intent`, `kp_governance`)
+- `context_builder_output.schema.json` — ADR-0013-Felder Pflicht; Profil `dar_context_builder_output_v1_4`
+
+### Changed
+
+- Roadmap Übersicht — Stufe-D-Zeile Spalten korrigiert; Contract vs. App Status getrennt
+- `contracts/README.md` — v1.4.0, Graph/Merge als contract_active
+- ADR-0008 — Graph Query Contract statt „Format TBD“
+- ADR-0009 — Merge Policy v1 aktiv, nicht mehr „geplant“
+- `chroma_index_manifest.example.json` — `knowledge_platform_version: 1.4.1`
+- `contracts/graph/README.md`, `contracts/retrieval/README.md` — Contract/App-Status
+
 ## [1.4.0] - 2026-07-09
 
 ### Added

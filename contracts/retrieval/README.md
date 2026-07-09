@@ -1,6 +1,8 @@
-# Retrieval- und RAG-Policy (Stufe E — geplant)
+# Retrieval- und RAG-Policy (Stufe E)
 
 Verträge für **Kontext-Zusammenführung** im DAR Context Builder — nicht für die Chroma-DB selbst.
+
+**Status:** **contract_active** (Merge Policy v1) · **app_planned** (Context Builder Merge in App)
 
 **Voraussetzung:** [Source Resolution](../source-resolution/) (ADR-0013) — SQL-first **vor** Graph/RAG-Merge.
 
@@ -15,11 +17,10 @@ Verträge für **Kontext-Zusammenführung** im DAR Context Builder — nicht fü
 
 **Keine Chroma-Implementierung** in der Knowledge Platform. Chroma bleibt in der Digiwiz App (`digiwiki/Chroma_DB/`).
 
-## Geplante Inhalte
+## Aktive Contracts (v1)
 
-- Kontext-Priorität **nach** Source Resolution: Graph → RAG (innerhalb Schritt 3–4)
-- Token-/Passage-Limits pro Task
-- Provenienz-Pflicht in DAR-Kontext
-- No-Gos (kein Auto-Publish aus RAG-Snippets)
+| Datei | Inhalt |
+|-------|--------|
+| [merge_policy.yaml](merge_policy.yaml) | Merge-Reihenfolge Graph→RAG, Token-Limits, Provenienz-Pflicht, Konfliktregeln |
 
-Siehe [ADR-0009](../adr/ADR-0009-knowledge-graph-and-chroma-rag.md), [ADR-0013](../adr/ADR-0013-source-resolution-and-sql-first-policy.md), [merge_policy.yaml](merge_policy.yaml) (**v1 aktiv**).
+Siehe [ADR-0009](../../adr/ADR-0009-knowledge-graph-and-chroma-rag.md), [ADR-0013](../../adr/ADR-0013-source-resolution-and-sql-first-policy.md).
