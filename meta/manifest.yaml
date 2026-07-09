@@ -31,6 +31,11 @@ contracts:
   adrs:
     path: adr/
     status: active
+  knowledge_graph:
+    schema: schemas/graph/
+    queries: contracts/graph/
+    examples: examples/graph/
+    status: planned
   examples:
     path: examples/
     status: active

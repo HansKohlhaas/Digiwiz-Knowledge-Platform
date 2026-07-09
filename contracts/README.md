@@ -10,6 +10,7 @@ Die Knowledge Platform ist **kein reines Dokumentations-Repository**, sondern di
 | JSON-Schemas | `schemas/` | JSON Schema | Lieferungs-Envelope, Datenmodelle |
 | Prompt-Schemas | `schemas/prompts/` | JSON/YAML (geplant) | Kontext- und Prompt-Struktur für DAR |
 | API-Verträge | `contracts/api/` | OpenAPI/JSON (geplant) | `/api/v1/*`, `/api/v1/runtime/*` |
+| Knowledge Graph | `schemas/graph/`, `contracts/graph/` | JSON (geplant) | DAR Context Builder (ADR-0008) |
 | Runtime | `runtime/` | JSON | Routing, Task→Agent→Modell |
 | ADRs | `adr/` | Markdown | Architekturentscheidungen |
 | Beispiele | `examples/` | JSON | Gültige und fehlerhafte Instanzen |
@@ -19,6 +20,7 @@ Die Knowledge Platform ist **kein reines Dokumentations-Repository**, sondern di
 - ✅ Playbooks, Runtime, ADRs, `agent-lieferung.v3.json`
 - ✅ Verfahrensdoku in `docs/verfahren/` (menschenlesbar, verweist auf Contracts)
 - ⏳ Prompt-Schemas, API-Verträge (OpenAPI) — inkrementell nach Stufe C/D
+- ⏳ Knowledge Graph (Stufe E) — [ADR-0008](../adr/ADR-0008-knowledge-graph-as-platform-extension.md)
 
 ## Prüfung
 

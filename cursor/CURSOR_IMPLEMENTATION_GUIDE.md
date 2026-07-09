@@ -5,7 +5,7 @@
 1. **Analysieren, dann implementieren** — Architekturentscheidungen als ADR in `adr/`
 2. **Keine Breaking Changes** — Digiwiz App behält Legacy-Fallbacks
 3. **Regisseur-Inbox** bleibt Freigabe-Hub (ADR-0002, ADR-0004)
-4. **Stufe E (Knowledge Graph)** erst nach abgeschlossener Migration
+4. **Stufe E — Knowledge Graph** — [ADR-0008](adr/ADR-0008-knowledge-graph-as-platform-extension.md); KP-Erweiterung, keine neue Runtime
 
 ## Repo-Grenzen
 

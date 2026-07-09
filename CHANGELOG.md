@@ -8,6 +8,7 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/).
 
 - ADR-0006: Kein Git-Submodule bis nach Stufe E — lose Kopplung über `DIGIWIZ_KNOWLEDGE_ROOT`
 - ADR-0007: Verträge (Contracts) als verbindliche Artefakte
+- ADR-0008: Knowledge Graph als KP-Erweiterung, keine neue Runtime (Stufe E)
 - `docs/11_roadmap_stufen_a_f.md` — Roadmap A–F inkl. Dual-Repo-Synchronisation
 
 ## [1.0.0] - 2026-07-09

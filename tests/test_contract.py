@@ -40,7 +40,7 @@ class TestKnowledgePlatformContract(unittest.TestCase):
 
     def test_manifest_contracts(self):
         manifest = (ROOT / "meta" / "manifest.yaml").read_text(encoding="utf-8")
-        for key in ("playbooks", "json_schemas", "runtime", "adrs"):
+        for key in ("playbooks", "json_schemas", "runtime", "adrs", "knowledge_graph"):
             self.assertIn(key, manifest)
 
     def test_contract_index_existiert(self):
@@ -58,6 +58,13 @@ class TestKnowledgePlatformContract(unittest.TestCase):
         md = ROOT / "content" / "playbooks" / "linkedin-presseschau.md"
         self.assertTrue(md.is_file())
         self.assertIn("Regisseur-Inbox", md.read_text(encoding="utf-8"))
+
+    def test_adr_0008_knowledge_graph(self):
+        adr = ROOT / "adr" / "ADR-0008-knowledge-graph-as-platform-extension.md"
+        self.assertTrue(adr.is_file())
+        text = adr.read_text(encoding="utf-8")
+        self.assertIn("keine neue Runtime", text)
+        self.assertIn("Knowledge Platform", text)
 
 
 if __name__ == "__main__":

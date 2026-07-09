@@ -210,35 +210,41 @@ Digiwiz als **AI Director**: Task → Routing → Playbooks → Provider → Val
 
 ### Ziel
 
-Wissensbeziehungen **explizit modellieren** (Entitäten, Kanten, Provenienz) — Grundlage für bessere Kontextwahl, RAG und spätere Autonomie. **Nur in der Knowledge Platform** beginnen (ADR-0005).
+Wissensbeziehungen **explizit modellieren** (Entitäten, Kanten, Provenienz) — Grundlage für bessere Kontextwahl, RAG und spätere Autonomie.
+
+**Architektur (ADR-0008):** Knowledge Graph als **Erweiterung der Knowledge Platform** — **keine neue Runtime**. Stufe D (DAR) bleibt die einzige AI-Runtime; der Graph erweitert den Kontext.
 
 ### Voraussetzungen (vor Start)
 
 - [x] Migration KP v1.0.0 abgeschlossen
 - [x] Lose Repo-Kopplung (`DIGIWIZ_KNOWLEDGE_ROOT`, ADR-0006)
 - [x] Contract-Modell definiert (ADR-0007)
-- [ ] Freigabe durch Maintainer / Architektur-Review
+- [x] ADR-0008: Graph = KP-Erweiterung, nicht neue Runtime
+- [ ] Freigabe durch Maintainer / Architektur-Review für E1-Implementierung
 
-### Geplante Contracts (KP)
+### Contracts (KP) — kanonisch
 
-| Artefakt | Pfad (vorläufig) | Beschreibung |
-|----------|------------------|--------------|
+| Artefakt | Pfad | Beschreibung |
+|----------|------|--------------|
 | Graph-Schema | `schemas/graph/` | Knoten, Kanten, Typen |
-| Abfrage-Verträge | `contracts/graph/` | Cypher/SPARQL/JSON-Query — TBD |
-| Provenienz | ADR + Schema | Quelle, Vertrauen, Zeitstempel |
+| Abfrage-Verträge | `contracts/graph/` | Deklarative Queries (TBD) |
+| Beispiele | `examples/graph/` | Referenz-Graph |
+| Provenienz | Schema + ADR-0008 | Quelle, Vertrauen, Zeitstempel |
 
-### Geplante App-Integration
+### App-Integration — Konsument, nicht Runtime
 
 | Komponente | Rolle |
 |------------|--------|
-| Graph-Loader | Liest KP-Schema, optional externer Store |
-| Context Builder (DAR) | Graph-Kontext neben Playbooks |
+| Graph-Loader | Lädt KP-Schema; optional persistenter Store in App |
+| `context_builder` (DAR) | Graph-Ausschnitte **neben** Playbooks |
+| Kein `graph_runtime/` | ❌ bewusst ausgeschlossen (ADR-0008) |
 | Kein Auto-Publish | Unverändert ADR-0004 |
 
 ### Nicht in Stufe E
 
+- Neue Runtime-Schicht parallel zu `ai_runtime/`
+- Eigener Graph-API-Server
 - Git-Submodule (Re-Evaluation **nach** E, ADR-0006)
-- Autonome Veröffentlichung (Stufe F)
 - Ersetzen der Regisseur-Inbox
 
 ### Meilensteine (Entwurf)
@@ -316,6 +322,7 @@ Version-Pin: digiwiki/knowledge_lock.json ↔ KP VERSION
 | 0005 | KP getrennt von Runtime (E) |
 | 0006 | Kein Submodule bis nach E |
 | 0007 | Contracts als SSOT (alle) |
+| 0008 | Knowledge Graph = KP-Erweiterung, keine neue Runtime (E) |
 
 ---
 

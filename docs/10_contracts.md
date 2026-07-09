@@ -38,7 +38,13 @@ Die Knowledge Platform definiert **verbindliche Schnittstellen** zwischen Wissen
 ### 6. ADRs
 
 - **Format:** Markdown (`adr/`)
-- **Zweck:** Architektur- und Prozessverträge für Menschen und Maintainer
+- **Zweck:** Architektur- und Prozessentscheidungen
+
+### 7. Knowledge Graph (Stufe E, geplant)
+
+- **Format:** `schemas/graph/`, `contracts/graph/`, `examples/graph/`
+- **Zweck:** Entitäten, Beziehungen, Provenienz — Kontext für DAR/RAG
+- **Status:** [ADR-0008](../adr/ADR-0008-knowledge-graph-as-platform-extension.md) — KP-Erweiterung, keine neue Runtime
 
 ## Workflow: Contract first
 
