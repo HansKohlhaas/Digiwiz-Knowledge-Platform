@@ -43,8 +43,14 @@ Die Knowledge Platform definiert **verbindliche Schnittstellen** zwischen Wissen
 ### 7. Knowledge Graph (Stufe E, geplant)
 
 - **Format:** `schemas/graph/`, `contracts/graph/`, `examples/graph/`
-- **Zweck:** Entitäten, Beziehungen, Provenienz — Kontext für DAR/RAG
+- **Zweck:** Entitäten, Beziehungen, Provenienz — strukturierter Kontext für DAR
 - **Status:** [ADR-0008](../adr/ADR-0008-knowledge-graph-as-platform-extension.md) — KP-Erweiterung, keine neue Runtime
+
+### 8. Retrieval-Policy (Stufe E, geplant)
+
+- **Format:** `contracts/retrieval/`
+- **Zweck:** Merge-Regeln Graph ↔ Chroma/RAG im Context Builder; Limits, Provenienz
+- **Status:** [ADR-0009](../adr/ADR-0009-knowledge-graph-and-chroma-rag.md) — **keine** Chroma-DB in KP; Index bleibt abgeleitet in App
 
 ## Workflow: Contract first
 

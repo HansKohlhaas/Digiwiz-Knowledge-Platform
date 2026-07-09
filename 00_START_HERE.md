@@ -5,7 +5,7 @@
 1. [README.md](README.md) — Zweck und Grenzen
 2. [docs/11_roadmap_stufen_a_f.md](docs/11_roadmap_stufen_a_f.md) — **Roadmap A–F**
 3. [docs/10_contracts.md](docs/10_contracts.md) — Verträge (Contracts)
-4. [adr/](adr/) — Architekturentscheidungen (verbindlich)
+4. [adr/](adr/) — Architekturentscheidungen ([Index](adr/README.md))
 5. [docs/verfahren/](docs/verfahren/) — Betriebsverfahren
 6. [playbooks/](playbooks/) — Maschinenlesbare Regeln
 7. [content/playbooks/](content/playbooks/) — Kanonische Langtexte
@@ -32,7 +32,7 @@
 
 | Stufe | Fokus | Status |
 |-------|--------|--------|
-| E | Knowledge Graph | ⏳ nach Freigabe |
+| E | Knowledge Graph + RAG-Rollen | ⏳ [Roadmap](docs/11_roadmap_stufen_a_f.md) · ADR-0008/0009 |
 | F | Autonome Agenten | 📋 Roadmap |
 
 Details: [docs/11_roadmap_stufen_a_f.md](docs/11_roadmap_stufen_a_f.md)

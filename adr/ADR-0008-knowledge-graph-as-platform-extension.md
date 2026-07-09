@@ -54,7 +54,7 @@ Risiko bei „neuer Runtime“:
 ## Nicht-Ziele (Stufe E)
 
 - Eigener MCP-/REST-Server nur für den Graph
-- Ersetzen von Chroma/RAG — Graph **ergänzt**, ersetzt nicht sofort
+- Ersetzen von Chroma/RAG — Graph **ergänzt**; Rollen klärt ADR-0009
 - Auto-Publish oder Umgehung der Regisseur-Inbox
 
 ## Verwandte ADRs
@@ -62,3 +62,4 @@ Risiko bei „neuer Runtime“:
 - ADR-0005 — Knowledge getrennt von Runtime
 - ADR-0006 — Kein Submodule bis nach E (Re-Evaluation inkl. Graph-Deployment)
 - ADR-0007 — Contracts als SSOT
+- ADR-0009 — Knowledge Graph und Chroma/RAG — Rollen und Zusammenspiel

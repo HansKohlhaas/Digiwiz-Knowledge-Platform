@@ -29,7 +29,7 @@ Nicht nur Dokumentation: **Playbooks, JSON-Schemas, Prompt-Schemas, API-Verträg
 1. Lesen: [00_START_HERE.md](00_START_HERE.md)
 2. **Roadmap:** [docs/11_roadmap_stufen_a_f.md](docs/11_roadmap_stufen_a_f.md)
 3. **Contracts:** [docs/10_contracts.md](docs/10_contracts.md) · [contracts/](contracts/)
-3. ADRs: [adr/](adr/)
+3. ADRs: [adr/](adr/) ([Index](adr/README.md))
 4. Playbooks: [playbooks/](playbooks/)
 5. App-Einbindung: `digiwiki/knowledge_paths.py` + `digiwiki/knowledge_lock.json`
 

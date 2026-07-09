@@ -36,6 +36,10 @@ contracts:
     queries: contracts/graph/
     examples: examples/graph/
     status: planned
+  retrieval:
+    policy: contracts/retrieval/
+    status: planned
+    hinweis: Chroma/RAG-Index lebt in App — nicht SSOT (ADR-0009)
   examples:
     path: examples/
     status: active

@@ -18,7 +18,7 @@ Digiwiz ist ein **Regisseur-System**: KI-Systeme bereiten Inhalte vor, Hans ents
 | B | Qualitätssicherung | ✅ App + KP |
 | C | CLI/API | ✅ App, Doku in KP |
 | D | AI Runtime | ✅ App, Routing in KP |
-| E | Knowledge Graph | ⏳ [11_roadmap](11_roadmap_stufen_a_f.md) · [ADR-0008](../adr/ADR-0008-knowledge-graph-as-platform-extension.md) |
+| E | Knowledge Graph + RAG-Rollen | ⏳ [11_roadmap](11_roadmap_stufen_a_f.md) · [ADR-0008](../adr/ADR-0008-knowledge-graph-as-platform-extension.md) · [ADR-0009](../adr/ADR-0009-knowledge-graph-and-chroma-rag.md) |
 | F | Autonome Agenten | 📋 [11_roadmap_stufen_a_f.md](11_roadmap_stufen_a_f.md) |
 
 Details: [02_system_architecture.md](02_system_architecture.md) · [10_contracts.md](10_contracts.md) · [11_roadmap_stufen_a_f.md](11_roadmap_stufen_a_f.md)

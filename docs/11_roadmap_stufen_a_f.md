@@ -212,7 +212,7 @@ Digiwiz als **AI Director**: Task → Routing → Playbooks → Provider → Val
 
 Wissensbeziehungen **explizit modellieren** (Entitäten, Kanten, Provenienz) — Grundlage für bessere Kontextwahl, RAG und spätere Autonomie.
 
-**Architektur (ADR-0008):** Knowledge Graph als **Erweiterung der Knowledge Platform** — **keine neue Runtime**. Stufe D (DAR) bleibt die einzige AI-Runtime; der Graph erweitert den Kontext.
+**Architektur (ADR-0008, ADR-0009):** Knowledge Graph als **Erweiterung der Knowledge Platform** — **keine neue Runtime**. Chroma/RAG ist **abgeleiteter semantischer Index**, nicht SSOT. DAR Context Builder kombiniert später Graph- und RAG-Kontext.
 
 ### Voraussetzungen (vor Start)
 
@@ -220,6 +220,7 @@ Wissensbeziehungen **explizit modellieren** (Entitäten, Kanten, Provenienz) —
 - [x] Lose Repo-Kopplung (`DIGIWIZ_KNOWLEDGE_ROOT`, ADR-0006)
 - [x] Contract-Modell definiert (ADR-0007)
 - [x] ADR-0008: Graph = KP-Erweiterung, nicht neue Runtime
+- [x] ADR-0009: Graph + Chroma/RAG — Rollen, kein Chroma in KP
 - [ ] Freigabe durch Maintainer / Architektur-Review für E1-Implementierung
 
 ### Contracts (KP) — kanonisch
@@ -228,22 +229,27 @@ Wissensbeziehungen **explizit modellieren** (Entitäten, Kanten, Provenienz) —
 |----------|------|--------------|
 | Graph-Schema | `schemas/graph/` | Knoten, Kanten, Typen |
 | Abfrage-Verträge | `contracts/graph/` | Deklarative Queries (TBD) |
+| Retrieval-Policy | `contracts/retrieval/` | Merge Graph↔RAG, Limits, Provenienz (ADR-0009) |
 | Beispiele | `examples/graph/` | Referenz-Graph |
-| Provenienz | Schema + ADR-0008 | Quelle, Vertrauen, Zeitstempel |
+| Provenienz | Schema + ADR-0008/0009 | Quelle, Vertrauen, Zeitstempel |
 
 ### App-Integration — Konsument, nicht Runtime
 
 | Komponente | Rolle |
 |------------|--------|
 | Graph-Loader | Lädt KP-Schema; optional persistenter Store in App |
-| `context_builder` (DAR) | Graph-Ausschnitte **neben** Playbooks |
-| Kein `graph_runtime/` | ❌ bewusst ausgeschlossen (ADR-0008) |
+| Chroma/RAG (bestehend) | Semantischer Index — **abgeleitet**, rebuild-fähig, nicht SSOT |
+| `context_builder` (DAR) | **Kombiniert** Playbooks + Graph-Kontext + RAG-Kontext (ADR-0009) |
+| Kein `graph_runtime/` / `rag_runtime/` | ❌ bewusst ausgeschlossen (ADR-0008, ADR-0009) |
 | Kein Auto-Publish | Unverändert ADR-0004 |
+| Regisseur-Inbox | Unverändert Freigabe-Hub ADR-0002 |
 
 ### Nicht in Stufe E
 
 - Neue Runtime-Schicht parallel zu `ai_runtime/`
 - Eigener Graph-API-Server
+- **Chroma-Implementierung oder -Migration in KP** (ADR-0009)
+- Chroma als SSOT — bei Konflikt gilt KP-Contract
 - Git-Submodule (Re-Evaluation **nach** E, ADR-0006)
 - Ersetzen der Regisseur-Inbox
 
@@ -251,7 +257,7 @@ Wissensbeziehungen **explizit modellieren** (Entitäten, Kanten, Provenienz) —
 
 1. **E1** — Graph-Schema + ADR, Beispiel-Graph in `examples/graph/`
 2. **E2** — Import aus Wiki/Playbooks (read-only)
-3. **E3** — DAR Context Builder nutzt Graph-Ausschnitte
+3. **E3** — DAR Context Builder: Graph-Kontext + Chroma/RAG-Kontext (ADR-0009)
 4. **E4** — Contract-Tests + Integrations-Tests
 5. **E5** — Re-Evaluation Submodule / Deployment-Modell
 
@@ -323,6 +329,7 @@ Version-Pin: digiwiki/knowledge_lock.json ↔ KP VERSION
 | 0006 | Kein Submodule bis nach E |
 | 0007 | Contracts als SSOT (alle) |
 | 0008 | Knowledge Graph = KP-Erweiterung, keine neue Runtime (E) |
+| 0009 | Graph + Chroma/RAG — Rollen, Retrieval-Policy in KP (E) |
 
 ---
 

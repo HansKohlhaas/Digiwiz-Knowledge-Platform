@@ -44,7 +44,7 @@ Die Knowledge Platform ist die **kanonische Contract-Quelle** für:
 - README und Manifest sprechen von **Contracts**, nicht nur von „Dokumentation“.
 - Neue Schnittstellen (Stufe C/D/E) werden zuerst als Vertrag in KP spezifiziert, dann in der App implementiert.
 - Prompt-Schemas und API-Verträge (z. B. OpenAPI) folgen inkrementell — ohne Breaking Changes an bestehenden Pfaden.
-- Stufe E (Knowledge Graph) erweitert die Contract-Familie um Graph-Schema und Abfrage-Verträge.
+- Stufe E (Knowledge Graph) erweitert die Contract-Familie um Graph-Schema und Abfrage-Verträge; Chroma/RAG bleibt abgeleiteter Index in der App (ADR-0009).
 
 ## Verwandte ADRs
 

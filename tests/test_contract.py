@@ -40,7 +40,7 @@ class TestKnowledgePlatformContract(unittest.TestCase):
 
     def test_manifest_contracts(self):
         manifest = (ROOT / "meta" / "manifest.yaml").read_text(encoding="utf-8")
-        for key in ("playbooks", "json_schemas", "runtime", "adrs", "knowledge_graph"):
+        for key in ("playbooks", "json_schemas", "runtime", "adrs", "knowledge_graph", "retrieval"):
             self.assertIn(key, manifest)
 
     def test_contract_index_existiert(self):
@@ -65,6 +65,19 @@ class TestKnowledgePlatformContract(unittest.TestCase):
         text = adr.read_text(encoding="utf-8")
         self.assertIn("keine neue Runtime", text)
         self.assertIn("Knowledge Platform", text)
+
+    def test_adr_0009_graph_chroma_rag(self):
+        adr = ROOT / "adr" / "ADR-0009-knowledge-graph-and-chroma-rag.md"
+        self.assertTrue(adr.is_file())
+        text = adr.read_text(encoding="utf-8")
+        self.assertIn("nicht SSOT", text)
+        self.assertIn("Context Builder", text)
+        self.assertTrue((ROOT / "contracts" / "retrieval" / "README.md").is_file())
+        self.assertTrue((ROOT / "adr" / "README.md").is_file())
+
+    def test_manifest_retrieval_contract(self):
+        manifest = (ROOT / "meta" / "manifest.yaml").read_text(encoding="utf-8")
+        self.assertIn("retrieval:", manifest)
 
 
 if __name__ == "__main__":
