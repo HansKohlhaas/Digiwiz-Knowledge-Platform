@@ -32,31 +32,32 @@ Fehlende **Pflichtinformationen** werden transparent ausgewiesen — **nicht ger
 
 ---
 
-## Quellenreihenfolge (feldgesteuert)
+## Quellenreihenfolge (kanonisch — ADR-0013)
 
-Die Pipeline nutzt **nicht alle Quellen blind**, sondern pro Feld die passende Stufe — in dieser **Priorität**:
+Identisch in ADR-0011, ADR-0013, `source_resolution_policy.yaml` und [13_source_resolution.md](13_source_resolution.md).
 
-| Stufe | Quelle | Wann | SSOT für |
-|-------|--------|------|----------|
-| 1 | **SQL / CRM / operative Daten** | Unternehmensdaten, Stammdaten | Strukturierte Firmendaten |
-| 2 | **Knowledge Platform** | Regeln, Prozesse, Strukturen | Playbooks, ADRs, Contracts |
-| 3 | **Knowledge Graph** | Beziehungen, Provenienz, Abhängigkeiten | Kanten (Stufe E) |
-| 4 | **Chroma / RAG** | Ähnliche Inhalte, Formulierungen, semantischer Kontext | — (abgeleitet) |
-| 5 | **Web / extern** | Nur bei Bedarf, ergänzend | — (niedrigste Priorität) |
+### Global (Pipeline-Schritte)
 
-**Regel:** Nächste Stufe nur für Felder mit Status `missing` oder `uncertain` — nicht für bereits `filled` Felder mit ausreichender Confidence.
+| Schritt | ID | Rolle |
+|---------|-----|--------|
+| 0 | `classify_intent` | SQL-first ja/nein — **immer zuerst** |
+| 1 | `kp_governance` | Playbooks/ADRs/Contracts — **immer für DAR** (Regeln, nicht SQL-Fakten) |
+| 2 | `sql_crm_stammdaten` | Operative Firmendaten bei SQL-first / Firmendaten-Feldern |
+| 3 | `knowledge_graph` | Beziehungen, Provenienz (Stufe E) |
+| 4 | `chroma_rag` | Semantik — **abgeleitet** |
+| 5 | `web_external` | Nur ergänzend |
 
----
+### Feldgesteuert (erste Quelle pro Feldtyp)
 
-## Entscheidungslogik je Feld
+| Feldtyp | Erste Quelle |
+|---------|--------------|
+| CRM-Status, Kundennummer, Umsatzklasse, MSV3, … | **SQL** |
+| Freigabe, Auto-Publish, Governance, Prozesse | **Knowledge Platform** |
+| Beziehung Entität A → B, Provenienz-Kette | **Knowledge Graph** |
+| Verfahren, Wiki-Formulierung, semantische Ähnlichkeit | **KP** → ggf. **Chroma/RAG** |
+| Branchennews extern | **Web** (nie über SQL/KP für Firmendaten) |
 
-| Feldtyp | Erste Quelle | Nächste Stufe wenn |
-|---------|--------------|-------------------|
-| CRM-Status, Kundennummer, Umsatzklasse | SQL | SQL leer → `missing`, kein RAG-Raten |
-| Freigabe, Auto-Publish, Governance | KP | — (Pflicht aus Playbook/ADR) |
-| Beziehung Entität A → B | Graph (E) | Graph leer → optional RAG, nie SQL raten |
-| Verfahren, Wiki-Formulierung | KP → RAG | RAG nur ergänzend |
-| Branchennews extern | Web | Nie über SQL/KP für Firmendaten |
+**Regel:** Nächste Pipeline-Stufe nur für Felder mit Status `missing` oder `uncertain`.
 
 ---
 

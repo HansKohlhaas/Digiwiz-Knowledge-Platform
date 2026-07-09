@@ -1,7 +1,21 @@
 {
   "task": "presseschau",
   "applied_playbooks": ["presseschau", "brandvoice", "sources"],
-  "applied_adrs": ["ADR-0002", "ADR-0004", "ADR-0011"],
+  "applied_adrs": ["ADR-0002", "ADR-0004", "ADR-0011", "ADR-0013"],
+  "sql_first": true,
+  "resolution_path": [
+    "classify_intent",
+    "kp_governance",
+    "query_sql_crm",
+    "query_knowledge_platform"
+  ],
+  "sql_snippets": [
+    {
+      "text": "CRM-Status Apotheke 12345: aktiv",
+      "query_ref": "crm.apotheken.kundennummer=12345",
+      "provenance": { "system": "sql", "queried_at": "2026-07-09T20:00:00Z" }
+    }
+  ],
   "graph_snippets": [],
   "rag_snippets": [
     {
@@ -11,9 +25,11 @@
     }
   ],
   "sources": [
+    "crm.apotheken.kundennummer=12345",
     "playbooks/presseschau.yaml",
     "content/playbooks/linkedin-presseschau.md",
     "adr/ADR-0004-no-auto-publishing.md"
   ],
+  "conflicts": [],
   "uncertainties": ["Graph-Kontext noch nicht aktiv (Stufe E1)"]
 }

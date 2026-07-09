@@ -2,12 +2,53 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://digiwiz.local/schemas/context_builder_input.schema.json",
   "title": "DAR Context Builder Input",
+  "description": "ADR-0011 + ADR-0013 — Input inkl. Source Resolution und optionaler Context-Assembly-Referenz.",
   "type": "object",
-  "required": ["task", "playbooks"],
+  "required": ["task", "playbooks", "resolution_policy_ref"],
   "properties": {
     "task": { "type": "string" },
     "playbooks": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
-    "graph_query": { "type": "object" },
+    "query": { "type": "string", "description": "Original-User-Anfrage" },
+    "sql_first": {
+      "type": "boolean",
+      "description": "ADR-0013 — Ergebnis Schritt 0 classify_intent"
+    },
+    "required_fields": {
+      "type": "array",
+      "description": "Aus Context Assembly abgeleitete Pflicht-/Optional-Felder",
+      "items": {
+        "type": "object",
+        "required": ["field_id", "mandatory"],
+        "properties": {
+          "field_id": { "type": "string" },
+          "mandatory": { "type": "boolean" },
+          "preferred_sources": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "sql_crm",
+                "knowledge_platform",
+                "knowledge_graph",
+                "chroma_rag",
+                "web_external"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "resolution_policy_ref": {
+      "type": "string",
+      "const": "contracts/source-resolution/source_resolution_policy.yaml"
+    },
+    "context_assembly_ref": {
+      "type": "string",
+      "description": "Pfad oder assembly_id zu context_assembly.schema.json Output"
+    },
+    "graph_query": {
+      "type": "object",
+      "description": "Deklarative Graph-Abfrage — contracts/graph/graph_query.schema.json"
+    },
     "rag_query": { "type": "object" },
     "session_id": { "type": "string" }
   }

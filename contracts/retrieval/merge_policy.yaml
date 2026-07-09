@@ -1,19 +1,56 @@
-# Retrieval Merge Policy (Platzhalter)
+# Retrieval Merge Policy — Digiwiz Knowledge Platform
+# Contract v1 — ADR-0009, ADR-0013
+# Gilt NACH Source Resolution / Context Assembly (Graph- und RAG-Schichten).
 
-**Status:** ⏳ geplant — Merge **nach** Source Resolution (ADR-0013 Schritt 3–4)
+policy_version: 1
+adr: ADR-0009
+effective_from: "2026-07-09"
+status: active
 
-Source Resolution entscheidet **welche Quellen** (SQL → Graph → RAG).  
-Dieser Ordner definiert **wie** Graph- und RAG-Snippets kombiniert werden.
+precondition:
+  source_resolution_complete: true
+  context_assembly_ready: true
+  ref: contracts/source-resolution/source_resolution_policy.yaml
 
-## Abgrenzung
+merge_order_within_retrieval_layers:
+  - knowledge_graph
+  - chroma_rag
 
-| Contract | Frage |
-|----------|--------|
-| [../source-resolution/](../source-resolution/) | Welche Quelle zuerst? SQL-first? |
-| **`retrieval/`** | Token-Limits, Passagen-Merge Graph↔RAG, Provenienz-Anzeige |
+merge_order_note: Graph liefert Struktur/Provenienz; RAG liefert semantische Passagen — nie Graph durch RAG ersetzen
 
-## Geplante Datei
+token_limits:
+  max_total_snippets: 12
+  max_graph_snippets: 5
+  max_rag_snippets: 7
+  max_chars_per_snippet: 800
 
-- `merge_policy.yaml` — Limits, Prioritäten innerhalb Schritt 3–4
+priorities:
+  - id: provenance_first
+    rule: Snippets ohne provenance oder source_ref werden verworfen
+  - id: graph_before_rag_for_structure
+    rule: Bei strukturellen Feldern Graph-Snippets vor RAG-Snippets einfügen
+  - id: kp_rules_never_from_rag_alone
+    rule: Governance-Regeln nur aus knowledge_platform, nicht allein aus chroma_rag
 
-Siehe [ADR-0009](../../adr/ADR-0009-knowledge-graph-and-chroma-rag.md), [ADR-0013](../../adr/ADR-0013-source-resolution-and-sql-first-policy.md).
+provenance_rules:
+  graph_snippet_required: [text, provenance]
+  rag_snippet_required: [text, source_ref, derived_true]
+  display_source_in_context: true
+
+conflict_handling:
+  - conflict: graph_structure_vs_rag_text
+    resolution: keep_both_label_rag_as_derived
+  - conflict: rag_vs_kp_rule
+    winner: knowledge_platform
+    adr: ADR-0009
+  - conflict: duplicate_passages
+    resolution: dedupe_by_source_ref_keep_highest_confidence
+
+forbidden:
+  - merge_rag_as_canonical_for_sql_fields
+  - auto_publish_from_merged_snippets
+  - skip_provenance_display
+
+dar_context_builder:
+  consumes_after: context_assembly
+  output_field: rag_snippets_and_graph_snippets

@@ -50,15 +50,23 @@ Anfrage analysieren
 
 **Keine neue Runtime.**
 
-### Quellenreihenfolge (feldgesteuert, ADR-0013 aligned)
+### Quellenreihenfolge (kanonisch — identisch ADR-0013)
 
-Pro Informationsfeld — nicht pauschal alle Quellen:
+**Global (Pipeline):** `classify_intent` → `kp_governance` → feldgesteuert `sql_crm_stammdaten` → `knowledge_graph` → `chroma_rag` → `web_external`
 
-1. **SQL / CRM** — Unternehmensdaten, Stammdaten (System of Record)
-2. **Knowledge Platform** — Regeln, Prozesse, Strukturen (SSOT)
-3. **Knowledge Graph** — Beziehungen, Provenienz (Stufe E)
-4. **Chroma / RAG** — semantischer, **abgeleiteter** Kontext
-5. **Web / extern** — nur ergänzend, nie Ersatz für interne Wahrheit
+**Feldgesteuert (erste Quelle pro Feldtyp):**
+
+| Feldtyp | Erste Quelle |
+|---------|--------------|
+| Firmendaten / CRM / Stammdaten | **SQL** (System of Record) |
+| Regeln / Prozesse / Governance | **Knowledge Platform** |
+| Beziehungen / Provenienz-Struktur | **Knowledge Graph** |
+| Semantik / Formulierungen | **Chroma/RAG** (abgeleitet) |
+| Externe Ergänzung | **Web** (niedrigste Priorität) |
+
+**Abstimmung ADR-0013:** Schritt 0 `classify_intent` und Schritt 1 `kp_governance` (Playbooks/ADRs/Contracts **immer** für DAR-Tasks) laufen **vor** der feldgesteuerten Datenabfrage. SQL-first gilt für **operative Fakten** (`sql_crm_stammdaten`), nicht als Ersatz für KP-Regeln.
+
+Maschinenlesbar: `canonical_sequence` in `source_resolution_policy.yaml`.
 
 **Nächste Stufe nur** für Felder mit Status `missing` oder `uncertain`.
 
@@ -110,4 +118,4 @@ Beispiel: `examples/source-resolution/context_assembly.example.json`
 | Version | Datum | Änderung |
 |---------|-------|----------|
 | 1 | 2026-07-09 | Context Builder kombiniert Schichten (Graph/RAG) |
-| 2 | 2026-07-09 | Context Assembly Pipeline vor Antwortgenerierung; Contract `context_assembly.schema.json` |
+| 2 | 2026-07-09 | Context Assembly Pipeline; Abstimmung kanonische Sequenz mit ADR-0013 |

@@ -1,0 +1,8 @@
+{
+  "rebuild_at": "2026-07-09T22:00:00Z",
+  "status": "success",
+  "manifest_ref": "examples/retrieval/chroma_index_manifest.example.json",
+  "documents_indexed": 42,
+  "errors": [],
+  "kp_conflict_resolved_by": "none"
+}

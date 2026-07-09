@@ -1,0 +1,10 @@
+{
+  "query_id": "q-playbook-adr-deps",
+  "query_type": "adr_dependencies",
+  "start_node_id": "node-playbook-presseschau",
+  "allowed_node_types": ["playbook", "adr"],
+  "allowed_edge_types": ["governed_by", "depends_on"],
+  "max_depth": 2,
+  "provenance_required": true,
+  "result_format": "snippets_with_provenance"
+}

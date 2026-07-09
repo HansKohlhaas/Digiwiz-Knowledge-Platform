@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digiwiz.local/contracts/graph/graph_query.schema.json",
+  "title": "Knowledge Graph Query Contract",
+  "description": "Stufe E — deklarative Graph-Abfrage für DAR Context Assembly. Keine Runtime.",
+  "type": "object",
+  "required": ["query_id", "query_type", "provenance_required"],
+  "properties": {
+    "query_id": { "type": "string" },
+    "query_type": {
+      "enum": [
+        "neighbors",
+        "path",
+        "provenance_chain",
+        "playbook_references",
+        "adr_dependencies"
+      ]
+    },
+    "start_node_id": { "type": "string" },
+    "end_node_id": { "type": "string" },
+    "allowed_node_types": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "z. B. playbook, adr, agent_lieferung"
+    },
+    "allowed_edge_types": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "z. B. references, depends_on, derived_from"
+    },
+    "max_depth": { "type": "integer", "minimum": 1, "maximum": 5, "default": 2 },
+    "provenance_required": { "const": true },
+    "result_format": {
+      "enum": ["nodes_edges", "snippets_with_provenance"],
+      "default": "snippets_with_provenance"
+    }
+  }
+}

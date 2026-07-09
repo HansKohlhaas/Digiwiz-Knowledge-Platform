@@ -1,0 +1,11 @@
+{
+  "id": "node-playbook-presseschau",
+  "type": "playbook",
+  "label": "Presseschau",
+  "provenance": {
+    "source_type": "playbook",
+    "source_ref": "playbooks/presseschau.yaml",
+    "confidence": 1.0,
+    "observed_at": "2026-07-09T20:00:00Z"
+  }
+}

@@ -1,7 +1,11 @@
-# Graph-Abfrage-Verträge (Stufe E — geplant)
+# Graph Query Contracts (Stufe E)
 
-Deklarative Abfragen gegen den Knowledge Graph (Format TBD).
+Deklarative Graph-Abfragen für DAR Context Assembly — **keine Runtime**.
 
-Kanonische Semantik in KP; Ausführung in der Digiwiz App (`context_builder`, Graph-Loader).
+| Artefakt | Pfad |
+|----------|------|
+| Query-Schema | `graph_query.schema.json` |
+| Node/Edge-Schemas | `../../schemas/knowledge_graph_*.schema.json` |
+| Beispiele | `../../examples/graph/` |
 
-Siehe [ADR-0008](../adr/ADR-0008-knowledge-graph-as-platform-extension.md).
+Siehe [ADR-0008](../../adr/ADR-0008-knowledge-graph-as-platform-extension.md), [ADR-0011](../../adr/ADR-0011-context-builder-combines-context-layers.md).

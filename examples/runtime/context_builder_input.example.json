@@ -1,0 +1,21 @@
+{
+  "task": "presseschau",
+  "query": "CRM-Status Apotheke 12345 und Presseschau-Regeln für LinkedIn-Entwurf",
+  "playbooks": ["presseschau", "brandvoice", "sources"],
+  "sql_first": true,
+  "required_fields": [
+    {
+      "field_id": "crm_status",
+      "mandatory": true,
+      "preferred_sources": ["sql_crm"]
+    },
+    {
+      "field_id": "presseschau_governance",
+      "mandatory": true,
+      "preferred_sources": ["knowledge_platform"]
+    }
+  ],
+  "resolution_policy_ref": "contracts/source-resolution/source_resolution_policy.yaml",
+  "context_assembly_ref": "examples/source-resolution/context_assembly.example.json",
+  "session_id": "sess-example-001"
+}

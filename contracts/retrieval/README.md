@@ -22,4 +22,4 @@ Verträge für **Kontext-Zusammenführung** im DAR Context Builder — nicht fü
 - Provenienz-Pflicht in DAR-Kontext
 - No-Gos (kein Auto-Publish aus RAG-Snippets)
 
-Siehe [ADR-0009](../adr/ADR-0009-knowledge-graph-and-chroma-rag.md), [ADR-0013](../adr/ADR-0013-source-resolution-and-sql-first-policy.md), [merge_policy.yaml](merge_policy.yaml) (Platzhalter).
+Siehe [ADR-0009](../adr/ADR-0009-knowledge-graph-and-chroma-rag.md), [ADR-0013](../adr/ADR-0013-source-resolution-and-sql-first-policy.md), [merge_policy.yaml](merge_policy.yaml) (**v1 aktiv**).

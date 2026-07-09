@@ -1,4 +1,4 @@
-version: "1.3.0"
+version: "1.4.0"
 name: digiwiz-knowledge-platform
 description: >
   Verbindliche Quelle für Regeln und Schnittstellen (Contracts):
@@ -47,11 +47,15 @@ contracts:
     schema: schemas/graph/
     queries: contracts/graph/
     examples: examples/graph/
-    status: planned
+    status: active
+    includes:
+      - graph_query.schema.json
   retrieval:
     policy: contracts/retrieval/
-    status: planned
+    status: active
     hinweis: Chroma/RAG-Index lebt in App — nicht SSOT (ADR-0009)
+    includes:
+      - merge_policy.yaml
   source_resolution:
     policy: contracts/source-resolution/
     examples: examples/source-resolution/

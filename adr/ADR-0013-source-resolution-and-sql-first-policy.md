@@ -30,16 +30,28 @@ Ohne verbindliche **Source-Resolution-Sequenz** drohen:
 
 **Bei jeder Wissensabfrage prüft DAR (bzw. ein vorgelagerter Source-Resolution-Schritt) zuerst, ob die Anfrage eine direkte SQL-/CRM-/Unternehmensdaten-Abfrage ist.**
 
-### Verbindliche Auflösungssequenz
+### Verbindliche Auflösungssequenz (kanonisch)
 
 ```
-0. Intent-Klassifikation     → SQL-first ja/nein (Pflicht, vor allen Quellen)
-1. Playbooks + ADRs + Contracts (KP, SSOT für Regeln)
-2. SQL / CRM / Stammdaten    → bei SQL-first oder Treffer in sql_first_domains
-3. Knowledge Graph           → struktureller Kontext (Stufe E)
-4. Chroma / RAG              → semantischer, abgeleiteter Kontext
-5. Web / extern              → nur ergänzend, nie über SQL bei Firmendaten
+0. classify_intent          → SQL-first ja/nein (Pflicht)
+1. kp_governance            → Playbooks + ADRs + Contracts (Pflicht für DAR-Tasks)
+2. sql_crm_stammdaten       → bei SQL-first / Firmendaten-Feldern
+3. knowledge_graph          → Beziehungen, Provenienz (Stufe E)
+4. chroma_rag               → semantisch, abgeleitet
+5. web_external             → nur ergänzend
 ```
+
+**Klarstellung KP vs. SQL:**
+
+| Aspekt | KP (Schritt 1) | SQL (Schritt 2) |
+|--------|----------------|-----------------|
+| Rolle | **Governance-Prüfung immer** — Regeln, Freigabe, Prozesse | **Operative Fakten** — Stammdaten, CRM |
+| SSOT für | Playbooks, ADRs, Contracts | Firmendaten |
+| Nicht | SQL-Fakten ersetzen | KP-Regeln ersetzen |
+
+**Feldgesteuert (Context Assembly, ADR-0011):** Pro `required_field` bestimmt `preferred_sources[]` die **erste** Datenquelle — konsistent mit obiger Sequenz, aber nicht jede Stufe für jedes Feld.
+
+Maschinenlesbar: `canonical_sequence` und `field_first_source` in `source_resolution_policy.yaml`.
 
 ### SQL-first-Pflichtdomänen
 

@@ -7,6 +7,33 @@ adr: ADR-0013
 effective_from: "2026-07-09"
 
 # Schritt 0 ist Pflicht vor jeder Wissensabfrage
+canonical_sequence:
+  description: >
+    Global identisch in ADR-0011, ADR-0013, docs/12_context_assembly_pipeline.md, docs/13_source_resolution.md.
+    Feldgesteuert: field_first_source bestimmt Einstieg pro required_field.
+  steps:
+    - step: 0
+      id: classify_intent
+    - step: 1
+      id: kp_governance
+      note: Playbooks/ADRs/Contracts immer für DAR — Governance, nicht SQL-Fakten
+    - step: 2
+      id: sql_crm_stammdaten
+      condition: sql_first_or_company_data_field
+    - step: 3
+      id: knowledge_graph
+    - step: 4
+      id: chroma_rag
+    - step: 5
+      id: web_external
+
+field_first_source:
+  company_operational: sql_crm
+  rules_governance: knowledge_platform
+  relationships_provenance: knowledge_graph
+  semantic_formulation: chroma_rag
+  external_supplement: web_external
+
 resolution_sequence:
   - step: 0
     id: classify_intent
@@ -14,10 +41,11 @@ resolution_sequence:
     mandatory: true
     description: Prüfen ob SQL-/CRM-/Unternehmensdaten-Abfrage
   - step: 1
-    id: knowledge_platform
+    id: kp_governance
     sources: [playbooks, adrs, contracts]
     mandatory_for_dar_tasks: true
     ssot_for: [rules, governance, approval]
+    note: Immer laden — nicht mit SQL-Fakten verwechseln
   - step: 2
     id: sql_crm_stammdaten
     sources: [sql_database, crm]

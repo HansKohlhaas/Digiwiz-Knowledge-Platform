@@ -1,0 +1,10 @@
+{
+  "id": "edge-playbook-adr-0004",
+  "type": "governed_by",
+  "from": "node-playbook-presseschau",
+  "to": "node-adr-0004",
+  "provenance": {
+    "source_type": "adr",
+    "source_ref": "adr/ADR-0004-no-auto-publishing.md"
+  }
+}

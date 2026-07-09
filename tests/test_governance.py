@@ -37,13 +37,34 @@ NEW_SCHEMAS = (
     "chroma_rebuild_report.schema.json",
     "linkedin.schema.json",
 )
+CANONICAL_SEQUENCE_IDS = (
+    "classify_intent",
+    "kp_governance",
+    "sql_crm_stammdaten",
+    "knowledge_graph",
+    "chroma_rag",
+    "web_external",
+)
+SEQUENCE_DOC_PATHS = (
+    ROOT / "adr" / "ADR-0011-context-builder-combines-context-layers.md",
+    ROOT / "adr" / "ADR-0013-source-resolution-and-sql-first-policy.md",
+    ROOT / "docs" / "12_context_assembly_pipeline.md",
+    ROOT / "docs" / "13_source_resolution.md",
+    ROOT / "contracts" / "source-resolution" / "source_resolution_policy.yaml",
+)
 EXAMPLE_PAIRS = (
     ("examples/linkedin/linkedin_post.example.json", "linkedin.schema.json"),
     ("examples/retrieval/chroma_index_manifest.example.json", "chroma_index_manifest.schema.json"),
+    ("examples/retrieval/chroma_rebuild_report.example.json", "chroma_rebuild_report.schema.json"),
     ("examples/runtime/context_builder_output.example.json", "context_builder_output.schema.json"),
+    ("examples/runtime/context_builder_input.example.json", "context_builder_input.schema.json"),
     (
         "examples/source-resolution/context_assembly.example.json",
         "contracts/source-resolution/context_assembly.schema.json",
+    ),
+    (
+        "examples/graph/graph_query.example.json",
+        "contracts/graph/graph_query.schema.json",
     ),
 )
 STAGE_EF_DOCS = (
@@ -123,6 +144,40 @@ class TestGovernance(unittest.TestCase):
             validator = Draft202012Validator(schema)
             errors = sorted(validator.iter_errors(example), key=lambda e: list(e.path))
             self.assertFalse(errors, f"{example_rel}: {[e.message for e in errors]}")
+
+    def test_source_resolution_sequence_konsistent(self):
+        for path in SEQUENCE_DOC_PATHS:
+            text = path.read_text(encoding="utf-8")
+            for step_id in CANONICAL_SEQUENCE_IDS:
+                self.assertIn(step_id, text, f"{path.name}: fehlt {step_id}")
+
+    def test_context_builder_input_source_resolution(self):
+        schema = _load_json(SCHEMAS / "context_builder_input.schema.json")
+        for key in ("sql_first", "required_fields", "resolution_policy_ref", "context_assembly_ref"):
+            self.assertIn(key, schema["properties"], key)
+        self.assertIn("resolution_policy_ref", schema["required"])
+
+    def test_context_builder_output_adr_0013_felder(self):
+        out = _load_json(ROOT / "examples" / "runtime" / "context_builder_output.example.json")
+        for key in ("sql_first", "resolution_path", "sql_snippets", "conflicts"):
+            self.assertIn(key, out, key)
+
+    def test_merge_policy_nicht_platzhalter(self):
+        data = _load_yaml(ROOT / "contracts" / "retrieval" / "merge_policy.yaml")
+        self.assertEqual(data.get("status"), "active")
+        self.assertIn("token_limits", data)
+        self.assertIn("max_rag_snippets", data["token_limits"])
+
+    def test_graph_query_contract_und_beispiele(self):
+        query_schema = ROOT / "contracts" / "graph" / "graph_query.schema.json"
+        self.assertTrue(query_schema.is_file())
+        node = _load_json(ROOT / "examples" / "graph" / "node.example.json")
+        edge = _load_json(ROOT / "examples" / "graph" / "edge.example.json")
+        node_schema = _load_json(SCHEMAS / "knowledge_graph_node.schema.json")
+        edge_schema = _load_json(SCHEMAS / "knowledge_graph_edge.schema.json")
+        Draft202012Validator = _jsonschema_validator()
+        self.assertFalse(list(Draft202012Validator(node_schema).iter_errors(node)))
+        self.assertFalse(list(Draft202012Validator(edge_schema).iter_errors(edge)))
 
     def test_context_assembly_contract_existiert(self):
         schema = ROOT / "contracts" / "source-resolution" / "context_assembly.schema.json"

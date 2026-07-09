@@ -14,34 +14,29 @@ Bei **jeder Wissensabfrage** muss **zuerst** geprüft werden, ob es sich um eine
 
 | Stufe | Quelle | Rolle | SSOT für |
 |-------|--------|-------|----------|
-| **0** | **Intent-Klassifikation** | Pflicht vor jeder Abfrage | Routing-Entscheid |
-| **1** | **Knowledge Platform** | Playbooks, ADRs, Contracts | Regeln, Freigabe, Schnittstellen |
-| **2** | **SQL / CRM / Stammdaten** | Operative Firmendaten (Access/CRM-DB) | Hersteller, Apotheken, Kunden, Status, Historien |
-| **3** | **Knowledge Graph** | Struktur, Beziehungen, Provenienz (Stufe E) | Kanten, Entitätsbezüge — nicht Attribut-Fakten |
-| **4** | **Chroma / RAG** | Semantischer, abgeleiteter Index | Wiki-Passagen, Verfahren, ähnliche Texte |
-| **5** | **Web / extern** | Ergänzung, Branchennews | Öffentliche Quellen — **nicht** über SQL bei Firmendaten |
+| **0** | **`classify_intent`** | Pflicht vor jeder Abfrage | SQL-first ja/nein |
+| **1** | **`kp_governance`** | Playbooks, ADRs, Contracts — **immer für DAR** | Regeln, Freigabe — **nicht** SQL-Fakten |
+| **2** | **`sql_crm_stammdaten`** | Operative Firmendaten | Hersteller, Apotheken, Kunden, Status, Historien |
+| **3** | **`knowledge_graph`** | Struktur, Beziehungen, Provenienz (Stufe E) | Kanten — nicht Attribut-Fakten |
+| **4** | **`chroma_rag`** | Semantischer, abgeleiteter Index | Wiki-Passagen — **nicht** kanonisch |
+| **5** | **`web_external`** | Ergänzung | **Nie** über SQL bei Firmendaten |
+
+**Feldgesteuert (ADR-0011):** Pro `required_field` bestimmt `preferred_sources[]` die erste Datenquelle — siehe [12_context_assembly_pipeline.md](12_context_assembly_pipeline.md).
 
 ```
 Anfrage
    │
    ▼
-[0] SQL-first? ──ja──► [2] SQL abfragen ──► Ergebnis mit Provenienz
-   │                           │
-   nein                         │
-   ▼                             │
-[1] Playbooks/Contracts (immer für DAR-Tasks)
+[0] classify_intent
    │
    ▼
-[3] Graph (wenn strukturelle Frage, Stufe E)
+[1] kp_governance (Playbooks/ADRs — immer DAR)
    │
    ▼
-[4] Chroma/RAG (wenn semantische/Wiki-Frage)
+[2..5] feldgesteuert: SQL → Graph → Chroma → Web (nur offene Felder)
    │
    ▼
-[5] Web (optional, niedrigste Priorität)
-   │
-   ▼
-Context Builder Output → Provider → Validator → ggf. Inbox
+Context Assembly → Context Builder → Provider → Validator → ggf. Inbox
 ```
 
 ---

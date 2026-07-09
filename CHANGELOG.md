@@ -4,6 +4,24 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-07-09
+
+### Added
+
+- Kanonische Source-Resolution-Sequenz (`classify` → `kp_governance` → feldgesteuert SQL/Graph/RAG/Web) in ADR-0011, ADR-0013, Policy, Docs
+- `context_builder_input.schema.json` — `sql_first`, `required_fields`, `resolution_policy_ref`, `context_assembly_ref`
+- `examples/runtime/context_builder_input.example.json`
+- `contracts/graph/graph_query.schema.json` + `examples/graph/` (Node, Edge, Query)
+- `examples/retrieval/chroma_rebuild_report.example.json`
+- `contracts/retrieval/merge_policy.yaml` v1 (Token-Limits, Provenienz, Konflikte)
+
+### Changed
+
+- `context_builder_output.example.json` — ADR-0013-Felder (`sql_first`, `resolution_path`, `sql_snippets`)
+- Roadmap Stufe D — Basis (D1–D3) vs. D4/D5 geplant
+- ADR-0009 — Verweis auf Merge-Policy v1
+- Tests — Sequenz-Konsistenz, Input-Contract, Merge-Policy, Graph-Query, Chroma-Rebuild
+
 ## [1.3.0] - 2026-07-09
 
 ### Added

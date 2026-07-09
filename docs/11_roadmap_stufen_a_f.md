@@ -19,7 +19,7 @@ order: 11
 Stufe A  Knowledge Layer          ✅ abgeschlossen
 Stufe B  Qualitätssicherung        ✅ abgeschlossen
 Stufe C  CLI / Agenten-API        ✅ abgeschlossen (Contracts API-Spec ⏳)
-Stufe D  AI Runtime (DAR)           ✅ abgeschlossen (Prompt-Schemas ⏳)
+Stufe D  AI Runtime (DAR)           ✅ Basis (D1–D3) / ⏳ D4–D5 Contracts
 Stufe E  Knowledge Graph            ⏳ nächste Phase — nur in KP
 Stufe F  Autonome Agenten           📋 Roadmap — nach E, ADR-0004 beachten
 ```
@@ -29,7 +29,7 @@ Stufe F  Autonome Agenten           📋 Roadmap — nach E, ADR-0004 beachten
 | **A** | Wissen & Import | Playbooks, Content, Examples | Inbox, Import, Morgen-Lauf | ✅ |
 | **B** | QS vor Freigabe | JSON-Schemas, QS-Verfahren | `agent_lieferung_validierung.py` | ✅ |
 | **C** | Externe Anbindung | API-Verfahren, API-Contract (geplant) | CLI, FastAPI `/api/v1/*` | ✅ / ⏳ Contract |
-| **D** | AI Director | `runtime/routing.json`, Prompt-Schema (geplant) | `digiwiki/ai_runtime/` | ✅ / ⏳ Contract |
+| **D** | AI Director (Basis) | D4/D5 in App | `runtime/routing.json`, Source/Assembly Contracts | `digiwiki/ai_runtime/` | ✅ Basis / ⏳ D4–D5 |
 | **E** | Knowledge Graph | Graph-Schema, Abfrage-Verträge | Graph-Client (geplant) | ⏳ |
 | **F** | Autonomie | Policy-Contracts, Freigabe-Regeln | Scheduler, Agent-Orchestrierung | 📋 |
 
@@ -183,9 +183,18 @@ Externe KI-Systeme binden sich **kontrolliert** an — per CLI und REST, mit API
 
 ### Ziel
 
-Digiwiz als **AI Director**: Task → Routing → Playbooks → Provider → Validator → Regisseur-Inbox.
+Digiwiz als **AI Director**: Task → Routing → Context Assembly → Provider → Validator → Regisseur-Inbox.
 
-### Definition of Done
+### Status-Abgrenzung
+
+| Meilenstein | Inhalt | Status |
+|-------------|--------|--------|
+| **D1–D3 Basis** | Registry, Routing, Pipeline, REST, Inbox-Anbindung | ✅ App |
+| **D4 Source Resolution** | `source_resolution_router`, SQL-first (ADR-0013) | ⏳ Contract ✅, App geplant |
+| **D5 Context Assembly** | `context_assembly_pipeline` (ADR-0011) | ⏳ Contract ✅, App geplant |
+| **D Contracts** | Input/Output, Merge Policy, Graph Query | ✅ KP v1.4.0 |
+
+### Definition of Done — Basis (D1–D3)
 
 | Kriterium | Status |
 |-----------|--------|
@@ -199,6 +208,15 @@ Digiwiz als **AI Director**: Task → Routing → Playbooks → Provider → Val
 | Prompt-Schemas in KP | ⏳ |
 | MCP Runtime-Tools | ⏳ |
 
+### Definition of Done — D4/D5 (geplant)
+
+| Kriterium | Status |
+|-----------|--------|
+| Source Resolution Router in App | ⏳ |
+| Context Assembly Pipeline in App | ⏳ |
+| Context Builder nutzt Assembly-Output | ⏳ |
+| Integrations-Tests SQL-first + missing fields | ⏳ |
+
 ### Contracts (KP)
 
 | Artefakt | Pfad | Status |
@@ -206,6 +224,10 @@ Digiwiz als **AI Director**: Task → Routing → Playbooks → Provider → Val
 | Runtime-Routing | `runtime/routing.json` | ✅ |
 | Verfahren | `docs/verfahren/digiwiz_ai_runtime.md` | ✅ |
 | Prompt-Schemas | `schemas/prompts/` | ⏳ |
+| Context Builder I/O | `schemas/context_builder_*.schema.json` | ✅ |
+| Source Resolution / Assembly | `contracts/source-resolution/` | ✅ |
+| Retrieval Merge | `contracts/retrieval/merge_policy.yaml` | ✅ |
+| Graph Query | `contracts/graph/graph_query.schema.json` | ✅ |
 
 ### App (Digiwiz)
 

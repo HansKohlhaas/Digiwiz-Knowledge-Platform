@@ -83,6 +83,7 @@ Regeln für Kontext-Zusammenführung — nicht der Vektor-Index:
 - `meta/manifest.yaml` erhält Contract-Typ `retrieval`
 - Roadmap E3: „Context Builder kombiniert Graph + RAG“
 - Rebuild-Policy: Bei Widerspruch zwischen Index und KP-Contract gilt **KP**
+- **Merge-Policy v1:** `contracts/retrieval/merge_policy.yaml` — Token-Limits, Graph↔RAG-Priorität (2026-07-09)
 
 ## Nicht-Ziele
 
