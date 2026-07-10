@@ -13,6 +13,23 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/).
 - DAR App Phase 4 (Monorepo): Context Assembly Dry-Run + Provider-Gate (`context_assembly_pipeline`, `darf_provider_aufgerufen_werden`), Tests T6/T7 — Feature-Flag `DAR_KP_CONTEXT_ASSEMBLY`; SQL-Adapter `ist_readonly_select()` Guard
 - DAR App Phase 5 (Monorepo): Chroma/RAG-Adapter + Merge (`chroma_rag_adapter`, `rag_merge`), Router-Eskalation — Feature-Flag `DAR_KP_CHROMA_RAG`
 - DAR App Phase 6 (Monorepo): Knowledge Graph Stub-Adapter (`graph_query_adapter`, `InMemoryGraphStore`), Tests — Feature-Flag `DAR_KP_KNOWLEDGE_GRAPH`
+- DAR App Phase 7B (Monorepo): End-to-End KP-Pipeline hinter `DAR_KP_PIPELINE` — `kp_pipeline.py`, zentrales `provider_gate`, optionale Runtime-Response-Felder; baut auf Phase-7A-Guards auf
+- DAR App P0 (Monorepo): Policy-Redaction, KP-Stufen-Exception-Handling, Graph-Testmodus-Gate, vereinheitlichtes Provider-Gate
+- DAR App Phase 7C (Monorepo): kontrollierter manueller Schaltertest — `scripts/run_phase_7c_manual_test.py`, Bericht `reviews/manual_test_dar_kp_phase_7c.md`
+- DAR App Phase 7D (Monorepo): E2E mit echtem Provider (OpenAI), synthetische Mock-SQL — `scripts/run_phase_7d_real_provider_test.py`, Bericht `reviews/manual_test_dar_kp_phase_7d_real_provider.md`
+- DAR App Phase 7E (Monorepo): Provider Data Boundary — `contracts/provider/provider_data_policy.yaml`, `provider_context_sanitizer.py`, TLS-Härtung, `DAR_KP_SQL_LOCAL_ONLY`
+
+## [1.5.3] - 2026-07-10
+
+### Added
+
+- `contracts/provider/provider_data_policy.yaml` — maschinenlesbare Provider Data Boundary je Feldklasse (übertragbar, lokal, maskiert, pseudonymisiert, Freigabe, Datentiefe, Zweck, Provider-Klasse).
+- DAR App Phase 7E: `sanitize_context_for_provider()`, TLS-Guard (`verify=False` verboten), Local-only-SQL-Modus `DAR_KP_SQL_LOCAL_ONLY=1`.
+
+### Changed
+
+- Phase-7D-SSL-Bypass entfernt; TLS nur mit gültiger Zertifikatskette.
+- KP-Pipeline sanitisiert Provider-Kontext vor externem Aufruf; CRM-/SQL-Werte standardmäßig nicht an externe Provider.
 
 ## [1.5.2] - 2026-07-10
 

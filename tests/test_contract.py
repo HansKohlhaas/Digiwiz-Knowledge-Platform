@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class TestKnowledgePlatformContract(unittest.TestCase):
     def test_version_und_manifest(self):
         version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
-        self.assertEqual(version, "1.5.2")
+        self.assertEqual(version, "1.5.3")
         manifest = (ROOT / "meta" / "manifest.yaml").read_text(encoding="utf-8")
         self.assertIn("digiwiz-knowledge-platform", manifest)
 
@@ -78,6 +78,17 @@ class TestKnowledgePlatformContract(unittest.TestCase):
     def test_manifest_retrieval_contract(self):
         manifest = (ROOT / "meta" / "manifest.yaml").read_text(encoding="utf-8")
         self.assertIn("retrieval:", manifest)
+
+    def test_provider_data_policy_contract(self):
+        import yaml
+
+        path = ROOT / "contracts" / "provider" / "provider_data_policy.yaml"
+        self.assertTrue(path.is_file())
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+        self.assertEqual(data.get("policy_id"), "provider_data_policy")
+        self.assertIn("operative_sql", data.get("field_classes") or {})
+        self.assertIn("crm_status", data.get("fields") or {})
+        self.assertFalse(data["fields"]["crm_status"].get("external_provider_transfer", True))
 
 
 if __name__ == "__main__":

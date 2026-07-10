@@ -95,6 +95,16 @@ Siehe `meta/manifest.yaml` (`contract_status`, `app_status`) und [contracts/READ
 
 **Status:** **contract_active** · App `decision_engine` **app_planned**
 
+### 12. Provider Data Boundary (Phase 7E, v1.5.3)
+
+| Artefakt | Pfad | Zweck |
+|----------|------|--------|
+| Provider Data Policy | `contracts/provider/provider_data_policy.yaml` | Externe LLM-Übertragung je Feldklasse (ADR-0015) |
+| Doku | `docs/16_provider_data_boundary.md` | Sanitizer, Local-only SQL, TLS |
+| Beispiele | — | Abgedeckt durch Digiwiz App-Tests Phase 7E |
+
+**Status:** **contract_active** · App `provider_context_sanitizer` **app_planned**
+
 ## Workflow: Contract first
 
 ```

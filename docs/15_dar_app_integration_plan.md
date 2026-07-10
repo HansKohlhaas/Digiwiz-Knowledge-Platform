@@ -1,5 +1,5 @@
 ---
-title: DAR — KP v1.5.2 Integrationsplan (App)
+title: DAR — KP v1.5.3 Integrationsplan (App)
 slug: dar-kp-integration-plan
 category: Architektur
 audience: developers
@@ -7,13 +7,13 @@ version: "2026-07-10"
 order: 15
 ---
 
-# DAR — Integrationsplan Knowledge Platform v1.5.2
+# DAR — Integrationsplan Knowledge Platform v1.5.3
 
 **Stand:** 10.07.2026  
-**Scope:** Digiwiz App (Monorepo) — Phasen 0-7A vorbereitet, **keine produktive KP-Pipeline-Aktivierung**<br>
-**KP-Version:** 1.5.2 (`knowledge_lock.json`)
+**Scope:** Digiwiz App (Monorepo) — Phasen 0–7E vorbereitet, **keine produktive KP-Pipeline-Aktivierung**<br>
+**KP-Version:** 1.5.3 (`knowledge_lock.json`)
 
-**Verbindlich:** ADR-0011 (Context Assembly), ADR-0013 (Source Resolution / SQL-first), ADR-0014 (Decision Engine), ADR-0010 (DAR einzige Runtime), ADR-0002/0004 (Regisseur-Inbox, kein Auto-Publish)
+**Verbindlich:** ADR-0011 (Context Assembly), ADR-0013 (Source Resolution / SQL-first), ADR-0014 (Decision Engine), **ADR-0015 (Provider Data Boundary)**, ADR-0010 (DAR einzige Runtime), ADR-0002/0004 (Regisseur-Inbox, kein Auto-Publish)
 
 ---
 
@@ -26,7 +26,7 @@ Die Digiwiz-App hat heute **zwei getrennte KI-Pfade**:
 | **DAR** (`digiwiki/ai_runtime/`) | `POST /api/v1/runtime/task` | Task-Routing → Playbooks → Provider → Validator → Inbox |
 | **Wiki Oracle** (`ask_wiki.py`, `frage_strukturierung.py`) | `15_wiki_web_ui.py` | Heuristisches Intent → SQL / Spezialdokumente → Chroma RAG |
 
-KP v1.5.2 beschreibt eine **einheitliche Pipeline innerhalb DAR**. Die Wiki-Logik ist fachlich näher an ADR-0013, ist aber **nicht policy-gesteuert** und **nicht mit DAR verbunden**.
+KP v1.5.3 beschreibt eine **einheitliche Pipeline innerhalb DAR** inklusive **Provider Data Boundary** (Phase 7E). Die Wiki-Logik ist fachlich näher an ADR-0013, ist aber **nicht policy-gesteuert** und **nicht mit DAR verbunden**.
 
 **Strategie:** DAR schrittweise erweitern, Wiki-Adapter **wiederverwenden** (nicht ersetzen), Legacy-Pfad per Feature-Flag absicherbar.
 
@@ -296,6 +296,42 @@ digiwiki/ai_runtime/
 **Feature-Flag:** `DAR_KP_KNOWLEDGE_GRAPH=1` (Standard: aus).
 **Kein Graph-Server** — nur injizierbarer Stub, keine Cypher/SPARQL aus Freitext.
 
+### Phase 7B — implementiert (App, E2E hinter Flag)
+
+| Datei | Rolle |
+|-------|--------|
+| `digiwiki/ai_runtime/pipeline.py` | Dispatch Legacy vs. KP (`DAR_KP_PIPELINE`) |
+| `digiwiki/ai_runtime/kp_pipeline.py` | Volle KP-Pipeline Intent→Inbox |
+| `digiwiki/ai_runtime/provider_gate.py` | Zentrales Provider-Gate |
+| `digiwiki/tests/test_dar_kp_pipeline_phase7b.py` | E2E-Tests |
+
+### Phase 7C — implementiert (App, manueller Schaltertest)
+
+| Artefakt | Rolle |
+|----------|--------|
+| `digiwiki/scripts/run_phase_7c_manual_test.py` | 6 Szenarien mit Mock-Provider |
+| `reviews/manual_test_dar_kp_phase_7c.md` | Manueller Bericht |
+
+### Phase 7D — implementiert (App, E2E echter Provider, synthetische Daten)
+
+| Artefakt | Rolle |
+|----------|--------|
+| `digiwiki/scripts/run_phase_7d_real_provider_test.py` | Positiv + Negativ mit Mock-SQL |
+| `reviews/manual_test_dar_kp_phase_7d_real_provider.md` | Manueller Bericht |
+
+### Phase 7E — implementiert (App + KP Contract)
+
+| Artefakt | Rolle |
+|----------|--------|
+| `contracts/provider/provider_data_policy.yaml` | Provider Data Boundary (KP) |
+| `digiwiki/ai_runtime/provider_context_sanitizer.py` | `sanitize_context_for_provider()` |
+| `digiwiki/ai_runtime/provider_tls.py` | TLS-Guard |
+| `docs/16_provider_data_boundary.md` | Datenschutz-/Provider-Doku |
+| `adr/ADR-0015-provider-data-boundary.md` | ADR |
+| `digiwiki/tests/test_dar_kp_phase7e_provider_boundary.py` | Tests |
+
+**Feature-Flag:** `DAR_KP_SQL_LOCAL_ONLY=1` — read-only SQL lokal, keine SQL-Werte an externen Provider.
+
 ---
 
 ## 5. Inkrementeller Implementierungsplan
@@ -309,7 +345,11 @@ digiwiki/ai_runtime/
 | **4** | Context Assembly + Provider-Gate | ✅ App (2026-07-10) |
 | **5** | Chroma-Adapter + merge_policy | ✅ App (2026-07-10) |
 | **6** | Graph-Adapter (Stub → Store) | ✅ App Stub (2026-07-10) |
-| **7A** | Integrationssicherungen: globaler Schalter, Provider-Gate, Field-Source-Contract, Privacy-Minimum | ✅ App vorbereitet (2026-07-10), keine Aktivierung |
+| **7A** | Integrationssicherungen: globaler Schalter, Provider-Gate, Field-Source-Contract, Privacy-Minimum | ✅ App (2026-07-10) |
+| **7B** | E2E KP-Pipeline (`DAR_KP_PIPELINE`) | ✅ App (2026-07-10) |
+| **7C** | Manueller Schaltertest (Mock-Provider) | ✅ App (2026-07-10) |
+| **7D** | E2E echter Provider, synthetische Mock-SQL | ✅ App (2026-07-10) |
+| **7E** | Provider Data Boundary + TLS + Local-only SQL | ✅ App + KP (2026-07-10) |
 | **7** | API-Transparenz + Wiki-Konsolidierung (optional) | Später |
 
 ---
@@ -329,7 +369,7 @@ digiwiki/ai_runtime/
 
 ## 7. Teststrategie
 
-1. **KP Contract Tests** (44/44 in KP) — unverändert
+1. **KP Contract Tests** (46/46 in KP) — inkl. Provider Data Policy
 2. **App Contract Tests** — Loader + Schema (neu)
 3. **Modul-Tests** — Intent, Decision, SR, Assembly
 4. **Pipeline-Integration** — mock Provider
@@ -352,7 +392,8 @@ digiwiki/ai_runtime/
 | Field Source Contract | SQL/KP/RAG/Graph-Feldklassen aus `field_source_policy.yaml` |
 | Legacy grün | `test_ai_runtime_stufe_d` mit Fallback |
 | Inbox-Hub | `submit_inbox` → `regisseur_inbox` |
-| Audit | `decision_trace` mit `rule_ref` pro Schritt |
+| Provider Data Boundary | CRM-Werte nicht an externen Provider; Sanitizer + Audit |
+| TLS | Kein `verify=False`; kontrollierter Abbruch bei Zertifikatsfehlern |
 
 ---
 
@@ -362,6 +403,7 @@ digiwiki/ai_runtime/
 - [13_source_resolution.md](13_source_resolution.md)
 - [12_context_assembly_pipeline.md](12_context_assembly_pipeline.md)
 - [11_roadmap_stufen_a_f.md](11_roadmap_stufen_a_f.md)
-- ADR-0011, ADR-0013, ADR-0014
+- [16_provider_data_boundary.md](16_provider_data_boundary.md)
+- ADR-0011, ADR-0013, ADR-0014, **ADR-0015**
 
 **App-Pfad (Monorepo):** `docs/wiki/verfahren/dar_kp_integration_plan.md`

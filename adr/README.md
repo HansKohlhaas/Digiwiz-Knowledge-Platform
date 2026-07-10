@@ -18,5 +18,6 @@ Architekturentscheidungen in Lesereihenfolge (empfohlen für Neueinsteiger).
 | [0012](ADR-0012-contracts-before-stage-e-f-automation.md) | Contracts vor E/F-Automation | E, F |
 | [0013](ADR-0013-source-resolution-and-sql-first-policy.md) | Source Resolution, SQL-first | D, E, Wiki |
 | [0014](ADR-0014-decision-engine-orchestration.md) | Decision Engine — Orchestrierung | E4, D |
+| [0015](ADR-0015-provider-data-boundary.md) | Provider Data Boundary — externe LLM-Übertragung | D, E, Phase 7E |
 
-**Leitplanke:** Bei Widerspruch zwischen abgeleitetem Index (Chroma) und KP-Contract gilt die **Knowledge Platform**. Bei Widerspruch zwischen Chroma/RAG/Web und **SQL-Firmendaten** gilt **SQL** (ADR-0013).
+**Leitplanke:** Bei Widerspruch zwischen abgeleitetem Index (Chroma) und KP-Contract gilt die **Knowledge Platform**. Bei Widerspruch zwischen Chroma/RAG/Web und **SQL-Firmendaten** gilt **SQL** (ADR-0013). Bei Widerspruch zwischen vollständigem Context Assembly und Provider-Kontext gilt **Provider Data Policy** (ADR-0015).

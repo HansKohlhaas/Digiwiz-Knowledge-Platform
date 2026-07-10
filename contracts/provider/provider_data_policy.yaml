@@ -1,0 +1,197 @@
+version: "1.0"
+policy_id: provider_data_policy
+owner: knowledge-platform
+adr_refs:
+  - ADR-0011
+  - ADR-0013
+  - ADR-0015
+purpose: >
+  Maschinenlesbare Provider Data Boundary: welche Felder und Feldklassen
+  an externe LLM-Provider duerfen, lokal bleiben, maskiert oder pseudonymisiert werden.
+
+defaults:
+  unknown_field_action: block
+  external_provider_transfer: false
+  local_processing_only: true
+  max_data_depth: none
+  allowed_purpose: [local_validation]
+  allowed_provider_classes: []
+  require_explicit_approval: false
+  mask_token: "[BLOCKED:unknown_field]"
+  audit_log_required: true
+
+provider_classes:
+  external_llm:
+    description: Externe Cloud-LLM-Provider (OpenAI, Google Gemini, Anthropic, …)
+  mock:
+    description: Lokaler Mock-Provider fuer Tests — gleiche Boundary-Regeln wie external_llm
+  local_only:
+    description: Kein externer Provider — nur lokale Verarbeitung
+
+purposes:
+  content_generation:
+    description: Textgenerierung fuer Presseschau, LinkedIn, Brandvoice
+  governance_hint:
+    description: Governance- und Playbook-Hinweise an Provider
+  local_validation:
+    description: Lokale Pruefung ohne externe Uebertragung
+
+field_classes:
+  operative_sql:
+    description: Operative SQL-/CRM-Felder
+    external_provider_transfer: false
+    local_processing_only: true
+    action: mask
+    mask_token: "[LOCAL_ONLY:crm_operational]"
+    max_data_depth: none
+    allowed_purpose: [local_validation]
+    allowed_provider_classes: []
+    require_explicit_approval: true
+
+  crm_identifier:
+    description: Kundennummern und interne CRM-IDs
+    external_provider_transfer: false
+    local_processing_only: true
+    action: block
+    pseudonymize: true
+    pseudonym_prefix: "kunden-ref"
+    max_data_depth: none
+    allowed_purpose: [local_validation]
+    allowed_provider_classes: []
+    require_explicit_approval: true
+
+  contact_personal:
+    description: Ansprechpartner- und personenbezogene Daten
+    external_provider_transfer: false
+    local_processing_only: true
+    action: block
+    max_data_depth: none
+    allowed_purpose: [local_validation]
+    allowed_provider_classes: []
+    require_explicit_approval: true
+
+  internal_notes:
+    description: Interne Notizen und vertrauliche Freitexte
+    external_provider_transfer: false
+    local_processing_only: true
+    action: block
+    max_data_depth: none
+    allowed_purpose: [local_validation]
+    allowed_provider_classes: []
+
+  governance_playbook:
+    description: Governance- und oeffentliche Playbook-Regeln
+    external_provider_transfer: true
+    local_processing_only: false
+    action: allow
+    max_data_depth: full
+    allowed_purpose: [content_generation, governance_hint]
+    allowed_provider_classes: [external_llm, mock]
+
+  semantic_rag:
+    description: Semantische RAG-Inhalte (abgeleitet)
+    external_provider_transfer: true
+    local_processing_only: false
+    action: allow
+    max_data_depth: summary
+    allowed_purpose: [content_generation]
+    allowed_provider_classes: [external_llm, mock]
+
+  structural_graph:
+    description: Graph- und Provenienz-Inhalte
+    external_provider_transfer: false
+    local_processing_only: true
+    action: mask
+    mask_token: "[LOCAL_ONLY:graph_structure]"
+    max_data_depth: summary
+    allowed_purpose: [local_validation]
+    allowed_provider_classes: []
+
+fields:
+  crm_status:
+    field_class: operative_sql
+    action: mask
+    mask_token: "[LOCAL_ONLY:crm_status]"
+    external_provider_transfer: false
+
+  kundennummer:
+    field_class: crm_identifier
+    action: block
+    pseudonymize: true
+
+  kundennumm:
+    field_class: crm_identifier
+    action: block
+    pseudonymize: true
+
+  segmentierung:
+    field_class: operative_sql
+    action: mask
+
+  umsatzklasse:
+    field_class: operative_sql
+    action: mask
+
+  msv3_status:
+    field_class: operative_sql
+    action: mask
+
+  operative_stammdaten:
+    field_class: operative_sql
+    action: mask
+
+  ansprechpartner:
+    field_class: contact_personal
+    action: block
+
+  kontaktperson:
+    field_class: contact_personal
+    action: block
+
+  interne_notizen:
+    field_class: internal_notes
+    action: block
+
+  governance_rules:
+    field_class: governance_playbook
+    action: allow
+    external_provider_transfer: true
+
+  presseschau_no_auto_publish:
+    field_class: governance_playbook
+    action: allow
+    external_provider_transfer: true
+
+  semantic_context:
+    field_class: semantic_rag
+    action: allow
+    max_data_depth: summary
+
+  content_background:
+    field_class: semantic_rag
+    action: allow
+    max_data_depth: summary
+
+  relationship_structure:
+    field_class: structural_graph
+    action: mask
+
+  provenance_chain:
+    field_class: structural_graph
+    action: mask
+
+local_only_sql_mode:
+  description: >
+    Bei DAR_KP_SQL_LOCAL_ONLY=1 duerfen read-only SQL-Abfragen lokal ausgefuehrt werden.
+    SQL-Werte werden nicht an externe Provider uebergeben; Provider erhaelt nur neutrale Struktur.
+  sql_values_to_provider: false
+  provider_neutral_token: "[LOCAL_VALIDATED:field_present]"
+  telemetry_redact_sql_values: true
+  memory_redact_sql_values: true
+  inbox_redact_sql_values: true
+
+audit:
+  log_blocked_fields: true
+  log_masked_fields: true
+  log_pseudonymized_fields: true
+  log_provider_decision: true

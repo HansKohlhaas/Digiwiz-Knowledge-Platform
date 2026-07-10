@@ -1,4 +1,4 @@
-version: "1.5.2"
+version: "1.5.3"
 name: digiwiz-knowledge-platform
 description: >
   Verbindliche Quelle für Regeln und Schnittstellen (Contracts):
@@ -101,6 +101,13 @@ contracts:
       - decision_output.schema.json
       - decision_trace.schema.json
       - decision_context.schema.json
+  provider_data_boundary:
+    policy: contracts/provider/
+    contract_status: contract_active
+    app_status: app_planned
+    hinweis: Provider Data Boundary — sensible Felder nicht an externe LLMs (Phase 7E)
+    includes:
+      - provider_data_policy.yaml
   examples:
     path: examples/
     contract_status: contract_active
