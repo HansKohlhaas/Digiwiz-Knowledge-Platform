@@ -19,6 +19,18 @@
   ],
   "properties": {
     "assembly_id": { "type": "string" },
+    "decision_id": {
+      "type": "string",
+      "description": "ADR-0014 — Korrelation zur Decision Engine (Pflicht wenn Decision-Pfad genutzt)"
+    },
+    "decision_context_ref": {
+      "type": "string",
+      "description": "Verweis auf decision_context (decision_id oder Artefaktpfad)"
+    },
+    "source_requirements_planned": {
+      "$ref": "../decision-engine/decision_shared.schema.json#/$defs/source_requirements",
+      "description": "Geplante Quellen aus Decision Engine — Abgleich mit tatsächlicher Feldfüllung"
+    },
     "canonical_sequence_ref": {
       "type": "string",
       "const": "contracts/source-resolution/source_resolution_policy.yaml",
@@ -59,25 +71,10 @@
     "required_fields": {
       "type": "array",
       "items": {
-        "type": "object",
-        "required": ["field_id", "label", "mandatory"],
-        "properties": {
-          "field_id": { "type": "string" },
-          "label": { "type": "string" },
-          "mandatory": { "type": "boolean" },
-          "preferred_sources": {
-            "type": "array",
-            "items": {
-              "enum": [
-                "sql_crm",
-                "knowledge_platform",
-                "knowledge_graph",
-                "chroma_rag",
-                "web_external"
-              ]
-            }
-          }
-        }
+        "allOf": [
+          { "$ref": "../decision-engine/decision_shared.schema.json#/$defs/required_field" },
+          { "required": ["label"] }
+        ]
       },
       "minItems": 1
     },

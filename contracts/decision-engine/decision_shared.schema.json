@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digiwiz.local/contracts/decision-engine/decision_shared.schema.json",
+  "title": "Decision Engine Shared Subcontracts",
+  "description": "ADR-0014 — Gemeinsame Teilstrukturen für Output, Context und Assembly (v1.5.1).",
+  "$defs": {
+    "reason_code": {
+      "type": "string",
+      "enum": [
+        "domain_match_sql_first",
+        "entity_match_sql_first",
+        "no_operational_domain_match",
+        "dar_task_requires_kp_governance",
+        "semantic_query_type",
+        "structural_query_type",
+        "no_structural_query_type",
+        "supplementary_external_only",
+        "regisseur_inbox_required",
+        "auto_publish_forbidden",
+        "missing_entity_clarification",
+        "sql_first_overrides_rag_for_operational_facts",
+        "playbook_hints_fallback",
+        "optional_source_escalation_only",
+        "optional_source_not_executed"
+      ]
+    },
+    "source_layer_enum": {
+      "enum": [
+        "sql_crm",
+        "knowledge_platform",
+        "knowledge_graph",
+        "chroma_rag",
+        "web_external"
+      ]
+    },
+    "source_requirement": {
+      "type": "object",
+      "required": ["status", "reason_code"],
+      "properties": {
+        "status": { "enum": ["required", "optional", "skipped"] },
+        "reason_code": { "$ref": "#/$defs/reason_code" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+      },
+      "additionalProperties": false
+    },
+    "source_requirements": {
+      "type": "object",
+      "required": [
+        "kp_governance",
+        "sql_crm_stammdaten",
+        "knowledge_graph",
+        "chroma_rag",
+        "web_external"
+      ],
+      "properties": {
+        "kp_governance": { "$ref": "#/$defs/source_requirement" },
+        "sql_crm_stammdaten": { "$ref": "#/$defs/source_requirement" },
+        "knowledge_graph": { "$ref": "#/$defs/source_requirement" },
+        "chroma_rag": { "$ref": "#/$defs/source_requirement" },
+        "web_external": { "$ref": "#/$defs/source_requirement" }
+      },
+      "additionalProperties": false
+    },
+    "required_field": {
+      "type": "object",
+      "required": ["field_id", "mandatory"],
+      "properties": {
+        "field_id": { "type": "string" },
+        "label": { "type": "string" },
+        "mandatory": { "type": "boolean" },
+        "preferred_sources": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/source_layer_enum" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "required_fields": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/required_field" }
+    },
+    "governance_summary": {
+      "type": "object",
+      "required": ["approval_required", "auto_publish_allowed"],
+      "properties": {
+        "approval_required": { "type": "boolean" },
+        "clarification_required": { "type": "boolean" },
+        "auto_publish_allowed": { "const": false },
+        "applied_adrs": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "orchestration_step": {
+      "type": "object",
+      "required": ["step_id", "module", "status"],
+      "properties": {
+        "step_id": { "type": "string" },
+        "module": {
+          "enum": [
+            "intent_recognition",
+            "decision_engine",
+            "source_resolution",
+            "context_assembly",
+            "context_builder"
+          ]
+        },
+        "status": {
+          "enum": ["completed", "planned", "skipped", "blocked"]
+        },
+        "condition": { "type": "string" },
+        "execution_note": {
+          "type": "string",
+          "description": "optional = geplant, Ausführung nur bei Eskalation nach vorherigen Stufen"
+        }
+      },
+      "additionalProperties": false
+    },
+    "rejected_alternative": {
+      "type": "object",
+      "required": ["source_id", "reason_code"],
+      "properties": {
+        "source_id": { "type": "string" },
+        "reason_code": { "$ref": "#/$defs/reason_code" },
+        "adr": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "next_stage": {
+      "enum": ["source_resolution", "clarification", "approval_gate", "block"]
+    }
+  }
+}

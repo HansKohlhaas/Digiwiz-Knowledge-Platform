@@ -22,7 +22,7 @@
     },
     "chroma_rag": {
       "status": "optional",
-      "reason_code": "semantic_query_type",
+      "reason_code": "optional_source_escalation_only",
       "confidence": 0.75
     },
     "web_external": {
@@ -48,7 +48,8 @@
       "step_id": "chroma_rag",
       "module": "source_resolution",
       "status": "planned",
-      "condition": "optional"
+      "condition": "optional",
+      "execution_note": "Nur bei Feld-Eskalation"
     },
     {
       "step_id": "context_assembly",
@@ -82,11 +83,13 @@
   },
   "policy_refs": {
     "decision_policy_ref": "contracts/decision-engine/decision_policy.yaml",
-    "resolution_policy_ref": "contracts/source-resolution/source_resolution_policy.yaml"
+    "resolution_policy_ref": "contracts/source-resolution/source_resolution_policy.yaml",
+    "decision_output_ref": "dec-presseschau-crm-001",
+    "decision_trace_ref": "tr-dec-presseschau-crm-001"
   },
   "next_stage": "source_resolution",
   "readiness": {
     "ready_for_source_resolution": true,
-    "answer_generation_allowed": true
+    "answer_generation_allowed_after_context_assembly": false
   }
 }

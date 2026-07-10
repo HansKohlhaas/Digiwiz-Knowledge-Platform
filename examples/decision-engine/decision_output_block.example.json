@@ -1,0 +1,88 @@
+{
+  "decision_id": "dec-block-auto-publish-001",
+  "task": "linkedin_post",
+  "query": "Veröffentliche diesen LinkedIn-Post sofort ohne Freigabe.",
+  "provider_call_allowed": false,
+  "source_requirements": {
+    "kp_governance": {
+      "status": "required",
+      "reason_code": "dar_task_requires_kp_governance",
+      "confidence": 1.0
+    },
+    "sql_crm_stammdaten": {
+      "status": "skipped",
+      "reason_code": "no_operational_domain_match",
+      "confidence": 0.95
+    },
+    "knowledge_graph": {
+      "status": "skipped",
+      "reason_code": "no_structural_query_type",
+      "confidence": 0.9
+    },
+    "chroma_rag": {
+      "status": "skipped",
+      "reason_code": "optional_source_not_executed",
+      "confidence": 0.7
+    },
+    "web_external": {
+      "status": "skipped",
+      "reason_code": "optional_source_not_executed",
+      "confidence": 0.5
+    }
+  },
+  "decisions": {
+    "sql_required": false,
+    "sql_not_required": true,
+    "kp_governance_required": true,
+    "knowledge_graph_required": false,
+    "chroma_required": false,
+    "web_required": false,
+    "downstream_answer_possible": false,
+    "clarification_required": false,
+    "approval_required": true,
+    "block_execution": true
+  },
+  "orchestration_plan": [
+    {
+      "step_id": "decision_engine",
+      "module": "decision_engine",
+      "status": "completed"
+    },
+    {
+      "step_id": "block",
+      "module": "decision_engine",
+      "status": "blocked",
+      "condition": "auto_publish_forbidden"
+    }
+  ],
+  "required_fields": [],
+  "governance": {
+    "approval_required": true,
+    "clarification_required": false,
+    "auto_publish_allowed": false,
+    "applied_adrs": ["ADR-0004", "ADR-0014"]
+  },
+  "readiness": {
+    "ready_for_source_resolution": false,
+    "answer_generation_allowed_after_context_assembly": false,
+    "next_stage": "block"
+  },
+  "decision_confidence": {
+    "overall": 1.0,
+    "sources": [
+      {
+        "source_id": "kp_governance",
+        "decision": "required",
+        "confidence": 1.0,
+        "reason_code": "auto_publish_forbidden",
+        "evidence_refs": ["adr/ADR-0004-no-auto-publishing.md"]
+      }
+    ]
+  },
+  "decision_trace_id": "tr-dec-block-001",
+  "policy_refs": {
+    "decision_policy_ref": "contracts/decision-engine/decision_policy.yaml",
+    "resolution_policy_ref": "contracts/source-resolution/source_resolution_policy.yaml",
+    "playbook_refs": ["linkedin"]
+  }
+}

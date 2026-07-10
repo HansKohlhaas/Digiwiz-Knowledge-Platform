@@ -1,5 +1,34 @@
 {
   "assembly_id": "asm-presseschau-crm-status-001",
+  "decision_id": "dec-presseschau-crm-001",
+  "decision_context_ref": "dec-presseschau-crm-001",
+  "source_requirements_planned": {
+    "kp_governance": {
+      "status": "required",
+      "reason_code": "dar_task_requires_kp_governance",
+      "confidence": 1.0
+    },
+    "sql_crm_stammdaten": {
+      "status": "required",
+      "reason_code": "domain_match_sql_first",
+      "confidence": 0.95
+    },
+    "knowledge_graph": {
+      "status": "skipped",
+      "reason_code": "no_structural_query_type",
+      "confidence": 0.9
+    },
+    "chroma_rag": {
+      "status": "optional",
+      "reason_code": "optional_source_escalation_only",
+      "confidence": 0.75
+    },
+    "web_external": {
+      "status": "optional",
+      "reason_code": "supplementary_external_only",
+      "confidence": 0.5
+    }
+  },
   "canonical_sequence_ref": "contracts/source-resolution/source_resolution_policy.yaml",
   "classification": {
     "sql_first": true,

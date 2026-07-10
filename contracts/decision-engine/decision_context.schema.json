@@ -22,56 +22,17 @@
     "task": { "type": "string" },
     "query": { "type": "string" },
     "sql_first": { "type": "boolean" },
-    "source_requirements": {
-      "type": "object",
-      "required": [
-        "kp_governance",
-        "sql_crm_stammdaten",
-        "knowledge_graph",
-        "chroma_rag",
-        "web_external"
-      ],
-      "properties": {
-        "kp_governance": { "$ref": "#/$defs/source_requirement" },
-        "sql_crm_stammdaten": { "$ref": "#/$defs/source_requirement" },
-        "knowledge_graph": { "$ref": "#/$defs/source_requirement" },
-        "chroma_rag": { "$ref": "#/$defs/source_requirement" },
-        "web_external": { "$ref": "#/$defs/source_requirement" }
-      }
-    },
+    "source_requirements": { "$ref": "decision_shared.schema.json#/$defs/source_requirements" },
     "orchestration_plan": {
       "type": "array",
-      "items": { "$ref": "#/$defs/orchestration_step" },
+      "items": { "$ref": "decision_shared.schema.json#/$defs/orchestration_step" },
       "minItems": 1
     },
-    "required_fields": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["field_id", "mandatory"],
-        "properties": {
-          "field_id": { "type": "string" },
-          "label": { "type": "string" },
-          "mandatory": { "type": "boolean" },
-          "preferred_sources": {
-            "type": "array",
-            "items": { "type": "string" }
-          }
-        }
-      }
-    },
-    "governance": {
-      "type": "object",
-      "required": ["approval_required", "auto_publish_allowed"],
-      "properties": {
-        "approval_required": { "type": "boolean" },
-        "clarification_required": { "type": "boolean" },
-        "auto_publish_allowed": { "const": false }
-      }
-    },
+    "required_fields": { "$ref": "decision_shared.schema.json#/$defs/required_fields" },
+    "governance": { "$ref": "decision_shared.schema.json#/$defs/governance_summary" },
     "policy_refs": {
       "type": "object",
-      "required": ["decision_policy_ref", "resolution_policy_ref"],
+      "required": ["decision_policy_ref", "resolution_policy_ref", "decision_output_ref"],
       "properties": {
         "decision_policy_ref": {
           "type": "string",
@@ -80,50 +41,24 @@
         "resolution_policy_ref": {
           "type": "string",
           "const": "contracts/source-resolution/source_resolution_policy.yaml"
-        }
-      }
+        },
+        "decision_output_ref": {
+          "type": "string",
+          "description": "decision_id oder Pfad zum Decision-Output für Audit-Kette"
+        },
+        "decision_trace_ref": { "type": "string" }
+      },
+      "additionalProperties": false
     },
-    "next_stage": {
-      "enum": ["source_resolution", "clarification", "approval_gate", "block"]
-    },
+    "next_stage": { "$ref": "decision_shared.schema.json#/$defs/next_stage" },
     "readiness": {
       "type": "object",
       "properties": {
         "ready_for_source_resolution": { "type": "boolean" },
-        "answer_generation_allowed": { "type": "boolean" }
-      }
+        "answer_generation_allowed_after_context_assembly": { "type": "boolean" }
+      },
+      "additionalProperties": false
     }
   },
-  "additionalProperties": false,
-  "$defs": {
-    "source_requirement": {
-      "type": "object",
-      "required": ["status", "reason_code"],
-      "properties": {
-        "status": { "enum": ["required", "optional", "skipped"] },
-        "reason_code": { "type": "string" },
-        "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
-      }
-    },
-    "orchestration_step": {
-      "type": "object",
-      "required": ["step_id", "module", "status"],
-      "properties": {
-        "step_id": { "type": "string" },
-        "module": {
-          "enum": [
-            "intent_recognition",
-            "decision_engine",
-            "source_resolution",
-            "context_assembly",
-            "context_builder"
-          ]
-        },
-        "status": {
-          "enum": ["completed", "planned", "skipped", "blocked"]
-        },
-        "condition": { "type": "string" }
-      }
-    }
-  }
+  "additionalProperties": false
 }

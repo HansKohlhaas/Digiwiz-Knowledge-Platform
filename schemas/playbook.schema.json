@@ -33,14 +33,32 @@
       "type": "object",
       "description": "ADR-0014 — optionale Hinweise für Decision Engine (keine Fachlogik im Code)",
       "properties": {
-        "default_query_type": { "type": "string" },
+        "default_query_type": {
+          "enum": [
+            "operational_lookup",
+            "content_preparation",
+            "semantic_lookup",
+            "relationship_lookup",
+            "provenance_trace",
+            "governance_check",
+            "mixed"
+          ]
+        },
         "sql_first_when_entities": {
           "type": "array",
           "items": { "type": "string" }
         },
         "preferred_sources": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "enum": [
+              "sql_crm",
+              "knowledge_platform",
+              "knowledge_graph",
+              "chroma_rag",
+              "web_external"
+            ]
+          }
         },
         "required_field_templates": {
           "type": "array",
@@ -52,14 +70,41 @@
               "mandatory": { "type": "boolean" },
               "preferred_sources": {
                 "type": "array",
-                "items": { "type": "string" }
+                "items": {
+                  "enum": [
+                    "sql_crm",
+                    "knowledge_platform",
+                    "knowledge_graph",
+                    "chroma_rag",
+                    "web_external"
+                  ]
+                }
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "clarification_triggers": {
           "type": "array",
-          "items": { "type": "object" }
+          "items": {
+            "type": "object",
+            "required": ["missing_entity"],
+            "properties": {
+              "missing_entity": { "type": "string" },
+              "when_query_type": {
+                "enum": [
+                  "operational_lookup",
+                  "content_preparation",
+                  "semantic_lookup",
+                  "relationship_lookup",
+                  "provenance_trace",
+                  "governance_check",
+                  "mixed"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
         }
       },
       "additionalProperties": true

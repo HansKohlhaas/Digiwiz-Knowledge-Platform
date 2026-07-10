@@ -123,4 +123,4 @@ Provider → Validator → Regisseur-Inbox
 
 | Version | Datum | Änderung |
 |---------|-------|----------|
-| 1 | 2026-07-09 | Decision Engine als KP-Contract, Stufe E4 |
+| 1 | 2026-07-10 | Decision Engine als KP-Contract, Stufe E4 |

@@ -1,4 +1,4 @@
-version: "1.5.0"
+version: "1.5.1"
 name: digiwiz-knowledge-platform
 description: >
   Verbindliche Quelle für Regeln und Schnittstellen (Contracts):
@@ -95,6 +95,7 @@ contracts:
     hinweis: Orchestrierungsentscheidungen; keine Antworten, kein Retrieval
     includes:
       - decision_policy.yaml
+      - decision_shared.schema.json
       - decision_input.schema.json
       - decision_output.schema.json
       - decision_trace.schema.json

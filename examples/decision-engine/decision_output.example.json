@@ -2,6 +2,7 @@
   "decision_id": "dec-presseschau-crm-001",
   "task": "presseschau",
   "query": "Welchen CRM-Status hat Apotheke Kundennummer 12345 und welche Presseschau-Regeln gelten?",
+  "provider_call_allowed": false,
   "source_requirements": {
     "kp_governance": {
       "status": "required",
@@ -20,7 +21,7 @@
     },
     "chroma_rag": {
       "status": "optional",
-      "reason_code": "semantic_query_type",
+      "reason_code": "optional_source_escalation_only",
       "confidence": 0.75
     },
     "web_external": {
@@ -36,7 +37,7 @@
     "knowledge_graph_required": false,
     "chroma_required": false,
     "web_required": false,
-    "answer_generation_allowed": true,
+    "downstream_answer_possible": true,
     "clarification_required": false,
     "approval_required": true,
     "block_execution": false
@@ -74,7 +75,8 @@
       "step_id": "chroma_rag",
       "module": "source_resolution",
       "status": "planned",
-      "condition": "optional"
+      "condition": "optional",
+      "execution_note": "Nur wenn Pflichtfelder nach SQL/KP noch missing/uncertain"
     },
     {
       "step_id": "context_assembly",
@@ -109,7 +111,7 @@
   },
   "readiness": {
     "ready_for_source_resolution": true,
-    "answer_generation_allowed": true,
+    "answer_generation_allowed_after_context_assembly": false,
     "next_stage": "source_resolution"
   },
   "decision_confidence": {

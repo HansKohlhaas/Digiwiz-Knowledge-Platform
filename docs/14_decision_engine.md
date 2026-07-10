@@ -80,7 +80,7 @@ Die Engine durchläuft **intern** diese Schritte (Orchestrierungsentscheidung, k
 | `orchestration_plan` | Geordnete Downstream-Schritte |
 | `required_fields` | An Context Assembly weitergegeben |
 | `governance` | `approval_required`, `clarification_required`, … |
-| `readiness` | `answer_generation_allowed`, `ready_for_source_resolution` |
+| `readiness` | `answer_generation_allowed_after_context_assembly`, `ready_for_source_resolution` |
 | `decision_confidence` | Gesamt + pro Quelle |
 | `decision_trace_id` | Verweis auf Trace |
 
@@ -169,10 +169,14 @@ Aggregiert im Objekt `decisions`:
 | `knowledge_graph_required` | Graph-Abfrage im Plan |
 | `chroma_required` | RAG-Abfrage im Plan |
 | `web_required` | Web-Ergänzung im Plan |
-| `answer_generation_allowed` | Downstream darf Provider aufrufen |
+| `downstream_answer_possible` | Antwort theoretisch möglich nach erfolgreichem Downstream |
 | `clarification_required` | Rückfrage an User vor Fortsetzung |
 | `approval_required` | Regisseur-Freigabe vor externer Wirkung |
 | `block_execution` | Pipeline stoppen (Governance-Verstoß) |
+
+**Root-Feld:** `provider_call_allowed` ist **immer `false`** auf Decision-Ebene — Provider erst nach Context Assembly.
+
+**Readiness:** `answer_generation_allowed_after_context_assembly` erst nach erfolgreicher Assembly auf `true`.
 
 **Hinweis:** `sql_required` und `sql_not_required` schließen sich gegenseitig aus; beide müssen im Trace begründet sein.
 
@@ -294,7 +298,7 @@ Struktur in `decision_output.decision_confidence`:
 | Aspekt | Status |
 |--------|--------|
 | ADR-0014 | ✅ |
-| Contracts + Beispiele | ✅ KP v1.5.0 |
+| Contracts + Beispiele | ✅ KP v1.5.1 |
 | App-Modul `decision_engine` | ⏳ geplant |
 | Integration D4/D5/E3 | ⏳ nach Contract-Tests |
 

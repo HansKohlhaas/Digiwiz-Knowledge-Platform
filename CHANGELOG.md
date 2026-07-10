@@ -4,6 +4,24 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [1.5.1] - 2026-07-10
+
+### Added
+
+- `decision_shared.schema.json` — gemeinsame Teilstrukturen (`source_requirements`, `required_fields`, `reason_code` enum)
+- Decision-Beispiele: `clarification`, `block`, `approval_gate`
+- `context_assembly` — `decision_id`, `decision_context_ref`, `source_requirements_planned`
+- `decision_policy.yaml` — `playbook_hints_fallback`, `optional_source_escalation`, fehlende Reason-Codes
+
+### Changed
+
+- `decision_output` — `provider_call_allowed: false` Pflicht; `downstream_answer_possible` statt irreführendem `answer_generation_allowed`
+- `readiness.answer_generation_allowed_after_context_assembly` — klare Semantik
+- `reason_code` validiert gegen Policy-Katalog (enum in `decision_shared`)
+- `decision_context.policy_refs` — `decision_output_ref`, `decision_trace_ref`
+- `playbook.schema.json` — `decision_hints` enger typisiert
+- Tests — Reason-Code-Katalog, Output/Context-Sync, Negativbeispiele, Assembly-Verknüpfung
+
 ## [1.5.0] - 2026-07-10
 
 ### Added

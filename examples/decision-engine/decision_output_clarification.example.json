@@ -1,0 +1,94 @@
+{
+  "decision_id": "dec-clarification-missing-entity-001",
+  "task": "presseschau",
+  "query": "Welchen CRM-Status hat die Apotheke?",
+  "provider_call_allowed": false,
+  "source_requirements": {
+    "kp_governance": {
+      "status": "required",
+      "reason_code": "dar_task_requires_kp_governance",
+      "confidence": 1.0
+    },
+    "sql_crm_stammdaten": {
+      "status": "required",
+      "reason_code": "entity_match_sql_first",
+      "confidence": 0.6
+    },
+    "knowledge_graph": {
+      "status": "skipped",
+      "reason_code": "no_structural_query_type",
+      "confidence": 0.9
+    },
+    "chroma_rag": {
+      "status": "skipped",
+      "reason_code": "optional_source_not_executed",
+      "confidence": 0.8
+    },
+    "web_external": {
+      "status": "skipped",
+      "reason_code": "optional_source_not_executed",
+      "confidence": 0.5
+    }
+  },
+  "decisions": {
+    "sql_required": true,
+    "sql_not_required": false,
+    "kp_governance_required": true,
+    "knowledge_graph_required": false,
+    "chroma_required": false,
+    "web_required": false,
+    "downstream_answer_possible": false,
+    "clarification_required": true,
+    "approval_required": true,
+    "block_execution": false
+  },
+  "orchestration_plan": [
+    {
+      "step_id": "decision_engine",
+      "module": "decision_engine",
+      "status": "completed"
+    },
+    {
+      "step_id": "clarification",
+      "module": "decision_engine",
+      "status": "planned",
+      "condition": "missing_entity_clarification"
+    }
+  ],
+  "required_fields": [
+    {
+      "field_id": "crm_status",
+      "label": "CRM-Status Apotheke",
+      "mandatory": true,
+      "preferred_sources": ["sql_crm"]
+    }
+  ],
+  "governance": {
+    "approval_required": true,
+    "clarification_required": true,
+    "auto_publish_allowed": false
+  },
+  "readiness": {
+    "ready_for_source_resolution": false,
+    "answer_generation_allowed_after_context_assembly": false,
+    "next_stage": "clarification"
+  },
+  "decision_confidence": {
+    "overall": 0.55,
+    "sources": [
+      {
+        "source_id": "sql_crm_stammdaten",
+        "decision": "required",
+        "confidence": 0.6,
+        "reason_code": "missing_entity_clarification",
+        "evidence_refs": ["playbooks/presseschau.yaml#decision_hints.clarification_triggers"]
+      }
+    ]
+  },
+  "decision_trace_id": "tr-dec-clarification-001",
+  "policy_refs": {
+    "decision_policy_ref": "contracts/decision-engine/decision_policy.yaml",
+    "resolution_policy_ref": "contracts/source-resolution/source_resolution_policy.yaml",
+    "playbook_refs": ["presseschau"]
+  }
+}

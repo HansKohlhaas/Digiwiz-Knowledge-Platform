@@ -1,0 +1,100 @@
+{
+  "decision_id": "dec-approval-gate-001",
+  "task": "presseschau",
+  "query": "Bereite LinkedIn-Post für externe Veröffentlichung vor.",
+  "provider_call_allowed": false,
+  "source_requirements": {
+    "kp_governance": {
+      "status": "required",
+      "reason_code": "dar_task_requires_kp_governance",
+      "confidence": 1.0
+    },
+    "sql_crm_stammdaten": {
+      "status": "skipped",
+      "reason_code": "no_operational_domain_match",
+      "confidence": 0.9
+    },
+    "knowledge_graph": {
+      "status": "skipped",
+      "reason_code": "no_structural_query_type",
+      "confidence": 0.9
+    },
+    "chroma_rag": {
+      "status": "optional",
+      "reason_code": "semantic_query_type",
+      "confidence": 0.7
+    },
+    "web_external": {
+      "status": "optional",
+      "reason_code": "supplementary_external_only",
+      "confidence": 0.4
+    }
+  },
+  "decisions": {
+    "sql_required": false,
+    "sql_not_required": true,
+    "kp_governance_required": true,
+    "knowledge_graph_required": false,
+    "chroma_required": false,
+    "web_required": false,
+    "downstream_answer_possible": true,
+    "clarification_required": false,
+    "approval_required": true,
+    "block_execution": false
+  },
+  "orchestration_plan": [
+    {
+      "step_id": "decision_engine",
+      "module": "decision_engine",
+      "status": "completed"
+    },
+    {
+      "step_id": "approval_gate",
+      "module": "decision_engine",
+      "status": "planned",
+      "condition": "regisseur_inbox_required"
+    },
+    {
+      "step_id": "context_assembly",
+      "module": "context_assembly",
+      "status": "planned"
+    }
+  ],
+  "required_fields": [
+    {
+      "field_id": "presseschau_no_auto_publish",
+      "label": "Keine Auto-Veröffentlichung",
+      "mandatory": true,
+      "preferred_sources": ["knowledge_platform"]
+    }
+  ],
+  "governance": {
+    "approval_required": true,
+    "clarification_required": false,
+    "auto_publish_allowed": false,
+    "applied_adrs": ["ADR-0002", "ADR-0004"]
+  },
+  "readiness": {
+    "ready_for_source_resolution": true,
+    "answer_generation_allowed_after_context_assembly": false,
+    "next_stage": "approval_gate"
+  },
+  "decision_confidence": {
+    "overall": 0.82,
+    "sources": [
+      {
+        "source_id": "kp_governance",
+        "decision": "required",
+        "confidence": 1.0,
+        "reason_code": "regisseur_inbox_required",
+        "evidence_refs": ["contracts/decision-engine/decision_policy.yaml#governance_gates"]
+      }
+    ]
+  },
+  "decision_trace_id": "tr-dec-approval-001",
+  "policy_refs": {
+    "decision_policy_ref": "contracts/decision-engine/decision_policy.yaml",
+    "resolution_policy_ref": "contracts/source-resolution/source_resolution_policy.yaml",
+    "playbook_refs": ["presseschau", "linkedin"]
+  }
+}

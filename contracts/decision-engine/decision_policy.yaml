@@ -33,6 +33,7 @@ pipeline_steps:
     order: 4
     source: playbooks
     field: decision_hints
+    fallback: playbook_hints_fallback
   - id: consume_intent_signals
     order: 5
     input_field: intent_classification
@@ -108,6 +109,23 @@ source_requirement_rules:
     priority: lowest
     reason_code: supplementary_external_only
 
+playbook_hints_fallback:
+  when: playbook has no decision_hints
+  behavior:
+    - use generic source_requirement_rules from this policy
+    - kp_governance always required
+    - no task-specific sql_first_when_entities extension
+    - governance gates still apply
+  reason_code: playbook_hints_fallback
+
+optional_source_escalation:
+  rule: >
+    status optional bedeutet geplant, aber Ausführung nur wenn required_fields
+    nach vorherigen kanonischen Stufen noch missing/uncertain sind.
+    Optional ersetzt niemals SQL-first für operative Fakten (ADR-0013).
+  reason_code_when_planned: optional_source_escalation_only
+  reason_code_when_skipped: optional_source_not_executed
+
 readiness_rules:
   - id: clarification_missing_entity
     when: clarification_triggers matched
@@ -135,6 +153,8 @@ reason_codes:
     description: Semantische Anfrage — Chroma optional
   structural_query_type:
     description: Strukturelle Anfrage — Graph erforderlich
+  no_structural_query_type:
+    description: Kein struktureller Query-Typ — Graph übersprungen
   supplementary_external_only:
     description: Web nur ergänzend, niedrigste Priorität
   regisseur_inbox_required:
@@ -143,6 +163,18 @@ reason_codes:
     description: Auto-Publish laut ADR-0004 blockiert
   missing_entity_clarification:
     description: Pflicht-Entität fehlt — Rückfrage
+  sql_first_overrides_rag_for_operational_facts:
+    description: Operative Fakten nur aus SQL, nicht aus Chroma/RAG (ADR-0013)
+  playbook_hints_fallback:
+    description: Playbook ohne decision_hints — generische Policy-Regeln
+  optional_source_escalation_only:
+    description: Optionale Quelle geplant — Ausführung nur bei Feld-Eskalation
+  optional_source_not_executed:
+    description: Optionale Quelle nicht ausgeführt — Pflichtfelder bereits erfüllt
+
+provider_call_policy:
+  decision_phase: provider_call_allowed must be false
+  after_context_assembly: answer_generation_allowed_after_context_assembly may become true
 
 orchestration_plan_template:
   - step: classify_intent

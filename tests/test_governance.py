@@ -91,6 +91,24 @@ EXAMPLE_PAIRS = (
         "examples/decision-engine/decision_context.example.json",
         "contracts/decision-engine/decision_context.schema.json",
     ),
+    (
+        "examples/decision-engine/decision_output_clarification.example.json",
+        "contracts/decision-engine/decision_output.schema.json",
+    ),
+    (
+        "examples/decision-engine/decision_output_block.example.json",
+        "contracts/decision-engine/decision_output.schema.json",
+    ),
+    (
+        "examples/decision-engine/decision_output_approval_gate.example.json",
+        "contracts/decision-engine/decision_output.schema.json",
+    ),
+)
+DECISION_OUTPUT_EXAMPLES = (
+    "examples/decision-engine/decision_output.example.json",
+    "examples/decision-engine/decision_output_clarification.example.json",
+    "examples/decision-engine/decision_output_block.example.json",
+    "examples/decision-engine/decision_output_approval_gate.example.json",
 )
 STAGE_EF_DOCS = (
     ROOT / "docs" / "11_roadmap_stufen_a_f.md",
@@ -122,6 +140,50 @@ def _jsonschema_validator():
     except ImportError as exc:
         raise unittest.SkipTest("jsonschema nicht installiert — pip install jsonschema") from exc
     return Draft202012Validator
+
+
+def _contract_validator(schema_path: Path):
+    Draft202012Validator = _jsonschema_validator()
+    schema = _load_json(schema_path)
+    shared = ROOT / "contracts" / "decision-engine" / "decision_shared.schema.json"
+    if not shared.is_file():
+        return Draft202012Validator(schema)
+    try:
+        from referencing import Registry, Resource
+
+        shared_doc = _load_json(shared)
+        registry = (
+            Registry()
+            .with_resource(schema_path.name, Resource.from_contents(schema))
+            .with_resource("decision_shared.schema.json", Resource.from_contents(shared_doc))
+            .with_resource(
+                "../decision-engine/decision_shared.schema.json",
+                Resource.from_contents(shared_doc),
+            )
+        )
+        return Draft202012Validator(schema, registry=registry)
+    except ImportError:
+        merged = dict(schema)
+        merged.setdefault("$defs", {}).update(shared_doc.get("$defs", {}))
+        return Draft202012Validator(merged)
+
+
+def _reason_codes_from_policy() -> frozenset[str]:
+    policy = _load_yaml(ROOT / "contracts" / "decision-engine" / "decision_policy.yaml")
+    return frozenset(policy.get("reason_codes", {}).keys())
+
+
+def _collect_reason_codes(obj) -> set[str]:
+    found: set[str] = set()
+    if isinstance(obj, dict):
+        if "reason_code" in obj and isinstance(obj["reason_code"], str):
+            found.add(obj["reason_code"])
+        for value in obj.values():
+            found.update(_collect_reason_codes(value))
+    elif isinstance(obj, list):
+        for item in obj:
+            found.update(_collect_reason_codes(item))
+    return found
 
 
 class TestGovernance(unittest.TestCase):
@@ -158,15 +220,14 @@ class TestGovernance(unittest.TestCase):
             self.assertTrue((SCHEMAS / name).is_file(), name)
 
     def test_beispiele_gegen_schemas(self):
-        Draft202012Validator = _jsonschema_validator()
         for example_rel, schema_rel in EXAMPLE_PAIRS:
             example = _load_json(ROOT / example_rel)
             if schema_rel.startswith("contracts/"):
                 schema_path = ROOT / schema_rel
+                validator = _contract_validator(schema_path)
             else:
                 schema_path = SCHEMAS / schema_rel
-            schema = _load_json(schema_path)
-            validator = Draft202012Validator(schema)
+                validator = _jsonschema_validator()(_load_json(schema_path))
             errors = sorted(validator.iter_errors(example), key=lambda e: list(e.path))
             self.assertFalse(errors, f"{example_rel}: {[e.message for e in errors]}")
 
@@ -210,6 +271,7 @@ class TestGovernance(unittest.TestCase):
         de = ROOT / "contracts" / "decision-engine"
         for name in (
             "decision_policy.yaml",
+            "decision_shared.schema.json",
             "decision_input.schema.json",
             "decision_output.schema.json",
             "decision_trace.schema.json",
@@ -225,6 +287,57 @@ class TestGovernance(unittest.TestCase):
         not_block = schema.get("not", {})
         for forbidden in ("published_url", "auto_publish", "answer_text"):
             self.assertIn(forbidden, not_block.get("required", []))
+
+    def test_decision_reason_codes_im_policy_katalog(self):
+        catalog = _reason_codes_from_policy()
+        for rel in DECISION_OUTPUT_EXAMPLES:
+            data = _load_json(ROOT / rel)
+            used = _collect_reason_codes(data)
+            missing = used - catalog
+            self.assertFalse(missing, f"{rel}: unbekannte reason_codes {missing}")
+        trace = _load_json(ROOT / "examples/decision-engine/decision_trace.example.json")
+        trace_codes = _collect_reason_codes(trace)
+        ctx = _load_json(ROOT / "examples/decision-engine/decision_context.example.json")
+        ctx_codes = _collect_reason_codes(ctx)
+        assembly = _load_json(ROOT / "examples/source-resolution/context_assembly.example.json")
+        asm_codes = _collect_reason_codes(assembly)
+        for label, codes in (
+            ("trace", trace_codes),
+            ("context", ctx_codes),
+            ("assembly", asm_codes),
+        ):
+            missing = codes - catalog
+            self.assertFalse(missing, f"{label}: unbekannte reason_codes {missing}")
+
+    def test_decision_output_und_context_synchron(self):
+        out = _load_json(ROOT / "examples/decision-engine/decision_output.example.json")
+        ctx = _load_json(ROOT / "examples/decision-engine/decision_context.example.json")
+        for key in ("source_requirements", "required_fields"):
+            self.assertEqual(out[key], ctx[key], key)
+        self.assertEqual(out["readiness"]["next_stage"], ctx["next_stage"])
+        self.assertEqual(out["governance"]["approval_required"], ctx["governance"]["approval_required"])
+
+    def test_decision_output_provider_call_verboten(self):
+        for rel in DECISION_OUTPUT_EXAMPLES:
+            out = _load_json(ROOT / rel)
+            self.assertFalse(out["provider_call_allowed"], rel)
+
+    def test_decision_output_sql_required_impliziert_sql_status(self):
+        out = _load_json(ROOT / "examples/decision-engine/decision_output.example.json")
+        if out["decisions"]["sql_required"]:
+            self.assertEqual(out["source_requirements"]["sql_crm_stammdaten"]["status"], "required")
+
+    def test_context_assembly_decision_verknuepfung(self):
+        asm = _load_json(ROOT / "examples/source-resolution/context_assembly.example.json")
+        self.assertEqual(asm["decision_id"], "dec-presseschau-crm-001")
+        self.assertEqual(asm["decision_context_ref"], "dec-presseschau-crm-001")
+        self.assertIn("source_requirements_planned", asm)
+
+    def test_playbook_ohne_decision_hints_fallback(self):
+        data = _load_yaml(PLAYBOOKS / "brandvoice.yaml")
+        self.assertNotIn("decision_hints", data)
+        policy = _load_yaml(ROOT / "contracts/decision-engine/decision_policy.yaml")
+        self.assertIn("playbook_hints_fallback", policy)
 
     def test_decision_output_sql_mutex(self):
         out = _load_json(ROOT / "examples" / "decision-engine" / "decision_output.example.json")
