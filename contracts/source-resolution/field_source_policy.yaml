@@ -1,0 +1,241 @@
+version: "1.0"
+policy_id: field_source_policy
+owner: knowledge-platform
+adr_refs:
+  - ADR-0011
+  - ADR-0013
+  - ADR-0014
+purpose: >
+  Kanonische Feld-zu-Quellen-Policy fuer DAR-KP Source Resolution,
+  Context Assembly, Chroma/RAG-Merge und Knowledge-Graph-Erweiterung.
+
+defaults:
+  provenance_required: true
+  minimum_confidence: 0.75
+  missing_behavior: block_if_mandatory
+  uncertain_behavior: block_if_mandatory
+  conflict_rule: canonical_source_wins
+  sensitive: false
+
+source_layers:
+  sql_crm:
+    canonical_for: operative_sql
+    derived: false
+    stores_canonical_knowledge: true
+  knowledge_platform:
+    canonical_for: governance_playbook
+    derived: false
+    stores_canonical_knowledge: true
+  chroma_rag:
+    canonical_for: none
+    derived: true
+    stores_canonical_knowledge: false
+  knowledge_graph:
+    canonical_for: structural_graph
+    derived: true
+    stores_canonical_knowledge: false
+
+field_classes:
+  operative_sql:
+    description: Operative CRM-/SQL-Felder. SQL ist kanonisch.
+  governance_playbook:
+    description: Governance- und Playbook-Felder. Knowledge Platform ist kanonisch.
+  semantic_rag:
+    description: Semantische Kontextfelder. Chroma/RAG darf nur abgeleitet ergaenzen.
+  structural_graph:
+    description: Struktur- und Provenienzfelder. Knowledge Graph liefert nur Kontext/Beziehungen.
+
+fields:
+  crm_status:
+    field_class: operative_sql
+    canonical_source: sql_crm
+    allowed_supplemental_sources: []
+    forbidden_substitute_sources: [chroma_rag, knowledge_graph, web_external]
+    escalation_conditions:
+      chroma_rag: never
+      knowledge_graph: never
+    conflict_rule: sql_wins_operational
+    provenance_required: true
+    minimum_confidence: 1.0
+    missing_behavior: block_if_mandatory
+    uncertain_behavior: block_if_mandatory
+    sensitive: true
+    redaction_class: crm_operational
+
+  kundennummer:
+    field_class: operative_sql
+    canonical_source: sql_crm
+    allowed_supplemental_sources: []
+    forbidden_substitute_sources: [chroma_rag, knowledge_graph, web_external]
+    escalation_conditions:
+      chroma_rag: never
+      knowledge_graph: never
+    conflict_rule: sql_wins_operational
+    provenance_required: true
+    minimum_confidence: 1.0
+    missing_behavior: block_if_mandatory
+    uncertain_behavior: block_if_mandatory
+    sensitive: true
+    redaction_class: crm_identifier
+
+  segmentierung:
+    field_class: operative_sql
+    canonical_source: sql_crm
+    allowed_supplemental_sources: []
+    forbidden_substitute_sources: [chroma_rag, knowledge_graph, web_external]
+    escalation_conditions:
+      chroma_rag: never
+      knowledge_graph: never
+    conflict_rule: sql_wins_operational
+    provenance_required: true
+    minimum_confidence: 1.0
+    missing_behavior: block_if_mandatory
+    uncertain_behavior: block_if_mandatory
+    sensitive: true
+    redaction_class: crm_operational
+
+  umsatzklasse:
+    field_class: operative_sql
+    canonical_source: sql_crm
+    allowed_supplemental_sources: []
+    forbidden_substitute_sources: [chroma_rag, knowledge_graph, web_external]
+    escalation_conditions:
+      chroma_rag: never
+      knowledge_graph: never
+    conflict_rule: sql_wins_operational
+    provenance_required: true
+    minimum_confidence: 1.0
+    missing_behavior: block_if_mandatory
+    uncertain_behavior: block_if_mandatory
+    sensitive: true
+    redaction_class: crm_operational
+
+  msv3_status:
+    field_class: operative_sql
+    canonical_source: sql_crm
+    allowed_supplemental_sources: []
+    forbidden_substitute_sources: [chroma_rag, knowledge_graph, web_external]
+    escalation_conditions:
+      chroma_rag: never
+      knowledge_graph: never
+    conflict_rule: sql_wins_operational
+    provenance_required: true
+    minimum_confidence: 1.0
+    missing_behavior: block_if_mandatory
+    uncertain_behavior: block_if_mandatory
+    sensitive: true
+    redaction_class: crm_operational
+
+  operative_stammdaten:
+    field_class: operative_sql
+    canonical_source: sql_crm
+    allowed_supplemental_sources: []
+    forbidden_substitute_sources: [chroma_rag, knowledge_graph, web_external]
+    escalation_conditions:
+      chroma_rag: never
+      knowledge_graph: never
+    conflict_rule: sql_wins_operational
+    provenance_required: true
+    minimum_confidence: 1.0
+    missing_behavior: block_if_mandatory
+    uncertain_behavior: block_if_mandatory
+    sensitive: true
+    redaction_class: crm_operational
+
+  governance_rules:
+    field_class: governance_playbook
+    canonical_source: knowledge_platform
+    allowed_supplemental_sources: [knowledge_graph]
+    forbidden_substitute_sources: [chroma_rag, sql_crm, web_external]
+    escalation_conditions:
+      chroma_rag: never
+      knowledge_graph: provenance_or_relationship_only
+    conflict_rule: kp_wins_governance
+    provenance_required: true
+    minimum_confidence: 1.0
+    missing_behavior: block_if_mandatory
+    uncertain_behavior: block_if_mandatory
+    sensitive: false
+    redaction_class: public_governance
+
+  presseschau_no_auto_publish:
+    field_class: governance_playbook
+    canonical_source: knowledge_platform
+    allowed_supplemental_sources: [knowledge_graph]
+    forbidden_substitute_sources: [chroma_rag, sql_crm, web_external]
+    escalation_conditions:
+      chroma_rag: never
+      knowledge_graph: provenance_or_relationship_only
+    conflict_rule: kp_wins_governance
+    provenance_required: true
+    minimum_confidence: 1.0
+    missing_behavior: block_if_mandatory
+    uncertain_behavior: block_if_mandatory
+    sensitive: false
+    redaction_class: public_governance
+
+  semantic_context:
+    field_class: semantic_rag
+    canonical_source: knowledge_platform
+    allowed_supplemental_sources: [chroma_rag]
+    forbidden_substitute_sources: [sql_crm, knowledge_graph, web_external]
+    escalation_conditions:
+      chroma_rag: required_or_allowed_semantic_context_missing
+      knowledge_graph: never
+    conflict_rule: canonical_source_wins
+    provenance_required: true
+    minimum_confidence: 0.55
+    missing_behavior: allow_if_optional
+    uncertain_behavior: document_uncertainty
+    sensitive: false
+    redaction_class: semantic_context
+
+  content_background:
+    field_class: semantic_rag
+    canonical_source: knowledge_platform
+    allowed_supplemental_sources: [chroma_rag]
+    forbidden_substitute_sources: [sql_crm, knowledge_graph, web_external]
+    escalation_conditions:
+      chroma_rag: required_or_allowed_semantic_context_missing
+      knowledge_graph: never
+    conflict_rule: canonical_source_wins
+    provenance_required: true
+    minimum_confidence: 0.55
+    missing_behavior: allow_if_optional
+    uncertain_behavior: document_uncertainty
+    sensitive: false
+    redaction_class: semantic_context
+
+  relationship_structure:
+    field_class: structural_graph
+    canonical_source: knowledge_graph
+    allowed_supplemental_sources: []
+    forbidden_substitute_sources: [sql_crm, chroma_rag, web_external]
+    escalation_conditions:
+      knowledge_graph: structural_query_type_only
+      chroma_rag: never
+    conflict_rule: graph_as_context_only
+    provenance_required: true
+    minimum_confidence: 0.75
+    missing_behavior: allow_if_optional
+    uncertain_behavior: document_uncertainty
+    sensitive: false
+    redaction_class: graph_structure
+    graph_query_id: q-rel-playbook-refs
+
+  provenance_chain:
+    field_class: structural_graph
+    canonical_source: knowledge_graph
+    allowed_supplemental_sources: []
+    forbidden_substitute_sources: [sql_crm, chroma_rag, web_external]
+    escalation_conditions:
+      knowledge_graph: structural_query_type_only
+      chroma_rag: never
+    conflict_rule: graph_as_context_only
+    provenance_required: true
+    minimum_confidence: 0.75
+    missing_behavior: allow_if_optional
+    uncertain_behavior: document_uncertainty
+    sensitive: false
+    redaction_class: graph_structure
+    graph_query_id: q-provenance-chain

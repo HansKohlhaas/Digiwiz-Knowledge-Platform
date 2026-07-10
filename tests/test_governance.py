@@ -447,6 +447,30 @@ class TestGovernance(unittest.TestCase):
             matches = list(ROOT.glob(f"adr/ADR-{n:04d}-*.md"))
             self.assertEqual(len(matches), 1, n)
 
+    def test_field_source_policy_existiert_und_konsistent(self):
+        policy = _load_yaml(ROOT / "contracts" / "source-resolution" / "field_source_policy.yaml")
+        fields = policy.get("fields") or {}
+        self.assertIn("crm_status", fields)
+        self.assertIn("presseschau_no_auto_publish", fields)
+        self.assertIn("relationship_structure", fields)
+        self.assertEqual(fields["crm_status"]["canonical_source"], "sql_crm")
+        self.assertIn("chroma_rag", fields["crm_status"]["forbidden_substitute_sources"])
+        self.assertEqual(fields["presseschau_no_auto_publish"]["canonical_source"], "knowledge_platform")
+        self.assertIn("chroma_rag", fields["presseschau_no_auto_publish"]["forbidden_substitute_sources"])
+        self.assertEqual(fields["relationship_structure"]["field_class"], "structural_graph")
+        for field_id, spec in fields.items():
+            for key in (
+                "canonical_source",
+                "allowed_supplemental_sources",
+                "forbidden_substitute_sources",
+                "conflict_rule",
+                "provenance_required",
+                "minimum_confidence",
+                "missing_behavior",
+                "uncertain_behavior",
+            ):
+                self.assertIn(key, spec, field_id)
+
 
 if __name__ == "__main__":
     unittest.main()

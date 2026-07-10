@@ -2,7 +2,7 @@
 
 **Stand:** 09.07.2026  
 **Verbindlich:** [ADR-0013](../adr/ADR-0013-source-resolution-and-sql-first-policy.md)  
-**Contract:** [contracts/source-resolution/source_resolution_policy.yaml](../contracts/source-resolution/source_resolution_policy.yaml)
+**Contracts:** [contracts/source-resolution/source_resolution_policy.yaml](../contracts/source-resolution/source_resolution_policy.yaml) · [contracts/source-resolution/field_source_policy.yaml](../contracts/source-resolution/field_source_policy.yaml)
 
 ## Kernaussage
 
@@ -22,6 +22,8 @@ Bei **jeder Wissensabfrage** muss **zuerst** geprüft werden, ob es sich um eine
 | **5** | **`web_external`** | Ergänzung | **Nie** über SQL bei Firmendaten |
 
 **Feldgesteuert (ADR-0011):** Pro `required_field` bestimmt `preferred_sources[]` die erste Datenquelle — siehe [12_context_assembly_pipeline.md](12_context_assembly_pipeline.md).
+
+**Field Source Policy:** `field_source_policy.yaml` definiert je `field_id` die kanonische Quelle, erlaubte Ergänzungsquellen, verbotene Ersatzquellen, Eskalationsbedingungen, Konfliktregel, Provenienzpflicht, Mindest-Confidence und Redaction-Metadaten.
 
 ```
 Anfrage
@@ -127,6 +129,8 @@ Beispiele: [examples/source-resolution/knowledge_graph_questions.yaml](../exampl
 | RAG vs. Web (allgemeine Branche) | Neueres Playbook/Verfahren > alter Index; Web niedrigste Priorität | Quellenliste vollständig |
 
 **Leitplanke:** Bei Konflikt zwischen **abgeleitetem Index** (Chroma) und **KP-Contract** gilt die Knowledge Platform. Bei Konflikt zwischen **Chroma und SQL** für **Firmendaten** gilt **SQL**.
+
+Die maschinenlesbare Durchsetzung pro Feld erfolgt ueber `field_source_policy.yaml`; Chroma und Graph duerfen dort verbotene Ersatzquellen nicht fuellen.
 
 ---
 

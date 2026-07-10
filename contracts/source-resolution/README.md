@@ -11,6 +11,7 @@ Verbindliche **Auflösungssequenz** für Wissensabfragen: SQL-first bei CRM-/Sta
 | Datei | Status | Beschreibung |
 |-------|--------|--------------|
 | `source_resolution_policy.yaml` | ✅ Contract v1 | Domänen, Sequenz, Konfliktregeln (ADR-0013) |
+| `field_source_policy.yaml` | ✅ Contract v1 | Kanonische Quelle je `field_id`, erlaubte Ergänzungen, verbotene Ersatzquellen, Redaction-Metadaten |
 | `context_assembly.schema.json` | ✅ Contract v1 | Context-Array, Pflichtfelder, Assembly (ADR-0011) |
 | `../retrieval/merge_policy.yaml` | ⏳ geplant | Merge Graph↔RAG **nach** Source Resolution |
 

@@ -1,4 +1,4 @@
-version: "1.5.1"
+version: "1.5.2"
 name: digiwiz-knowledge-platform
 description: >
   Verbindliche Quelle für Regeln und Schnittstellen (Contracts):
@@ -78,6 +78,7 @@ contracts:
     hinweis: SQL-first vor Graph/RAG; Router in App geplant (D4)
     includes:
       - source_resolution_policy.yaml
+      - field_source_policy.yaml
       - context_assembly.schema.json
   context_assembly:
     schema: contracts/source-resolution/context_assembly.schema.json

@@ -66,7 +66,7 @@ Anfrage analysieren
 
 **Abstimmung ADR-0013:** Schritt 0 `classify_intent` und Schritt 1 `kp_governance` (Playbooks/ADRs/Contracts **immer** für DAR-Tasks) laufen **vor** der feldgesteuerten Datenabfrage. SQL-first gilt für **operative Fakten** (`sql_crm_stammdaten`), nicht als Ersatz für KP-Regeln.
 
-Maschinenlesbar: `canonical_sequence` in `source_resolution_policy.yaml`.
+Maschinenlesbar: `canonical_sequence` in `source_resolution_policy.yaml`; Feldklassen und erlaubte Quellen in `field_source_policy.yaml`.
 
 **Nächste Stufe nur** für Felder mit Status `missing` oder `uncertain`.
 
@@ -80,6 +80,8 @@ Maschinenlesbar: `canonical_sequence` in `source_resolution_policy.yaml`.
 ### Contract
 
 Maschinenlesbar: `contracts/source-resolution/context_assembly.schema.json`
+
+Field-Source-Regeln: `contracts/source-resolution/field_source_policy.yaml`
 
 Pflichtfelder u. a.: `query`, `answer_goal`, `answer_structure`, `required_fields`, `context_array`, `missing_mandatory_fields`, `ready_for_generation`.
 
@@ -101,6 +103,7 @@ Beispiel: `examples/source-resolution/context_assembly.example.json`
 - Doku: [docs/12_context_assembly_pipeline.md](../docs/12_context_assembly_pipeline.md)
 - Roadmap Stufe D: Meilenstein **D5 Context Assembly** (Contract ✅, App ⏳)
 - ADR-0013 bleibt gültig für Quellen-Priorität; ADR-0011 definiert Assembly-Ablauf
+- Context Items koennen Redaction-Metadaten aus `field_source_policy.yaml` tragen, damit SQL-/CRM-Felder vor Persistenz oder Provider-Uebergabe behandelbar sind.
 - Implementierung in App inkrementell nach ADR-0012
 - Keine Breaking Changes an Stufe A–D API
 

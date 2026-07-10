@@ -51,7 +51,7 @@ Ohne verbindliche **Source-Resolution-Sequenz** drohen:
 
 **Feldgesteuert (Context Assembly, ADR-0011):** Pro `required_field` bestimmt `preferred_sources[]` die **erste** Datenquelle — konsistent mit obiger Sequenz, aber nicht jede Stufe für jedes Feld.
 
-Maschinenlesbar: `canonical_sequence` und `field_first_source` in `source_resolution_policy.yaml`.
+Maschinenlesbar: `canonical_sequence` und `field_first_source` in `source_resolution_policy.yaml`; kanonische Quelle, erlaubte Ergänzungsquellen, verbotene Ersatzquellen und Redaction-Metadaten je `field_id` in `field_source_policy.yaml`.
 
 ### SQL-first-Pflichtdomänen
 
@@ -64,7 +64,7 @@ Die **eigene SQL-Datenbank hat Vorrang**, wenn die Anfrage sich bezieht auf:
 - Historien, Freigaben, interne Bewertungen
 - firmenspezifische Notizen, operative Stammdaten
 
-Maschinenlesbar: `contracts/source-resolution/source_resolution_policy.yaml`
+Maschinenlesbar: `contracts/source-resolution/source_resolution_policy.yaml` und `contracts/source-resolution/field_source_policy.yaml`
 
 ### Konfliktregeln (Kurzform)
 
@@ -103,6 +103,7 @@ Details: [docs/13_source_resolution.md](../docs/13_source_resolution.md)
 ## Konsequenzen
 
 - Neuer Contract-Ordner `contracts/source-resolution/`
+- `field_source_policy.yaml` konkretisiert SQL/KP/RAG/Graph-Feldklassen und verhindert Chroma-/Graph-Ersatz fuer operative SQL- und Governance-Felder.
 - `contracts/retrieval/` verweist auf Source Resolution (Merge nach Schritt 2–4)
 - Roadmap Stufe D: Unterpunkt „Source Resolution (D4)“ geplant
 - `context_builder_output.schema.json` — optionale Felder `resolution_path`, `sql_snippets` (Contract-Erweiterung v1.2.0, Implementierung später)

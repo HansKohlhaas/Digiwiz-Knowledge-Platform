@@ -4,6 +4,28 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+
+- DAR App Phase 0 (Monorepo): `knowledge_paths` Contract-Pfade, `kp_loader`, `schema_validator`, `policy_refs`, Tests T0–T2 — siehe `docs/15_dar_app_integration_plan.md`
+- DAR App Phase 1 (Monorepo): Intent Recognition Dry-Run (`intent_recognition`, `intent_adapter`), Tests T3 — noch nicht in Pipeline
+- DAR App Phase 2 (Monorepo): Decision Engine Dry-Run (`decision_engine`), Tests T4 — keine Retrieval-Ausführung
+- DAR App Phase 3 (Monorepo): Source Resolution Dry-Run (KP + SQL/CRM), Tests T5 — Feature-Flag `DAR_KP_SOURCE_RESOLUTION`
+- DAR App Phase 4 (Monorepo): Context Assembly Dry-Run + Provider-Gate (`context_assembly_pipeline`, `darf_provider_aufgerufen_werden`), Tests T6/T7 — Feature-Flag `DAR_KP_CONTEXT_ASSEMBLY`; SQL-Adapter `ist_readonly_select()` Guard
+- DAR App Phase 5 (Monorepo): Chroma/RAG-Adapter + Merge (`chroma_rag_adapter`, `rag_merge`), Router-Eskalation — Feature-Flag `DAR_KP_CHROMA_RAG`
+- DAR App Phase 6 (Monorepo): Knowledge Graph Stub-Adapter (`graph_query_adapter`, `InMemoryGraphStore`), Tests — Feature-Flag `DAR_KP_KNOWLEDGE_GRAPH`
+
+## [1.5.2] - 2026-07-10
+
+### Added
+
+- `contracts/source-resolution/field_source_policy.yaml` — kanonische Field-Source-Policy je `field_id` mit kanonischer Quelle, erlaubten Ergänzungsquellen, verbotenen Ersatzquellen, Eskalationsbedingungen, Konfliktregel, Provenienzpflicht, Mindest-Confidence und Redaction-Metadaten.
+- DAR App Phase 7A Verweise: globaler Schalter `DAR_KP_PIPELINE`, zentrales Provider-Gate, Field-Source-Contract-Konsum und Privacy-Minimum — keine produktive KP-Pipeline-Aktivierung.
+
+### Changed
+
+- `meta/manifest.yaml`, ADR-0011, ADR-0013, Source-Resolution-Doku und Integrationsplan verweisen auf den Field-Source-Contract.
+- `chroma_index_manifest.example.json` auf KP-Version `1.5.2` aktualisiert.
+
 ## [1.5.1] - 2026-07-10
 
 ### Added

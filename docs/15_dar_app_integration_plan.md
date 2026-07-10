@@ -1,5 +1,5 @@
 ---
-title: DAR — KP v1.5.1 Integrationsplan (App)
+title: DAR — KP v1.5.2 Integrationsplan (App)
 slug: dar-kp-integration-plan
 category: Architektur
 audience: developers
@@ -7,11 +7,11 @@ version: "2026-07-10"
 order: 15
 ---
 
-# DAR — Integrationsplan Knowledge Platform v1.5.1
+# DAR — Integrationsplan Knowledge Platform v1.5.2
 
 **Stand:** 10.07.2026  
-**Scope:** Digiwiz App (Monorepo) — **Planung, keine Implementierung**  
-**KP-Version:** 1.5.1 (`knowledge_lock.json`)
+**Scope:** Digiwiz App (Monorepo) — Phasen 0-7A vorbereitet, **keine produktive KP-Pipeline-Aktivierung**<br>
+**KP-Version:** 1.5.2 (`knowledge_lock.json`)
 
 **Verbindlich:** ADR-0011 (Context Assembly), ADR-0013 (Source Resolution / SQL-first), ADR-0014 (Decision Engine), ADR-0010 (DAR einzige Runtime), ADR-0002/0004 (Regisseur-Inbox, kein Auto-Publish)
 
@@ -26,7 +26,7 @@ Die Digiwiz-App hat heute **zwei getrennte KI-Pfade**:
 | **DAR** (`digiwiki/ai_runtime/`) | `POST /api/v1/runtime/task` | Task-Routing → Playbooks → Provider → Validator → Inbox |
 | **Wiki Oracle** (`ask_wiki.py`, `frage_strukturierung.py`) | `15_wiki_web_ui.py` | Heuristisches Intent → SQL / Spezialdokumente → Chroma RAG |
 
-KP v1.5.1 beschreibt eine **einheitliche Pipeline innerhalb DAR**. Die Wiki-Logik ist fachlich näher an ADR-0013, ist aber **nicht policy-gesteuert** und **nicht mit DAR verbunden**.
+KP v1.5.2 beschreibt eine **einheitliche Pipeline innerhalb DAR**. Die Wiki-Logik ist fachlich näher an ADR-0013, ist aber **nicht policy-gesteuert** und **nicht mit DAR verbunden**.
 
 **Strategie:** DAR schrittweise erweitern, Wiki-Adapter **wiederverwenden** (nicht ersetzen), Legacy-Pfad per Feature-Flag absicherbar.
 
@@ -186,6 +186,8 @@ digiwiki/ai_runtime/
 
 **Legacy:** `DAR_KP_PIPELINE=0` oder `use_kp_pipeline=False` → heutiger Pfad.
 
+**Phase 7A:** `DAR_KP_PIPELINE` ist der zentrale globale Schalter fuer den kuenftigen KP-Pfad. Standard ist aus; bei aus bleibt ausschliesslich der Legacy-Pfad massgeblich. Die Teilflags fuer Source Resolution, Context Assembly, Chroma/RAG und Knowledge Graph duerfen den aktiven Runtime-Pfad nicht eigenstaendig umschalten.
+
 ### 3.10 Tests vor Implementierung
 
 | ID | Test |
@@ -213,6 +215,86 @@ digiwiki/ai_runtime/
 | `source_resolution_router.py` | 0013 | `source_resolution_policy.yaml` |
 | `context_assembly_pipeline.py` | 0011 | `context_assembly.schema.json` |
 | `context_builder.py` (erweitert) | 0011/0013 | `context_builder_input/output.schema.json` |
+| `kp_pipeline_integration.py` | 0011/0013/0014 | globaler `DAR_KP_PIPELINE`-Schalter, zentrales Provider-Gate |
+
+---
+
+### Phase 0 — implementiert (App)
+
+| Datei | Rolle |
+|-------|--------|
+| `digiwiki/knowledge_paths.py` | Contract-Pfade, `pruefe_knowledge_lock()` |
+| `digiwiki/ai_runtime/contracts/kp_loader.py` | JSON/YAML laden |
+| `digiwiki/ai_runtime/contracts/schema_validator.py` | Schema-Validierung |
+| `digiwiki/ai_runtime/contracts/policy_refs.py` | Zentrale Policy-Pfade |
+| `digiwiki/tests/test_dar_kp_contracts_phase0.py` | Tests T0–T2 |
+
+### Phase 1 — implementiert (App, Dry-Run)
+
+| Datei | Rolle |
+|-------|--------|
+| `digiwiki/ai_runtime/intent_recognition.py` | `erkenne_intent_dry_run()` → `decision_input` |
+| `digiwiki/ai_runtime/adapters/intent_adapter.py` | Adapter auf `frage_strukturierung` |
+| `digiwiki/tests/test_dar_kp_intent_phase1.py` | Tests T3 (Intent + Schema) |
+
+**Nicht eingebunden:** `pipeline.py`, Decision Engine, Provider, API.
+
+### Phase 2 — implementiert (App, Dry-Run)
+
+| Datei | Rolle |
+|-------|--------|
+| `digiwiki/ai_runtime/decision_engine.py` | `entscheide_dry_run()` → Output, Trace, Context |
+| `digiwiki/tests/test_dar_kp_decision_phase2.py` | Tests T4 (Golden Paths + Schema) |
+
+**Nicht eingebunden:** Source Resolution, Context Assembly, Provider, `pipeline.py`.
+
+### Phase 3 — implementiert (App, Dry-Run)
+
+| Datei | Rolle |
+|-------|--------|
+| `digiwiki/ai_runtime/source_resolution_router.py` | Router — nur `required`-Quellen |
+| `digiwiki/ai_runtime/adapters/kp_governance_adapter.py` | Playbooks, ADRs, Contracts |
+| `digiwiki/ai_runtime/adapters/sql_crm_adapter.py` | Read-only SQL via Wiki-Pfad |
+| `digiwiki/tests/test_dar_kp_source_resolution_phase3.py` | Tests T5 (Source Resolution) |
+
+**Feature-Flag:** `DAR_KP_SOURCE_RESOLUTION=1` (Standard: aus).
+**Hardcoded-Signale-Audit:** [dar_kp_hardcoded_signals.md](../../../docs/wiki/verfahren/dar_kp_hardcoded_signals.md)
+
+### Phase 4 — implementiert (App, Dry-Run)
+
+| Datei | Rolle |
+|-------|--------|
+| `digiwiki/ai_runtime/context_assembly_pipeline.py` | `baue_context_assembly()` → Assembly-Dokument, `darf_provider_aufgerufen_werden()` Provider-Gate |
+| `digiwiki/ai_runtime/adapters/sql_crm_adapter.py` | `ist_readonly_select()` Guard, redigierte SQL-Logreferenz |
+| `digiwiki/tests/test_dar_kp_context_assembly_phase4.py` | Tests T6/T7 (Assembly + Provider-Gate) |
+
+**Feature-Flag:** `DAR_KP_CONTEXT_ASSEMBLY=1` (Standard: aus).
+**Nicht eingebunden:** `pipeline.py`, Provider, API, produktive Umschaltung.
+
+### Phase 5 — implementiert (App, Dry-Run)
+
+| Datei | Rolle |
+|-------|--------|
+| `digiwiki/ai_runtime/adapters/chroma_rag_adapter.py` | Chroma-Abfrage via bestehenden Wiki-Index (`ask_wiki`/`config`) |
+| `digiwiki/ai_runtime/adapters/rag_merge.py` | Merge gemäß `merge_policy.yaml` |
+| `digiwiki/ai_runtime/source_resolution_router.py` | Optionale Eskalation + `required` Chroma |
+| `digiwiki/ai_runtime/context_assembly_pipeline.py` | `rag_snippets` feldbezogen, `derived`/`chroma_rag` |
+| `digiwiki/tests/test_dar_kp_chroma_rag_phase5.py` | Tests Phase 5 |
+
+**Feature-Flag:** `DAR_KP_CHROMA_RAG=1` (Standard: aus).
+**Hardcoded-Feld-Quellen:** [dar_kp_hardcoded_signals.md](../../../docs/wiki/verfahren/dar_kp_hardcoded_signals.md)
+
+### Phase 6 — implementiert (App, Dry-Run)
+
+| Datei | Rolle |
+|-------|--------|
+| `digiwiki/ai_runtime/adapters/graph_query_adapter.py` | Deklarative Queries + `GraphStore`/`InMemoryGraphStore` Stub |
+| `digiwiki/ai_runtime/source_resolution_router.py` | Graph nur bei `required`/struktureller Eskalation |
+| `digiwiki/ai_runtime/context_assembly_pipeline.py` | `graph_snippets` feldbezogen, `knowledge_graph` layer |
+| `digiwiki/tests/test_dar_kp_knowledge_graph_phase6.py` | Tests Phase 6 |
+
+**Feature-Flag:** `DAR_KP_KNOWLEDGE_GRAPH=1` (Standard: aus).
+**Kein Graph-Server** — nur injizierbarer Stub, keine Cypher/SPARQL aus Freitext.
 
 ---
 
@@ -220,13 +302,14 @@ digiwiki/ai_runtime/
 
 | Phase | Inhalt | Rollback |
 |-------|--------|----------|
-| **0** | `knowledge_paths` + Contract-Loader + Tests T0–T2 | Neue Dateien only |
-| **1** | Intent Recognition (dry-run, nicht in Pipeline) | Flag aus |
-| **2** | Decision Engine dry-run + Telemetrie | `DAR_KP_PIPELINE=0` |
-| **3** | Source Resolution (SQL + KP only) | Playbooks-only Fallback |
-| **4** | Context Assembly + Provider-Gate | Legacy-Pfad |
-| **5** | Chroma-Adapter + merge_policy | Adapter deaktivierbar |
-| **6** | Graph-Adapter (Stub → Store) | Graph skipped |
+| **0** | `knowledge_paths` + Contract-Loader + Tests T0–T2 | ✅ App (2026-07-10) |
+| **1** | Intent Recognition (dry-run, nicht in Pipeline) | ✅ App (2026-07-10) |
+| **2** | Decision Engine dry-run + Telemetrie | ✅ App (2026-07-10) |
+| **3** | Source Resolution (SQL + KP only) | ✅ App (2026-07-10) |
+| **4** | Context Assembly + Provider-Gate | ✅ App (2026-07-10) |
+| **5** | Chroma-Adapter + merge_policy | ✅ App (2026-07-10) |
+| **6** | Graph-Adapter (Stub → Store) | ✅ App Stub (2026-07-10) |
+| **7A** | Integrationssicherungen: globaler Schalter, Provider-Gate, Field-Source-Contract, Privacy-Minimum | ✅ App vorbereitet (2026-07-10), keine Aktivierung |
 | **7** | API-Transparenz + Wiki-Konsolidierung (optional) | Später |
 
 ---
@@ -238,7 +321,7 @@ digiwiki/ai_runtime/
 | Wiki vs DAR divergiert | Adapter auf `frage_strukturierung`, nicht duplizieren |
 | Provider zu früh | `provider_call_allowed` + Assembly-Gate + T7 |
 | Breaking API | Nur optionale Response-Felder |
-| Chroma füllt SQL-Felder | Policy + Tests T10 |
+| Chroma füllt SQL-Felder | `field_source_policy.yaml` + Tests T10 |
 | Fachlogik im Code | Nur Policy/Playbook interpretieren |
 | Schema-Drift | `knowledge_lock` + Contract-Tests in CI |
 
@@ -265,6 +348,8 @@ digiwiki/ai_runtime/
 | Decision → Assembly | `decision_context_ref` in `context_assembly` |
 | SQL-first CRM | Presseschau-CRM-Szenario E2E (mock SQL) |
 | Kein Provider vor Assembly | Test T7 |
+| Globaler Schalter | `DAR_KP_PIPELINE` aus → Legacy, Teilflags schalten Runtime nicht um |
+| Field Source Contract | SQL/KP/RAG/Graph-Feldklassen aus `field_source_policy.yaml` |
 | Legacy grün | `test_ai_runtime_stufe_d` mit Fallback |
 | Inbox-Hub | `submit_inbox` → `regisseur_inbox` |
 | Audit | `decision_trace` mit `rule_ref` pro Schritt |

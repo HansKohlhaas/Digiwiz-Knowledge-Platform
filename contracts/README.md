@@ -28,10 +28,10 @@ Die Knowledge Platform ist **kein reines Dokumentations-Repository**, sondern di
 | ADRs | `adr/` | Markdown | Architekturentscheidungen |
 | Beispiele | `examples/` | JSON | Gültige und fehlerhafte Instanzen |
 
-## Status v1.5.1
+## Status v1.5.2
 
 - ✅ Playbooks, Runtime, ADRs, `agent-lieferung.v3.json` — **contract_active / app_active**
-- ✅ Source Resolution + Context Assembly (ADR-0013, ADR-0011) — **contract_active / app_planned** (D4/D5)
+- ✅ Source Resolution + Context Assembly + Field Source Policy (ADR-0013, ADR-0011) — **contract_active / app_planned** (D4/D5/Phase 7A)
 - ✅ **Decision Engine** (ADR-0014, E4) — **contract_active / app_planned**
 - ✅ Graph Query Contract + Beispiele — **contract_active / app_planned** (Stufe E App)
 - ✅ Retrieval Merge Policy v1 — **contract_active / app_planned** (Context Builder Merge)

@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class TestKnowledgePlatformContract(unittest.TestCase):
     def test_version_und_manifest(self):
         version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
-        self.assertEqual(version, "1.5.1")
+        self.assertEqual(version, "1.5.2")
         manifest = (ROOT / "meta" / "manifest.yaml").read_text(encoding="utf-8")
         self.assertIn("digiwiz-knowledge-platform", manifest)
 
