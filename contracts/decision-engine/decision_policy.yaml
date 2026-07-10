@@ -1,0 +1,179 @@
+# Decision Engine Policy — Digiwiz Knowledge Platform
+# Contract v1 — ADR-0014
+# Interpretiert KP-Regeln; keine Fachlogik in App-Code.
+
+policy_version: 1
+adr: ADR-0014
+effective_from: "2026-07-10"
+status: active
+
+principle:
+  no_hardcoded_domain_rules: true
+  no_answer_generation: true
+  no_retrieval_execution: true
+  rule_sources:
+    - playbooks
+    - contracts
+    - adrs
+    - runtime/routing.json
+
+pipeline_steps:
+  - id: validate_input
+    order: 1
+    contract: contracts/decision-engine/decision_input.schema.json
+  - id: resolve_task_routing
+    order: 2
+    ref: runtime/routing.json
+  - id: load_rule_stack
+    order: 3
+    refs:
+      - contracts/decision-engine/decision_policy.yaml
+      - contracts/source-resolution/source_resolution_policy.yaml
+  - id: load_playbook_hints
+    order: 4
+    source: playbooks
+    field: decision_hints
+  - id: consume_intent_signals
+    order: 5
+    input_field: intent_classification
+  - id: derive_source_requirements
+    order: 6
+    ref: contracts/source-resolution/source_resolution_policy.yaml#canonical_sequence
+  - id: derive_required_fields
+    order: 7
+    refs:
+      - playbooks.decision_hints.required_field_templates
+      - contracts/source-resolution/context_assembly.schema.json
+  - id: evaluate_governance_gates
+    order: 8
+    adrs: [ADR-0002, ADR-0004]
+  - id: build_orchestration_plan
+    order: 9
+  - id: assess_readiness
+    order: 10
+  - id: emit_output
+    order: 11
+    contracts:
+      - contracts/decision-engine/decision_output.schema.json
+      - contracts/decision-engine/decision_trace.schema.json
+      - contracts/decision-engine/decision_context.schema.json
+
+governance_gates:
+  kp_governance_always:
+    source_id: kp_governance
+    decision: required
+    adr: ADR-0013
+    reason_code: dar_task_requires_kp_governance
+  no_auto_publish:
+    block_field: auto_publish
+    adr: ADR-0004
+    reason_code: auto_publish_forbidden
+  approval_for_external_effect:
+    when: external_output_requested
+    decision: approval_required
+    adr: ADR-0002
+    reason_code: regisseur_inbox_required
+
+source_requirement_rules:
+  - id: sql_first_from_domain
+    when: intent.domain_matches intersects source_resolution_policy.sql_first_domains
+    source_id: sql_crm_stammdaten
+    decision: required
+    reason_code: domain_match_sql_first
+    adr: ADR-0013
+  - id: sql_first_from_entity
+    when: intent.entity_refs.type in playbook.decision_hints.sql_first_when_entities
+    source_id: sql_crm_stammdaten
+    decision: required
+    reason_code: entity_match_sql_first
+  - id: sql_not_required_explicit
+    when: sql_crm_stammdaten not required
+    emit: sql_not_required
+    reason_code: no_operational_domain_match
+  - id: graph_when_structural
+    when: intent.query_type in [relationship_lookup, provenance_trace]
+    source_id: knowledge_graph
+    decision: required
+    reason_code: structural_query_type
+    adr: ADR-0008
+  - id: chroma_when_semantic
+    when: intent.query_type in [semantic_lookup, content_preparation]
+    source_id: chroma_rag
+    decision: optional
+    reason_code: semantic_query_type
+    adr: ADR-0009
+  - id: web_supplementary_only
+    source_id: web_external
+    decision: optional
+    priority: lowest
+    reason_code: supplementary_external_only
+
+readiness_rules:
+  - id: clarification_missing_entity
+    when: clarification_triggers matched
+    readiness: clarification_required
+    next_stage: clarification
+  - id: block_governance
+    when: governance_gate failed
+    readiness: block_execution
+    next_stage: block
+  - id: ready_for_resolution
+    when: no block and no mandatory clarification
+    readiness: ready_for_source_resolution
+    next_stage: source_resolution
+
+reason_codes:
+  domain_match_sql_first:
+    description: Domänen-Match in sql_first_domains
+  entity_match_sql_first:
+    description: Entität in playbook sql_first_when_entities
+  no_operational_domain_match:
+    description: Kein SQL-first-Signal — sql_not_required dokumentiert
+  dar_task_requires_kp_governance:
+    description: DAR-Task erfordert KP-Governance (immer Schritt 1)
+  semantic_query_type:
+    description: Semantische Anfrage — Chroma optional
+  structural_query_type:
+    description: Strukturelle Anfrage — Graph erforderlich
+  supplementary_external_only:
+    description: Web nur ergänzend, niedrigste Priorität
+  regisseur_inbox_required:
+    description: Externe Wirkung — Freigabe erforderlich
+  auto_publish_forbidden:
+    description: Auto-Publish laut ADR-0004 blockiert
+  missing_entity_clarification:
+    description: Pflicht-Entität fehlt — Rückfrage
+
+orchestration_plan_template:
+  - step: classify_intent
+    module: intent_recognition
+    note: Bereits vor Decision Engine ausgeführt
+  - step: decision_engine
+    module: decision_engine
+  - step: kp_governance
+    module: source_resolution
+    condition: always
+  - step: sql_crm_stammdaten
+    module: source_resolution
+    condition: source_requirements.sql_crm_stammdaten == required
+  - step: knowledge_graph
+    module: source_resolution
+    condition: source_requirements.knowledge_graph in [required, optional]
+  - step: chroma_rag
+    module: source_resolution
+    condition: source_requirements.chroma_rag in [required, optional]
+  - step: web_external
+    module: source_resolution
+    condition: source_requirements.web_external == optional
+  - step: context_assembly
+    module: context_assembly
+  - step: context_builder
+    module: context_builder
+
+forbidden:
+  - generate_answer_text
+  - execute_sql_query
+  - execute_graph_query
+  - execute_rag_query
+  - auto_publish_from_decision
+  - skip_decision_trace

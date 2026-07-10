@@ -75,6 +75,22 @@ EXAMPLE_PAIRS = (
         "examples/graph/graph_query.example.json",
         "contracts/graph/graph_query.schema.json",
     ),
+    (
+        "examples/decision-engine/decision_input.example.json",
+        "contracts/decision-engine/decision_input.schema.json",
+    ),
+    (
+        "examples/decision-engine/decision_output.example.json",
+        "contracts/decision-engine/decision_output.schema.json",
+    ),
+    (
+        "examples/decision-engine/decision_trace.example.json",
+        "contracts/decision-engine/decision_trace.schema.json",
+    ),
+    (
+        "examples/decision-engine/decision_context.example.json",
+        "contracts/decision-engine/decision_context.schema.json",
+    ),
 )
 STAGE_EF_DOCS = (
     ROOT / "docs" / "11_roadmap_stufen_a_f.md",
@@ -190,6 +206,40 @@ class TestGovernance(unittest.TestCase):
         version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
         self.assertEqual(manifest.get("knowledge_platform_version"), version)
 
+    def test_decision_engine_contracts_existieren(self):
+        de = ROOT / "contracts" / "decision-engine"
+        for name in (
+            "decision_policy.yaml",
+            "decision_input.schema.json",
+            "decision_output.schema.json",
+            "decision_trace.schema.json",
+            "decision_context.schema.json",
+        ):
+            self.assertTrue((de / name).is_file(), name)
+        policy = _load_yaml(de / "decision_policy.yaml")
+        self.assertEqual(policy.get("status"), "active")
+        self.assertIn("no_hardcoded_domain_rules", policy.get("principle", {}))
+
+    def test_decision_engine_keine_antwort_felder(self):
+        schema = _load_json(ROOT / "contracts" / "decision-engine" / "decision_output.schema.json")
+        not_block = schema.get("not", {})
+        for forbidden in ("published_url", "auto_publish", "answer_text"):
+            self.assertIn(forbidden, not_block.get("required", []))
+
+    def test_decision_output_sql_mutex(self):
+        out = _load_json(ROOT / "examples" / "decision-engine" / "decision_output.example.json")
+        decisions = out["decisions"]
+        self.assertNotEqual(decisions["sql_required"], decisions["sql_not_required"])
+
+    def test_playbook_decision_hints_presseschau(self):
+        data = _load_yaml(PLAYBOOKS / "presseschau.yaml")
+        self.assertIn("decision_hints", data)
+        self.assertIn("kundennummer", data["decision_hints"]["sql_first_when_entities"])
+
+    def test_context_builder_input_decision_context_ref(self):
+        schema = _load_json(SCHEMAS / "context_builder_input.schema.json")
+        self.assertIn("decision_context_ref", schema["properties"])
+
     def test_manifest_statusmodell(self):
         manifest = _load_yaml(ROOT / "meta" / "manifest.yaml")
         self.assertIn("status_model", manifest)
@@ -199,6 +249,9 @@ class TestGovernance(unittest.TestCase):
         retrieval = manifest["contracts"]["retrieval"]
         self.assertEqual(retrieval.get("contract_status"), "contract_active")
         self.assertEqual(retrieval.get("app_status"), "app_planned")
+        de = manifest["contracts"]["decision_engine"]
+        self.assertEqual(de.get("contract_status"), "contract_active")
+        self.assertEqual(de.get("app_status"), "app_planned")
 
     def test_roadmap_stufe_d_spalten(self):
         text = (ROOT / "docs" / "11_roadmap_stufen_a_f.md").read_text(encoding="utf-8")

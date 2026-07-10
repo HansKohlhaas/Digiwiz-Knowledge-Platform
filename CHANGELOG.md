@@ -4,6 +4,24 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-07-10
+
+### Added
+
+- **ADR-0014:** Decision Engine — Orchestrierung ohne Fachlogik im Code (Stufe E4)
+- `contracts/decision-engine/` — Policy, Input/Output/Trace/Context Schemas
+- `examples/decision-engine/` — Presseschau SQL-first Beispiel (Input, Output, Trace, Context)
+- `docs/14_decision_engine.md` — Architektur (Pipeline, Contracts, Integration)
+- `playbooks/presseschau.yaml` — optionales `decision_hints` (ADR-0014)
+- `schemas/playbook.schema.json` — `decision_hints` (optional, nicht breaking)
+- `schemas/context_builder_input.schema.json` — optionales `decision_context_ref`
+
+### Changed
+
+- Roadmap Stufe E — Meilenstein **E4 Decision Engine** (Contract ✅, App ⏳)
+- `meta/manifest.yaml` — Contract-Typ `decision_engine`
+- `adr/README.md` — ADR-0014 Index
+
 ## [1.4.1] - 2026-07-09
 
 ### Added

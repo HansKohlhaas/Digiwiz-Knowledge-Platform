@@ -84,6 +84,17 @@ Siehe `meta/manifest.yaml` (`contract_status`, `app_status`) und [contracts/READ
 | Doku Resolution | `docs/13_source_resolution.md` | Quellenreihenfolge, Konflikte |
 | Beispiele | `examples/source-resolution/` | SQL-first, RAG, Graph, Assembly |
 
+### 11. Decision Engine (Stufe E4, v1.5.0)
+
+| Artefakt | Pfad | Zweck |
+|----------|------|--------|
+| Decision Policy | `contracts/decision-engine/decision_policy.yaml` | Pipeline, Reason-Codes, Gates (ADR-0014) |
+| Input / Output / Trace / Context | `contracts/decision-engine/*.schema.json` | Orchestrierungs-Contracts |
+| Doku | `docs/14_decision_engine.md` | Architektur, Integration in DAR |
+| Beispiele | `examples/decision-engine/` | Presseschau SQL-first Szenario |
+
+**Status:** **contract_active** · App `decision_engine` **app_planned**
+
 ## Workflow: Contract first
 
 ```

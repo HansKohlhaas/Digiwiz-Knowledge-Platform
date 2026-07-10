@@ -23,14 +23,16 @@ Die Knowledge Platform ist **kein reines Dokumentations-Repository**, sondern di
 | Knowledge Graph | `schemas/knowledge_graph_*.schema.json`, `contracts/graph/` | JSON Schema | Node/Edge + deklarative Queries (ADR-0008) |
 | Retrieval-Policy | `contracts/retrieval/` | YAML | Merge Graph↔RAG nach Source Resolution (ADR-0009) |
 | Source Resolution | `contracts/source-resolution/` | YAML, JSON Schema | SQL-first, Context Assembly (ADR-0013, ADR-0011) |
+| Decision Engine | `contracts/decision-engine/` | YAML, JSON Schema | Orchestrierung Quellen + Schritte (ADR-0014, E4) |
 | Runtime | `runtime/` | JSON | Routing, Task→Agent→Modell |
 | ADRs | `adr/` | Markdown | Architekturentscheidungen |
 | Beispiele | `examples/` | JSON | Gültige und fehlerhafte Instanzen |
 
-## Status v1.4.0
+## Status v1.5.0
 
 - ✅ Playbooks, Runtime, ADRs, `agent-lieferung.v3.json` — **contract_active / app_active**
 - ✅ Source Resolution + Context Assembly (ADR-0013, ADR-0011) — **contract_active / app_planned** (D4/D5)
+- ✅ **Decision Engine** (ADR-0014, E4) — **contract_active / app_planned**
 - ✅ Graph Query Contract + Beispiele — **contract_active / app_planned** (Stufe E App)
 - ✅ Retrieval Merge Policy v1 — **contract_active / app_planned** (Context Builder Merge)
 - ✅ Verfahrensdoku in `docs/verfahren/` (menschenlesbar, verweist auf Contracts)

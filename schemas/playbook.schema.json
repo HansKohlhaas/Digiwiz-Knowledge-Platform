@@ -28,6 +28,41 @@
         }
       },
       "additionalProperties": false
+    },
+    "decision_hints": {
+      "type": "object",
+      "description": "ADR-0014 — optionale Hinweise für Decision Engine (keine Fachlogik im Code)",
+      "properties": {
+        "default_query_type": { "type": "string" },
+        "sql_first_when_entities": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "preferred_sources": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "required_field_templates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["field_id", "mandatory"],
+            "properties": {
+              "field_id": { "type": "string" },
+              "mandatory": { "type": "boolean" },
+              "preferred_sources": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        },
+        "clarification_triggers": {
+          "type": "array",
+          "items": { "type": "object" }
+        }
+      },
+      "additionalProperties": true
     }
   },
   "additionalProperties": true

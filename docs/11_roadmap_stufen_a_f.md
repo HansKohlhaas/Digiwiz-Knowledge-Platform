@@ -294,11 +294,24 @@ Wissensbeziehungen **explizit modellieren** (Entitäten, Kanten, Provenienz) —
 
 ### Meilensteine (Entwurf)
 
-1. **E1** — Graph-Schema + ADR, Beispiel-Graph in `examples/graph/`
-2. **E2** — Import aus Wiki/Playbooks (read-only)
-3. **E3** — DAR Context Builder: Graph-Kontext + Chroma/RAG-Kontext (ADR-0009)
-4. **E4** — Contract-Tests + Integrations-Tests
+1. **E1** — Graph-Schema + ADR, Beispiel-Graph in `examples/graph/` ✅ Contract
+2. **E2** — Import aus Wiki/Playbooks (read-only) ⏳ App
+3. **E3** — DAR Context Builder: Graph-Kontext + Chroma/RAG-Kontext (ADR-0009) ⏳ App
+4. **E4** — **Decision Engine** — Orchestrierungsentscheidungen ohne Antwortgenerierung (ADR-0014) ✅ Contract / ⏳ App
 5. **E5** — Re-Evaluation Submodule / Deployment-Modell
+
+### E4 — Decision Engine (Detail)
+
+| Aspekt | Inhalt | Status |
+|--------|--------|--------|
+| ADR | [ADR-0014](../adr/ADR-0014-decision-engine-orchestration.md) | ✅ |
+| Doku | [docs/14_decision_engine.md](14_decision_engine.md) | ✅ |
+| Contracts | `contracts/decision-engine/` | ✅ KP v1.5.0 |
+| Beispiele | `examples/decision-engine/` | ✅ |
+| App-Modul | `decision_engine` in DAR | ⏳ |
+| Integration | Intent → Decision → Source Resolution → Assembly → Builder | ⏳ |
+
+**Nicht-Ziele E4:** Keine Antworten, kein Retrieval, keine Fachregeln im Code.
 
 ---
 

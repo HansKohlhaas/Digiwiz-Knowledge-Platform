@@ -49,3 +49,14 @@ delivery:
   cli: digiwiz-agent submit presseschau <file.json>
   api: POST /api/v1/agenten/lieferung
   inbox: data/agenten/inbox/
+decision_hints:
+  default_query_type: content_preparation
+  sql_first_when_entities: [kundennummer, apotheken_id]
+  preferred_sources: [knowledge_platform, chroma_rag]
+  required_field_templates:
+    - field_id: presseschau_no_auto_publish
+      mandatory: true
+      preferred_sources: [knowledge_platform]
+  clarification_triggers:
+    - missing_entity: kundennummer
+      when_query_type: operational_lookup

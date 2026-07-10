@@ -1,0 +1,92 @@
+{
+  "decision_id": "dec-presseschau-crm-001",
+  "decision_trace_id": "tr-dec-presseschau-crm-001",
+  "task": "presseschau",
+  "query": "Welchen CRM-Status hat Apotheke Kundennummer 12345 und welche Presseschau-Regeln gelten?",
+  "sql_first": true,
+  "source_requirements": {
+    "kp_governance": {
+      "status": "required",
+      "reason_code": "dar_task_requires_kp_governance",
+      "confidence": 1.0
+    },
+    "sql_crm_stammdaten": {
+      "status": "required",
+      "reason_code": "domain_match_sql_first",
+      "confidence": 0.95
+    },
+    "knowledge_graph": {
+      "status": "skipped",
+      "reason_code": "no_structural_query_type",
+      "confidence": 0.9
+    },
+    "chroma_rag": {
+      "status": "optional",
+      "reason_code": "semantic_query_type",
+      "confidence": 0.75
+    },
+    "web_external": {
+      "status": "optional",
+      "reason_code": "supplementary_external_only",
+      "confidence": 0.5
+    }
+  },
+  "orchestration_plan": [
+    {
+      "step_id": "kp_governance",
+      "module": "source_resolution",
+      "status": "planned",
+      "condition": "always"
+    },
+    {
+      "step_id": "sql_crm_stammdaten",
+      "module": "source_resolution",
+      "status": "planned",
+      "condition": "sql_required"
+    },
+    {
+      "step_id": "chroma_rag",
+      "module": "source_resolution",
+      "status": "planned",
+      "condition": "optional"
+    },
+    {
+      "step_id": "context_assembly",
+      "module": "context_assembly",
+      "status": "planned"
+    },
+    {
+      "step_id": "context_builder",
+      "module": "context_builder",
+      "status": "planned"
+    }
+  ],
+  "required_fields": [
+    {
+      "field_id": "crm_status",
+      "label": "CRM-Status Apotheke 12345",
+      "mandatory": true,
+      "preferred_sources": ["sql_crm"]
+    },
+    {
+      "field_id": "presseschau_no_auto_publish",
+      "label": "Keine Auto-Veröffentlichung",
+      "mandatory": true,
+      "preferred_sources": ["knowledge_platform"]
+    }
+  ],
+  "governance": {
+    "approval_required": true,
+    "clarification_required": false,
+    "auto_publish_allowed": false
+  },
+  "policy_refs": {
+    "decision_policy_ref": "contracts/decision-engine/decision_policy.yaml",
+    "resolution_policy_ref": "contracts/source-resolution/source_resolution_policy.yaml"
+  },
+  "next_stage": "source_resolution",
+  "readiness": {
+    "ready_for_source_resolution": true,
+    "answer_generation_allowed": true
+  }
+}

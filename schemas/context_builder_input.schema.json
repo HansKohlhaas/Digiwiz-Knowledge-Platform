@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://digiwiz.local/schemas/context_builder_input.schema.json",
   "title": "DAR Context Builder Input",
-  "description": "ADR-0011 + ADR-0013 — Input inkl. Source Resolution und optionaler Context-Assembly-Referenz.",
+  "description": "ADR-0011 + ADR-0013 + ADR-0014 — Input inkl. Source Resolution und optionaler Context-Assembly-/Decision-Referenz.",
   "type": "object",
   "required": ["task", "playbooks", "resolution_policy_ref"],
   "properties": {
@@ -44,6 +44,10 @@
     "context_assembly_ref": {
       "type": "string",
       "description": "Pfad oder assembly_id zu context_assembly.schema.json Output"
+    },
+    "decision_context_ref": {
+      "type": "string",
+      "description": "ADR-0014 — Verweis auf decision_context (decision_id oder Pfad zu Output)"
     },
     "graph_query": {
       "type": "object",

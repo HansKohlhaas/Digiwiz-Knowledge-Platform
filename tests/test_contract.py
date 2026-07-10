@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class TestKnowledgePlatformContract(unittest.TestCase):
     def test_version_und_manifest(self):
         version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
-        self.assertEqual(version, "1.4.1")
+        self.assertEqual(version, "1.5.0")
         manifest = (ROOT / "meta" / "manifest.yaml").read_text(encoding="utf-8")
         self.assertIn("digiwiz-knowledge-platform", manifest)
 
@@ -40,7 +40,7 @@ class TestKnowledgePlatformContract(unittest.TestCase):
 
     def test_manifest_contracts(self):
         manifest = (ROOT / "meta" / "manifest.yaml").read_text(encoding="utf-8")
-        for key in ("playbooks", "json_schemas", "runtime", "adrs", "knowledge_graph", "retrieval", "source_resolution", "context_assembly"):
+        for key in ("playbooks", "json_schemas", "runtime", "adrs", "knowledge_graph", "retrieval", "source_resolution", "context_assembly", "decision_engine"):
             self.assertIn(key, manifest)
 
     def test_contract_index_existiert(self):

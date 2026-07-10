@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digiwiz.local/contracts/decision-engine/decision_context.schema.json",
+  "title": "Decision Context",
+  "description": "ADR-0014 — Weitergabe an Source Resolution, Context Assembly und DAR Context Builder.",
+  "type": "object",
+  "required": [
+    "decision_id",
+    "task",
+    "query",
+    "sql_first",
+    "source_requirements",
+    "orchestration_plan",
+    "required_fields",
+    "governance",
+    "policy_refs",
+    "next_stage"
+  ],
+  "properties": {
+    "decision_id": { "type": "string", "minLength": 1 },
+    "decision_trace_id": { "type": "string" },
+    "task": { "type": "string" },
+    "query": { "type": "string" },
+    "sql_first": { "type": "boolean" },
+    "source_requirements": {
+      "type": "object",
+      "required": [
+        "kp_governance",
+        "sql_crm_stammdaten",
+        "knowledge_graph",
+        "chroma_rag",
+        "web_external"
+      ],
+      "properties": {
+        "kp_governance": { "$ref": "#/$defs/source_requirement" },
+        "sql_crm_stammdaten": { "$ref": "#/$defs/source_requirement" },
+        "knowledge_graph": { "$ref": "#/$defs/source_requirement" },
+        "chroma_rag": { "$ref": "#/$defs/source_requirement" },
+        "web_external": { "$ref": "#/$defs/source_requirement" }
+      }
+    },
+    "orchestration_plan": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/orchestration_step" },
+      "minItems": 1
+    },
+    "required_fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field_id", "mandatory"],
+        "properties": {
+          "field_id": { "type": "string" },
+          "label": { "type": "string" },
+          "mandatory": { "type": "boolean" },
+          "preferred_sources": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "required": ["approval_required", "auto_publish_allowed"],
+      "properties": {
+        "approval_required": { "type": "boolean" },
+        "clarification_required": { "type": "boolean" },
+        "auto_publish_allowed": { "const": false }
+      }
+    },
+    "policy_refs": {
+      "type": "object",
+      "required": ["decision_policy_ref", "resolution_policy_ref"],
+      "properties": {
+        "decision_policy_ref": {
+          "type": "string",
+          "const": "contracts/decision-engine/decision_policy.yaml"
+        },
+        "resolution_policy_ref": {
+          "type": "string",
+          "const": "contracts/source-resolution/source_resolution_policy.yaml"
+        }
+      }
+    },
+    "next_stage": {
+      "enum": ["source_resolution", "clarification", "approval_gate", "block"]
+    },
+    "readiness": {
+      "type": "object",
+      "properties": {
+        "ready_for_source_resolution": { "type": "boolean" },
+        "answer_generation_allowed": { "type": "boolean" }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "source_requirement": {
+      "type": "object",
+      "required": ["status", "reason_code"],
+      "properties": {
+        "status": { "enum": ["required", "optional", "skipped"] },
+        "reason_code": { "type": "string" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "orchestration_step": {
+      "type": "object",
+      "required": ["step_id", "module", "status"],
+      "properties": {
+        "step_id": { "type": "string" },
+        "module": {
+          "enum": [
+            "intent_recognition",
+            "decision_engine",
+            "source_resolution",
+            "context_assembly",
+            "context_builder"
+          ]
+        },
+        "status": {
+          "enum": ["completed", "planned", "skipped", "blocked"]
+        },
+        "condition": { "type": "string" }
+      }
+    }
+  }
+}

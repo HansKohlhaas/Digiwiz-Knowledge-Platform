@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digiwiz.local/contracts/decision-engine/decision_input.schema.json",
+  "title": "Decision Engine Input",
+  "description": "ADR-0014 — Input nach Intent Recognition, vor Source Resolution.",
+  "type": "object",
+  "required": [
+    "query",
+    "task",
+    "intent_classification",
+    "routing_ref",
+    "decision_policy_ref",
+    "resolution_policy_ref",
+    "playbook_refs"
+  ],
+  "properties": {
+    "query": { "type": "string", "minLength": 1 },
+    "task": { "type": "string", "minLength": 1 },
+    "intent_classification": {
+      "type": "object",
+      "required": ["query_type", "confidence"],
+      "properties": {
+        "sql_first_signals": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "domain_matches": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "query_type": {
+          "enum": [
+            "operational_lookup",
+            "content_preparation",
+            "semantic_lookup",
+            "relationship_lookup",
+            "provenance_trace",
+            "governance_check",
+            "mixed"
+          ]
+        },
+        "entity_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": { "type": "string" },
+              "value": { "type": "string" }
+            }
+          }
+        },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+      },
+      "additionalProperties": true
+    },
+    "routing_ref": {
+      "type": "string",
+      "const": "runtime/routing.json"
+    },
+    "decision_policy_ref": {
+      "type": "string",
+      "const": "contracts/decision-engine/decision_policy.yaml"
+    },
+    "resolution_policy_ref": {
+      "type": "string",
+      "const": "contracts/source-resolution/source_resolution_policy.yaml"
+    },
+    "playbook_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "session_id": { "type": "string" },
+    "user_context": {
+      "type": "object",
+      "properties": {
+        "role": { "type": "string" },
+        "tenant_id": { "type": "string" },
+        "crm_context_ref": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -17,5 +17,6 @@ Architekturentscheidungen in Lesereihenfolge (empfohlen für Neueinsteiger).
 | [0011](ADR-0011-context-builder-combines-context-layers.md) | Context Assembly before Answer Generation | D, E |
 | [0012](ADR-0012-contracts-before-stage-e-f-automation.md) | Contracts vor E/F-Automation | E, F |
 | [0013](ADR-0013-source-resolution-and-sql-first-policy.md) | Source Resolution, SQL-first | D, E, Wiki |
+| [0014](ADR-0014-decision-engine-orchestration.md) | Decision Engine — Orchestrierung | E4, D |
 
 **Leitplanke:** Bei Widerspruch zwischen abgeleitetem Index (Chroma) und KP-Contract gilt die **Knowledge Platform**. Bei Widerspruch zwischen Chroma/RAG/Web und **SQL-Firmendaten** gilt **SQL** (ADR-0013).

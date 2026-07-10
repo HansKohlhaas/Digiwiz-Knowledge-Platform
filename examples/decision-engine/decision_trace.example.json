@@ -1,0 +1,67 @@
+{
+  "trace_id": "tr-dec-presseschau-crm-001",
+  "decision_id": "dec-presseschau-crm-001",
+  "engine_version": "contract_v1",
+  "task": "presseschau",
+  "query": "Welchen CRM-Status hat Apotheke Kundennummer 12345 und welche Presseschau-Regeln gelten?",
+  "entries": [
+    {
+      "step_id": "resolve_task_routing",
+      "timestamp": "2026-07-10T08:00:00Z",
+      "rule_ref": "runtime/routing.json#presseschau",
+      "rule_type": "routing",
+      "input_signals": { "task": "presseschau" },
+      "outcome": "playbooks_resolved",
+      "confidence": 1.0,
+      "rationale": "Task presseschau → Playbooks presseschau, linkedin, brandvoice, sources",
+      "source_effect": {}
+    },
+    {
+      "step_id": "derive_source_requirements",
+      "timestamp": "2026-07-10T08:00:01Z",
+      "rule_ref": "contracts/source-resolution/source_resolution_policy.yaml#sql_first_domains",
+      "rule_type": "contract",
+      "input_signals": {
+        "domain_matches": ["kundennummer", "apothekenbezug"],
+        "entity_refs": [{ "type": "kundennummer", "value": "12345" }]
+      },
+      "outcome": "sql_required",
+      "confidence": 0.95,
+      "rationale": "Domänen-Match kundennummer → SQL-first Pflicht (ADR-0013)",
+      "source_effect": { "sql_crm_stammdaten": "required" }
+    },
+    {
+      "step_id": "derive_source_requirements",
+      "timestamp": "2026-07-10T08:00:01Z",
+      "rule_ref": "contracts/decision-engine/decision_policy.yaml#governance_gates.kp_governance_always",
+      "rule_type": "contract",
+      "input_signals": { "task": "presseschau" },
+      "outcome": "kp_governance_required",
+      "confidence": 1.0,
+      "rationale": "DAR-Task erfordert KP-Governance immer vor Datenabfrage",
+      "source_effect": { "kp_governance": "required" }
+    },
+    {
+      "step_id": "evaluate_governance_gates",
+      "timestamp": "2026-07-10T08:00:02Z",
+      "rule_ref": "adr/ADR-0004-no-auto-publishing.md",
+      "rule_type": "adr",
+      "input_signals": {},
+      "outcome": "auto_publish_forbidden",
+      "confidence": 1.0,
+      "rationale": "Auto-Publish verboten — Freigabe nur Regisseur-Inbox",
+      "source_effect": {}
+    },
+    {
+      "step_id": "assess_readiness",
+      "timestamp": "2026-07-10T08:00:03Z",
+      "rule_ref": "contracts/decision-engine/decision_policy.yaml#readiness_rules.ready_for_resolution",
+      "rule_type": "contract",
+      "input_signals": { "block_execution": false, "clarification_required": false },
+      "outcome": "ready_for_source_resolution",
+      "confidence": 0.88,
+      "rationale": "Kein Block, keine Klärung — Source Resolution darf starten",
+      "source_effect": {}
+    }
+  ]
+}

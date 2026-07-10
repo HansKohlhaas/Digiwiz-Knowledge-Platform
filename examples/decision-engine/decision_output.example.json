@@ -1,0 +1,151 @@
+{
+  "decision_id": "dec-presseschau-crm-001",
+  "task": "presseschau",
+  "query": "Welchen CRM-Status hat Apotheke Kundennummer 12345 und welche Presseschau-Regeln gelten?",
+  "source_requirements": {
+    "kp_governance": {
+      "status": "required",
+      "reason_code": "dar_task_requires_kp_governance",
+      "confidence": 1.0
+    },
+    "sql_crm_stammdaten": {
+      "status": "required",
+      "reason_code": "domain_match_sql_first",
+      "confidence": 0.95
+    },
+    "knowledge_graph": {
+      "status": "skipped",
+      "reason_code": "no_structural_query_type",
+      "confidence": 0.9
+    },
+    "chroma_rag": {
+      "status": "optional",
+      "reason_code": "semantic_query_type",
+      "confidence": 0.75
+    },
+    "web_external": {
+      "status": "optional",
+      "reason_code": "supplementary_external_only",
+      "confidence": 0.5
+    }
+  },
+  "decisions": {
+    "sql_required": true,
+    "sql_not_required": false,
+    "kp_governance_required": true,
+    "knowledge_graph_required": false,
+    "chroma_required": false,
+    "web_required": false,
+    "answer_generation_allowed": true,
+    "clarification_required": false,
+    "approval_required": true,
+    "block_execution": false
+  },
+  "orchestration_plan": [
+    {
+      "step_id": "classify_intent",
+      "module": "intent_recognition",
+      "status": "completed"
+    },
+    {
+      "step_id": "decision_engine",
+      "module": "decision_engine",
+      "status": "completed"
+    },
+    {
+      "step_id": "kp_governance",
+      "module": "source_resolution",
+      "status": "planned",
+      "condition": "always"
+    },
+    {
+      "step_id": "sql_crm_stammdaten",
+      "module": "source_resolution",
+      "status": "planned",
+      "condition": "sql_required"
+    },
+    {
+      "step_id": "knowledge_graph",
+      "module": "source_resolution",
+      "status": "skipped",
+      "condition": "not_required"
+    },
+    {
+      "step_id": "chroma_rag",
+      "module": "source_resolution",
+      "status": "planned",
+      "condition": "optional"
+    },
+    {
+      "step_id": "context_assembly",
+      "module": "context_assembly",
+      "status": "planned"
+    },
+    {
+      "step_id": "context_builder",
+      "module": "context_builder",
+      "status": "planned"
+    }
+  ],
+  "required_fields": [
+    {
+      "field_id": "crm_status",
+      "label": "CRM-Status Apotheke 12345",
+      "mandatory": true,
+      "preferred_sources": ["sql_crm"]
+    },
+    {
+      "field_id": "presseschau_no_auto_publish",
+      "label": "Keine Auto-Veröffentlichung",
+      "mandatory": true,
+      "preferred_sources": ["knowledge_platform"]
+    }
+  ],
+  "governance": {
+    "approval_required": true,
+    "clarification_required": false,
+    "auto_publish_allowed": false,
+    "applied_adrs": ["ADR-0002", "ADR-0004", "ADR-0013", "ADR-0014"]
+  },
+  "readiness": {
+    "ready_for_source_resolution": true,
+    "answer_generation_allowed": true,
+    "next_stage": "source_resolution"
+  },
+  "decision_confidence": {
+    "overall": 0.88,
+    "sources": [
+      {
+        "source_id": "sql_crm_stammdaten",
+        "decision": "required",
+        "confidence": 0.95,
+        "reason_code": "domain_match_sql_first",
+        "evidence_refs": [
+          "contracts/source-resolution/source_resolution_policy.yaml#sql_first_domains",
+          "intent_classification.entity_refs"
+        ],
+        "rejected_alternatives": [
+          {
+            "source_id": "chroma_rag",
+            "reason_code": "sql_first_overrides_rag_for_operational_facts",
+            "adr": "ADR-0013"
+          }
+        ]
+      },
+      {
+        "source_id": "kp_governance",
+        "decision": "required",
+        "confidence": 1.0,
+        "reason_code": "dar_task_requires_kp_governance",
+        "evidence_refs": ["contracts/decision-engine/decision_policy.yaml#governance_gates"]
+      }
+    ]
+  },
+  "decision_trace_id": "tr-dec-presseschau-crm-001",
+  "policy_refs": {
+    "decision_policy_ref": "contracts/decision-engine/decision_policy.yaml",
+    "resolution_policy_ref": "contracts/source-resolution/source_resolution_policy.yaml",
+    "routing_ref": "runtime/routing.json",
+    "playbook_refs": ["presseschau", "linkedin", "brandvoice", "sources"]
+  }
+}

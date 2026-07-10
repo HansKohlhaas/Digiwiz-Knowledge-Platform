@@ -1,0 +1,18 @@
+{
+  "query": "Welchen CRM-Status hat Apotheke Kundennummer 12345 und welche Presseschau-Regeln gelten?",
+  "task": "presseschau",
+  "intent_classification": {
+    "sql_first_signals": ["kundennummer", "crm_status"],
+    "domain_matches": ["kundennummer", "apothekenbezug"],
+    "query_type": "operational_lookup",
+    "entity_refs": [
+      { "type": "kundennummer", "value": "12345" }
+    ],
+    "confidence": 0.92
+  },
+  "routing_ref": "runtime/routing.json",
+  "decision_policy_ref": "contracts/decision-engine/decision_policy.yaml",
+  "resolution_policy_ref": "contracts/source-resolution/source_resolution_policy.yaml",
+  "playbook_refs": ["presseschau", "linkedin", "brandvoice", "sources"],
+  "session_id": "sess-presseschau-001"
+}

@@ -1,0 +1,252 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://digiwiz.local/contracts/decision-engine/decision_output.schema.json",
+  "title": "Decision Engine Output",
+  "description": "ADR-0014 — Quellenbedarf, Gates und Orchestration Plan. Keine Antworten.",
+  "type": "object",
+  "required": [
+    "decision_id",
+    "task",
+    "query",
+    "source_requirements",
+    "decisions",
+    "orchestration_plan",
+    "required_fields",
+    "governance",
+    "readiness",
+    "decision_confidence",
+    "decision_trace_id",
+    "policy_refs"
+  ],
+  "properties": {
+    "decision_id": { "type": "string", "minLength": 1 },
+    "task": { "type": "string" },
+    "query": { "type": "string" },
+    "source_requirements": {
+      "type": "object",
+      "required": [
+        "kp_governance",
+        "sql_crm_stammdaten",
+        "knowledge_graph",
+        "chroma_rag",
+        "web_external"
+      ],
+      "properties": {
+        "kp_governance": { "$ref": "#/$defs/source_requirement" },
+        "sql_crm_stammdaten": { "$ref": "#/$defs/source_requirement" },
+        "knowledge_graph": { "$ref": "#/$defs/source_requirement" },
+        "chroma_rag": { "$ref": "#/$defs/source_requirement" },
+        "web_external": { "$ref": "#/$defs/source_requirement" }
+      },
+      "additionalProperties": false
+    },
+    "decisions": {
+      "type": "object",
+      "required": [
+        "sql_required",
+        "sql_not_required",
+        "kp_governance_required",
+        "knowledge_graph_required",
+        "chroma_required",
+        "web_required",
+        "answer_generation_allowed",
+        "clarification_required",
+        "approval_required",
+        "block_execution"
+      ],
+      "properties": {
+        "sql_required": { "type": "boolean" },
+        "sql_not_required": { "type": "boolean" },
+        "kp_governance_required": { "const": true },
+        "knowledge_graph_required": { "type": "boolean" },
+        "chroma_required": { "type": "boolean" },
+        "web_required": { "type": "boolean" },
+        "answer_generation_allowed": { "type": "boolean" },
+        "clarification_required": { "type": "boolean" },
+        "approval_required": { "type": "boolean" },
+        "block_execution": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "orchestration_plan": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/orchestration_step" },
+      "minItems": 1
+    },
+    "required_fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field_id", "mandatory"],
+        "properties": {
+          "field_id": { "type": "string" },
+          "label": { "type": "string" },
+          "mandatory": { "type": "boolean" },
+          "preferred_sources": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "sql_crm",
+                "knowledge_platform",
+                "knowledge_graph",
+                "chroma_rag",
+                "web_external"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "required": ["approval_required", "auto_publish_allowed"],
+      "properties": {
+        "approval_required": { "type": "boolean" },
+        "clarification_required": { "type": "boolean" },
+        "auto_publish_allowed": { "const": false },
+        "applied_adrs": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "required": ["ready_for_source_resolution", "next_stage"],
+      "properties": {
+        "ready_for_source_resolution": { "type": "boolean" },
+        "answer_generation_allowed": { "type": "boolean" },
+        "next_stage": {
+          "enum": [
+            "source_resolution",
+            "clarification",
+            "approval_gate",
+            "block"
+          ]
+        }
+      }
+    },
+    "decision_confidence": { "$ref": "#/$defs/decision_confidence" },
+    "decision_trace_id": { "type": "string", "minLength": 1 },
+    "policy_refs": {
+      "type": "object",
+      "required": ["decision_policy_ref", "resolution_policy_ref"],
+      "properties": {
+        "decision_policy_ref": {
+          "type": "string",
+          "const": "contracts/decision-engine/decision_policy.yaml"
+        },
+        "resolution_policy_ref": {
+          "type": "string",
+          "const": "contracts/source-resolution/source_resolution_policy.yaml"
+        },
+        "routing_ref": { "type": "string" },
+        "playbook_refs": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "source_requirement": {
+      "type": "object",
+      "required": ["status", "reason_code"],
+      "properties": {
+        "status": {
+          "enum": ["required", "optional", "skipped"]
+        },
+        "reason_code": { "type": "string" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "orchestration_step": {
+      "type": "object",
+      "required": ["step_id", "module", "status"],
+      "properties": {
+        "step_id": { "type": "string" },
+        "module": {
+          "enum": [
+            "intent_recognition",
+            "decision_engine",
+            "source_resolution",
+            "context_assembly",
+            "context_builder"
+          ]
+        },
+        "status": {
+          "enum": ["completed", "planned", "skipped", "blocked"]
+        },
+        "condition": { "type": "string" }
+      }
+    },
+    "decision_confidence": {
+      "type": "object",
+      "required": ["overall", "sources"],
+      "properties": {
+        "overall": { "type": "number", "minimum": 0, "maximum": 1 },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["source_id", "decision", "confidence", "reason_code"],
+            "properties": {
+              "source_id": { "type": "string" },
+              "decision": {
+                "enum": ["required", "optional", "skipped"]
+              },
+              "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+              "reason_code": { "type": "string" },
+              "evidence_refs": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "rejected_alternatives": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["source_id", "reason_code"],
+                  "properties": {
+                    "source_id": { "type": "string" },
+                    "reason_code": { "type": "string" },
+                    "adr": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "decisions": { "properties": { "sql_required": { "const": true } } } }
+      },
+      "then": {
+        "properties": {
+          "decisions": {
+            "properties": { "sql_not_required": { "const": false } }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "decisions": { "properties": { "sql_not_required": { "const": true } } } }
+      },
+      "then": {
+        "properties": {
+          "decisions": {
+            "properties": { "sql_required": { "const": false } }
+          }
+        }
+      }
+    }
+  ],
+  "not": {
+    "required": ["published_url", "auto_publish", "answer_text"]
+  }
+}
